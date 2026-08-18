@@ -3,6 +3,7 @@ import type { ReactNode } from 'react';
 import { AppleMark, Bag, Close, Heart, Person, SearchList } from './Icons';
 import { formatPrice, productLabel, PRODUCTS } from '../data/products';
 import { useStore } from '../lib/store';
+import { asset } from '../lib/asset';
 
 export function Button({
   children,
@@ -172,7 +173,7 @@ export function AiBanner({ variant = 'expert' }: { variant?: 'expert' | 'search'
   if (variant === 'expert') {
     return (
       <span className="ai-banner ai-banner--expert">
-        <img src="/assets/banner-expert-fab.png" alt="" />
+        <img src={asset('banner-expert-fab.png')} alt="" />
         <span className="ai-banner__pill fill-send">
           <span>спросить эксперта</span>
         </span>
@@ -189,7 +190,7 @@ export function AiBanner({ variant = 'expert' }: { variant?: 'expert' | 'search'
             {'\n'}расскажи, что хочется — я найду подходящие варианты
           </span>
         </span>
-        <img className="ai-banner__ill" src="/assets/mascot-banner-pdp.png" alt="" />
+        <img className="ai-banner__ill" src={asset('mascot-banner-pdp.png')} alt="" />
       </span>
     );
   }
@@ -204,8 +205,8 @@ export function AiBanner({ variant = 'expert' }: { variant?: 'expert' | 'search'
         </span>
         <span className="ai-banner__blob ai-banner__blob--a" />
         <span className="ai-banner__blob ai-banner__blob--b" />
-        <img className="ai-banner__ill" src="/assets/mascot-banner-search.png" alt="" />
-        <img className="ai-banner__glow" src="/assets/banner-search-glow.png" alt="" />
+        <img className="ai-banner__ill" src={asset('mascot-banner-search.png')} alt="" />
+        <img className="ai-banner__glow" src={asset('banner-search-glow.png')} alt="" />
       </span>
     );
   }
@@ -217,7 +218,7 @@ export function AiBanner({ variant = 'expert' }: { variant?: 'expert' | 'search'
           нужен бьюти совет?{'\n'}давай помогу
         </span>
       </span>
-      <img className="ai-banner__ill" src="/assets/mascot-banner-share.png" alt="" />
+      <img className="ai-banner__ill" src={asset('mascot-banner-share.png')} alt="" />
     </span>
   );
 }

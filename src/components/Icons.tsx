@@ -1,3 +1,5 @@
+import { asset } from '../lib/asset';
+
 type P = { size?: number; color?: string; className?: string };
 
 export const ChevronLeft = ({ size = 20, color = '#000' }: P) => (
@@ -83,11 +85,11 @@ export const AppleMark = ({ size = 24, color = '#000' }: P) => (
       height: size,
       display: 'block',
       backgroundColor: color,
-      WebkitMaskImage: 'url(/assets/gold-apple-mark.png)',
+      WebkitMaskImage: `url(${asset('gold-apple-mark.png')})`,
       WebkitMaskSize: 'contain',
       WebkitMaskRepeat: 'no-repeat',
       WebkitMaskPosition: 'center',
-      maskImage: 'url(/assets/gold-apple-mark.png)',
+      maskImage: `url(${asset('gold-apple-mark.png')})`,
       maskSize: 'contain',
       maskRepeat: 'no-repeat',
       maskPosition: 'center',
@@ -234,7 +236,7 @@ export const AiTag = ({
       </text>
     </svg>
   ) : (
-    <img src="/assets/ai-tag.svg" width={width} height={height} alt="" draggable={false} />
+    <img src={asset('ai-tag.svg')} width={width} height={height} alt="" draggable={false} />
   );
 
 export const TickOk = ({ size = 16 }: P) => (

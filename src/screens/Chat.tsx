@@ -17,6 +17,7 @@ import { useStore } from '../lib/store';
 import { useAssistant } from '../lib/useAssistant';
 import { openingLine } from '../lib/ai';
 import { PRODUCTS } from '../data/products';
+import { asset } from '../lib/asset';
 import type { Conversation, QuickReply } from '../lib/types';
 
 /** Starter pills from Figma node 240:26779 — labels are source of truth. */
@@ -64,7 +65,7 @@ export default function Chat() {
         <div className="welcome">
           <div className="welcome__hero">
             <div className="welcome__mascot">
-              <img src="/assets/banner-expert.png" alt="" />
+              <img src={asset('banner-expert.png')} alt="" />
               <button
                 type="button"
                 className="welcome__expert press"
@@ -112,7 +113,7 @@ export default function Chat() {
                     <button key={c.title} className="cap press" onClick={() => start(c.action)}>
                       <span className="cap__icon">{c.icon}</span>
                       {'tag' in c && c.tag && (
-                        <img className="cap__tag" src="/assets/cap-tag-new.svg" alt="" />
+                        <img className="cap__tag" src={asset('cap-tag-new.svg')} alt="" />
                       )}
                       <span className="cap__title t-card-15">{c.title}</span>
                     </button>

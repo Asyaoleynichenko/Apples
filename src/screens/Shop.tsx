@@ -21,6 +21,7 @@ import { useStore } from '../lib/store';
 import { useLiveShell } from '../lib/shell';
 import { extractSlots } from '../lib/intent';
 import { formatPrice, productLabel, PRODUCTS } from '../data/products';
+import { asset } from '../lib/asset';
 
 /* ------------------------------------------------------------ favorites */
 
@@ -59,8 +60,8 @@ export function Favorites() {
 
         <div className="wishlist">
           <div className="wishlist__thumbs">
-            <img src="/assets/product-elemis-procollagen.png" alt="" />
-            <img src="/assets/product-clarins-body-firming.png" alt="" />
+            <img src={asset('product-elemis-procollagen.png')} alt="" />
+            <img src={asset('product-clarins-body-firming.png')} alt="" />
           </div>
           <div className="wishlist__copy">
             <div className="t-title-17">создайте вишлист</div>
@@ -331,7 +332,7 @@ export function Profile() {
         <h1 className="shop__h1">мой бьюти-профиль</h1>
 
         <div className="profile__hero">
-          <img src="/assets/mascot-head-glossy.png" alt="" />
+          <img src={asset('mascot-head-glossy.png')} alt="" />
           <div className="t-body-16 profile__hero-copy">
             {profile.learned.length
               ? 'вот что я про тебя запомнила. чем больше говоришь — тем точнее подбираю'

@@ -2,6 +2,9 @@ import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 
 export default defineConfig({
+  // Relative base so the build works on GitHub Pages project URLs
+  // (username.github.io/repo/) as well as locally.
+  base: './',
   plugins: [react()],
   server: {
     port: 5173,

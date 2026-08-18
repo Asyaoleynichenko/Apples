@@ -45,7 +45,7 @@ input {
   place-items: center;
   padding: 24px;
   overflow: hidden;
-  background: #7eb8e8 url('/assets/stage-bg.jpg') center / cover no-repeat;
+  background: #7eb8e8 center / cover no-repeat;
 }
 
 .stage-chip {

@@ -1,5 +1,6 @@
 import { AnimatePresence, motion, type Variants } from 'framer-motion';
 import { useLiveShell } from './lib/shell';
+import { asset } from './lib/asset';
 import { StoreProvider, useStore, type NavKind, type Route } from './lib/store';
 import Onboarding from './screens/Onboarding';
 import Chat from './screens/Chat';
@@ -138,7 +139,7 @@ function Device() {
   const { restart } = useStore();
   useLiveShell();
   return (
-    <div className="stage">
+    <div className="stage" style={{ backgroundImage: `url(${asset('stage-bg.jpg')})` }}>
       <button type="button" className="stage-chip stage-chip--restart" onClick={restart}>
         Начать заново
       </button>

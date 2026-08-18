@@ -9,6 +9,7 @@ import { useStore } from '../lib/store';
 import { useAssistant } from '../lib/useAssistant';
 import { compareVerdict, handoffContext, preferenceChecks } from '../lib/ai';
 import { formatPrice, PRODUCTS, sourcesFor } from '../data/products';
+import { asset } from '../lib/asset';
 
 export default function Sheets() {
   const store = useStore();
@@ -99,7 +100,7 @@ function AiIntroSheet() {
               <span className="sheet__close-x" />
             </button>
             <div className="intro__art">
-              <img src="/assets/mascot-phone.png" alt="" />
+              <img src={asset('mascot-phone.png')} alt="" />
             </div>
             <div className="intro__texts">
               <div className="t-headline-24">привет, я твой личный ассистент</div>
@@ -402,7 +403,7 @@ function CompareSheet() {
             ))}
           </div>
           <div className="cmp__verdict">
-            <img src="/assets/mascot-avatar.png" alt="" />
+            <img src={asset('mascot-avatar.png')} alt="" />
             <div className="t-body-14">{text}</div>
           </div>
         </>

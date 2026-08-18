@@ -8,6 +8,7 @@ import { IosKeyboard } from '../components/Keyboard';
 import { CATALOG, PRODUCTS } from '../data/products';
 import { useStore } from '../lib/store';
 import { useLiveShell } from '../lib/shell';
+import { asset } from '../lib/asset';
 import type { ProductType } from '../lib/types';
 
 const PRIORITIES = [
@@ -224,7 +225,7 @@ export default function Onboarding() {
           {step === 'intro' && (
             <>
               <div className="onb__art onb__art--tall">
-                <img src="/assets/mascot-phone.png" alt="" />
+                <img src={asset('mascot-phone.png')} alt="" />
               </div>
               <div className="onb__texts">
                 <div className="t-headline-24">я твой личный ассистент{'\n'}давай познакомимся</div>
@@ -244,7 +245,7 @@ export default function Onboarding() {
           {step === 'priorities' && (
             <StepChips
               title={'что для тебя важно\nпри выборе косметики?'}
-              art="/assets/mascot-eyes-closed.png"
+              art={asset('mascot-eyes-closed.png')}
               label="Можно выбрать несколько"
               items={PRIORITIES}
               selected={priorities}
@@ -256,7 +257,7 @@ export default function Onboarding() {
           {step === 'budget' && (
             <StepChips
               title="твой бюджет"
-              art="/assets/mascot-waving.png"
+              art={asset('mascot-waving.png')}
               artClass="onb__art--wave"
               label="На какую сумму в месяц обычно рассчитываешь?"
               items={BUDGETS}
@@ -269,7 +270,7 @@ export default function Onboarding() {
           {step === 'dislikes' && (
             <StepChips
               title="что точно не твоё"
-              art="/assets/mascot-arms-open.png"
+              art={asset('mascot-arms-open.png')}
               label={'А есть что тебе точно не нравится?\nМожно выбрать несколько'}
               items={DISLIKES}
               selected={dislikes}
@@ -283,7 +284,7 @@ export default function Onboarding() {
               <div className="onb__title t-headline-24">продукты, которые используешь 24/7</div>
               <div className="onb__art onb__art--head">
                 <div className="onb__banner">
-                  <img src="/assets/banner-onboarding.png" alt="" />
+                  <img src={asset('banner-onboarding.png')} alt="" />
                 </div>
               </div>
               <div className="onb__fields">
@@ -326,7 +327,7 @@ export default function Onboarding() {
                 </div>
               </div>
               <div className="onb__art onb__art--tall">
-                <img src="/assets/mascot-calm.png" alt="" />
+                <img src={asset('mascot-calm.png')} alt="" />
               </div>
               <div className="button-group">
                 <Button onClick={() => finish(true)}>начать</Button>

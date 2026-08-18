@@ -164,24 +164,12 @@ html[data-shell='live'] .ai-banner--advice .ai-banner__copy {
 
 html[data-shell='live'] .onb__art--head {
   min-height: 0;
-  flex: 1 1 auto;
-  max-height: min(248px, 36svh);
+  flex: 0 1 auto;
+  max-height: min(200px, 28svh);
 }
 
 html[data-shell='live'] .onb__banner {
   width: min(303.28px, 100%);
-  height: auto;
-  aspect-ratio: 303.28 / 227.93;
-  max-height: 100%;
-}
-
-html[data-shell='live'] .onb__banner img {
-  width: 113%;
-  height: auto;
-  aspect-ratio: 342.64 / 248.37;
-  left: 50%;
-  top: 46%;
-  transform: translate(-50%, -50%);
 }
 
 html[data-shell='live'] .input-wrap__field {
