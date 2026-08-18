@@ -1,10 +1,12 @@
 import { useCallback } from 'react';
 import { runAction, runFreeText, type Ctx } from './ai';
-import { LOADING_MS } from './loading';
+import { LOADING_MS, isResultTurn } from './loading';
 import { useStore } from './store';
 
-/** Wait for the loading sequence plus a beat to read the answer. */
-const NAV_DELAY = LOADING_MS + 400;
+/** Open PDP/cart after the answer has landed. */
+function navDelay(messages: { kind: string }[]): number {
+  return (isResultTurn(messages) ? LOADING_MS : 0) + 400;
+}
 
 /**
  * Single place where a conversation turn is produced and its app-level side
@@ -17,11 +19,13 @@ export function useAssistant() {
   const run = useCallback(
     (action: string, value?: string) => {
       const ctx: Ctx = { profile, conv: conversation, chatContext };
-      applyTurn(runAction(action, value, ctx));
+      const turn = runAction(action, value, ctx);
+      applyTurn(turn);
+      const delay = navDelay(turn.messages);
 
       const [head, id] = action.split(':');
       if (!id) {
-        if (head === 'profile') window.setTimeout(() => push({ name: 'profile' }), NAV_DELAY);
+        if (head === 'profile') window.setTimeout(() => push({ name: 'profile' }), delay);
         return;
       }
 
@@ -29,8 +33,8 @@ export function useAssistant() {
       if (head === 'open' || head === 'add' || head === 'repeat') {
         setProfile({ viewed: Array.from(new Set([...profile.viewed, id])) });
       }
-      if (head === 'open') window.setTimeout(() => push({ name: 'pdp', productId: id }), NAV_DELAY);
-      if (head === 'repeat') window.setTimeout(() => push({ name: 'cart' }), NAV_DELAY);
+      if (head === 'open') window.setTimeout(() => push({ name: 'pdp', productId: id }), delay);
+      if (head === 'repeat') window.setTimeout(() => push({ name: 'cart' }), delay);
     },
     [profile, conversation, chatContext, applyTurn, push, addToCart, setProfile],
   );

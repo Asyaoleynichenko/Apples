@@ -243,52 +243,29 @@
 }
 .welcome__mascot {
   position: relative;
-  width: 154px;
-  height: 115px;
-  flex: 0 0 115px;
+  width: 153.51px;
+  height: 115.37px;
+  flex: none;
+  flex-grow: 0;
 }
 .welcome__mascot img {
   position: absolute;
-  left: 50%;
-  top: 50%;
-  width: 173px;
+  left: -9.77px;
+  top: -10.65px;
+  width: 173.44px;
+  height: 125.72px;
   max-width: none;
-  transform: translate(-50%, -50%);
-  filter: drop-shadow(0 3px 17px rgba(219, 255, 1, 0.45));
-}
-.welcome__tag {
-  position: absolute;
-  left: 74px;
-  top: 4px;
-  z-index: 2;
-  transform: rotate(-9deg);
 }
 .welcome__expert {
   position: absolute;
-  left: 22px;
+  left: 23px;
   top: 82px;
+  width: 99px;
+  height: 29px;
   z-index: 3;
   border: 0;
-  background: linear-gradient(90deg, var(--purple-from) 0%, var(--purple-to) 100%);
-  color: #fff;
-  border-radius: 100px;
-  padding: 4px 6px 4px 6px;
-  font-size: 9px;
-  line-height: 12px;
-  font-weight: 400;
-  white-space: nowrap;
-  overflow: hidden;
-}
-.welcome__expert::before {
-  content: '';
-  position: absolute;
-  left: 4px;
-  right: 16%;
-  top: 1px;
-  height: 14px;
-  border-radius: 100px;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.55) 0%, rgba(255, 255, 255, 0) 100%);
-  pointer-events: none;
+  padding: 0;
+  background: transparent;
 }
 .welcome__texts {
   text-align: center;

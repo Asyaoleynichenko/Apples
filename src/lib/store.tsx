@@ -1,6 +1,6 @@
 import { createContext, useCallback, useContext, useMemo, useRef, useState, type ReactNode } from 'react';
 import { EMPTY_CONVERSATION, type AiTurn } from './ai';
-import { LOADING_MS } from './loading';
+import { LOADING_MS, isResultTurn } from './loading';
 import { EMPTY_PROFILE } from './profile';
 import { uid } from './uid';
 import type { BeautyProfile, CartLine, ChatContext, ChatMessage, Conversation, QuickReply } from './types';
@@ -158,10 +158,16 @@ export function StoreProvider({ children }: { children: ReactNode }) {
   }, []);
 
   /**
-   * Plays the loading bubble sequence first, then swaps in the scripted reply.
+   * Clarifiers appear immediately. The loading beats play only when this turn
+   * is the recommendation itself (cards, routine, compare, editorial).
    */
   const pushAi = useCallback((messages: ChatMessage[], replies: QuickReply[]) => {
     setQuickReplies([]);
+    if (!isResultTurn(messages)) {
+      setChat((c) => [...c, ...messages]);
+      setQuickReplies(replies);
+      return;
+    }
     const typingId = uid('typing');
     setChat((c) => [...c, { id: typingId, role: 'ai', kind: 'typing' }]);
     const timer = window.setTimeout(() => {
@@ -174,6 +180,8 @@ export function StoreProvider({ children }: { children: ReactNode }) {
   const applyTurn = useCallback(
     (turn: AiTurn) => {
       const speaks = turn.messages.length > 0 || turn.replies.length > 0;
+      const thinking = isResultTurn(turn.messages);
+      const landIn = thinking ? TYPING_MS : 0;
       if (turn.userText) pushUser(turn.userText);
       if (speaks) pushAi(turn.messages, turn.replies);
       if (turn.profile) setProfile(turn.profile);
@@ -182,13 +190,14 @@ export function StoreProvider({ children }: { children: ReactNode }) {
       if (turn.sheet) {
         // A turn that only opens a sheet has nothing to read first.
         if (!speaks) setSheet(turn.sheet);
-        else timers.current.push(window.setTimeout(() => setSheet(turn.sheet!), TYPING_MS + 260));
+        else timers.current.push(window.setTimeout(() => setSheet(turn.sheet!), landIn + 260));
       }
-      // The follow-up beat waits for the first one to land, so the assistant
-      // reads as "thinking, then answering" rather than dumping both at once.
+      // After "поняла, ищу варианты" wait a beat, then the thinking animation
+      // runs on the result turn. Clarifiers don't stall the next question.
       if (turn.then) {
         const next = turn.then;
-        const timer = window.setTimeout(() => applyTurn(next), TYPING_MS + 320);
+        const wait = thinking ? TYPING_MS + 320 : 480;
+        const timer = window.setTimeout(() => applyTurn(next), wait);
         timers.current.push(timer);
       }
     },

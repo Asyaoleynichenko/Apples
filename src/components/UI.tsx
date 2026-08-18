@@ -1,6 +1,6 @@
 import { AnimatePresence, motion } from 'framer-motion';
 import type { ReactNode } from 'react';
-import { Bag, Close, Heart, Search, Catalog, Person, AiTag } from './Icons';
+import { Bag, Close, Heart, Search, Catalog, Person } from './Icons';
 import { formatPrice, PRODUCTS } from '../data/products';
 import { useStore } from '../lib/store';
 
@@ -186,11 +186,7 @@ export function AiBanner({ variant = 'expert' }: { variant?: 'expert' | keyof ty
   if (variant === 'expert') {
     return (
       <span className="ai-banner ai-banner--expert">
-        <img className="ai-banner__mascot" src="/assets/mascot-head-ai.png" alt="" />
-        <span className="ai-banner__tag">
-          <AiTag width={36} height={22} filled />
-        </span>
-        <span className="ai-banner__pill">спросить эксперта</span>
+        <img src="/assets/banner-expert-fab.png" alt="" />
       </span>
     );
   }

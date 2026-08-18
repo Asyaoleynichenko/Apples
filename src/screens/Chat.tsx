@@ -12,7 +12,7 @@ import {
   RoutineBlock,
   SourcesBlock,
 } from '../components/AiBlocks';
-import { AiTag, Sparkle, Bulb, Doc, Layers } from '../components/Icons';
+import { Sparkle, Bulb, Doc, Layers } from '../components/Icons';
 import { useStore } from '../lib/store';
 import { useAssistant } from '../lib/useAssistant';
 import { openingLine } from '../lib/ai';
@@ -64,17 +64,13 @@ export default function Chat() {
         <div className="welcome">
           <div className="welcome__hero">
             <div className="welcome__mascot">
-              <img src="/assets/mascot-head-glossy.png" alt="" />
-              <span className="welcome__tag">
-                <AiTag width={50} height={32} filled />
-              </span>
+              <img src="/assets/banner-expert.png" alt="" />
               <button
                 type="button"
                 className="welcome__expert press"
                 onClick={() => openSheet({ name: 'consultant' })}
-              >
-                спросить эксперта
-              </button>
+                aria-label="спросить эксперта"
+              />
             </div>
             <div className="welcome__texts">
               <div className="t-headline-24">привет, я{'\u00a0'}твой личный ассистент</div>
