@@ -80,6 +80,7 @@
   flex: 0 1 210px;
   display: grid;
   place-items: center;
+  overflow: visible;
 }
 .onb__art-mascot {
   position: relative;
@@ -89,9 +90,14 @@
 }
 .onb__art-mascot img {
   position: static;
+  top: auto;
+  left: auto;
+  transform: none;
   width: 100%;
   height: auto;
   max-width: none;
+  max-height: none;
+  object-fit: contain;
   filter: drop-shadow(0 5px 26px rgba(219, 255, 1, 0.45));
 }
 .onb__art-tag {
