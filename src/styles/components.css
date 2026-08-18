@@ -29,9 +29,7 @@
 }
 
 .home-indicator {
-  flex: 0 0 5px;
-  display: flex;
-  justify-content: center;
+  display: none;
 }
 .home-indicator span {
   width: 134px;

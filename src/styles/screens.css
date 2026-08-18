@@ -89,13 +89,7 @@
   width: auto;
   height: auto;
   object-fit: contain;
-}
-.onb__art--wave {
-  overflow: hidden;
-}
-.onb__art--wave img {
-  transform: translate(-50%, -50%) rotate(-12deg);
-  transform-origin: 52% 58%;
+  object-position: center;
 }
 .onb__art--head {
   flex: 0 1 200px;
@@ -331,11 +325,13 @@
   display: flex;
   gap: 8px;
   padding: 0 16px;
+  scroll-padding-inline: 16px;
 }
 .welcome__caps {
   display: flex;
   gap: 8px;
-  padding: 0 16px;
+  padding: 0 16px 4px;
+  scroll-padding-inline: 16px;
 }
 .cap {
   position: relative;

@@ -258,7 +258,6 @@ export default function Onboarding() {
             <StepChips
               title="твой бюджет"
               art={asset('mascot-waving.png')}
-              artClass="onb__art--wave"
               label="На какую сумму в месяц обычно рассчитываешь?"
               items={BUDGETS}
               selected={budget ? [budget] : []}

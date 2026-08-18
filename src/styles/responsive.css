@@ -21,6 +21,11 @@ a,
   touch-action: manipulation;
 }
 
+.hscroll,
+.hscroll .press {
+  touch-action: pan-x;
+}
+
 .device-slot {
   position: relative;
   width: calc(var(--screen-w) * var(--frame-fit, 1));

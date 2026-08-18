@@ -1,5 +1,6 @@
 import { AnimatePresence, motion, type Variants } from 'framer-motion';
 import { useLiveShell } from './lib/shell';
+import { useHScrollDrag } from './lib/hscroll';
 import { asset } from './lib/asset';
 import { StoreProvider, useStore, type NavKind, type Route } from './lib/store';
 import Onboarding from './screens/Onboarding';
@@ -138,6 +139,7 @@ const FIGMA =
 function Device() {
   const { restart } = useStore();
   useLiveShell();
+  useHScrollDrag();
   return (
     <div className="stage" style={{ backgroundImage: `url(${asset('stage-bg.jpg')})` }}>
       <button type="button" className="stage-chip stage-chip--restart" onClick={restart}>

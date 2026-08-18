@@ -31,12 +31,8 @@ export function StatusBar({ dark = false }: { dark?: boolean }) {
   );
 }
 
-export function HomeIndicator({ light = false }: { light?: boolean }) {
-  return (
-    <div className="home-indicator">
-      <span style={{ background: light ? 'rgba(255,255,255,0.9)' : '#000' }} />
-    </div>
-  );
+export function HomeIndicator() {
+  return null;
 }
 
 /** Chat header: 52px, back at the left, centred title, close at the right. */
