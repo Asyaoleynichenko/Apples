@@ -1,0 +1,96 @@
+@import './tokens.css';
+
+* {
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  font-family: var(--font);
+  color: var(--text);
+  background: #7eb8e8;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+  border: none;
+  background: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+input {
+  font: inherit;
+  color: inherit;
+  border: none;
+  background: none;
+  outline: none;
+}
+
+/* Desktop just centres the phone; the design is not adapted for wide screens. */
+.stage {
+  min-height: 100%;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background: #7eb8e8 url('/assets/stage-bg.jpg') center / cover no-repeat;
+}
+
+.device {
+  position: relative;
+  width: var(--screen-w);
+  height: var(--screen-h);
+  border-radius: var(--screen-radius);
+  overflow: hidden;
+  background: var(--app-bg);
+  box-shadow:
+    0 1px 2px rgba(0, 16, 61, 0.08),
+    0 24px 60px rgba(0, 16, 61, 0.22);
+  isolation: isolate;
+}
+
+.screen {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  background: var(--surface);
+}
+
+/* Scroll areas keep momentum scrolling and hide the desktop scrollbar. */
+.scroll {
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+.scroll::-webkit-scrollbar {
+  display: none;
+}
+
+.hscroll {
+  overflow-x: auto;
+  overflow-y: hidden;
+  scrollbar-width: none;
+}
+.hscroll::-webkit-scrollbar {
+  display: none;
+}
+
+.press {
+  transition: transform 0.12s var(--ease), opacity 0.12s var(--ease);
+}
+.press:active {
+  transform: scale(0.97);
+  opacity: 0.9;
+}

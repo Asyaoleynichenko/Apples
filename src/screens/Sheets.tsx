@@ -1,0 +1,503 @@
+import { AnimatePresence, motion } from 'framer-motion';
+import { useState } from 'react';
+import { BottomSheet, Button, AiBanner } from '../components/UI';
+import { ChatInput, Pill } from '../components/Chat';
+import { HomeIndicator } from '../components/Chrome';
+import { Heart, CheckCircle, Bag } from '../components/Icons';
+import { useStore } from '../lib/store';
+import { useAssistant } from '../lib/useAssistant';
+import { compareVerdict, handoffContext, preferenceChecks } from '../lib/ai';
+import { formatPrice, PRODUCTS, sourcesFor } from '../data/products';
+
+export default function Sheets() {
+  const store = useStore();
+  const { sheet, closeSheet } = store;
+
+  return (
+    <>
+      <AiIntroSheet />
+      <ShareSheet />
+      <WhySheet />
+      <SourcesSheet />
+      <CompareSheet />
+      <FeedbackSheet />
+      <ConsultantSheet />
+      {/* keeps TS happy about the discriminated union being fully handled */}
+      {sheet === null && <span hidden onClick={closeSheet} />}
+    </>
+  );
+}
+
+/* --------------------------------------------------- entry point sheet */
+
+function AiIntroSheet() {
+  const { sheet, closeSheet, push, profile } = useStore();
+  const open = sheet?.name === 'ai-intro';
+
+  const enter = () => {
+    closeSheet();
+    push(profile.metAssistant ? { name: 'chat' } : { name: 'onboarding' });
+  };
+
+  return (
+    <AnimatePresence>
+      {open && (
+        <>
+          <motion.div
+            className="sheet-backdrop"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.22 }}
+            onClick={closeSheet}
+          />
+          <motion.div
+            className="sheet sheet--intro"
+            initial={{ y: '100%' }}
+            animate={{ y: 0 }}
+            exit={{ y: '100%' }}
+            transition={{ type: 'spring', stiffness: 420, damping: 40, mass: 0.9 }}
+          >
+            <div className="sheet__grabber">
+              <span />
+            </div>
+            <button className="sheet__close press" onClick={closeSheet} aria-label="Закрыть">
+              <span className="sheet__close-x" />
+            </button>
+            <div className="intro__art">
+              <img src="/assets/mascot-phone.png" alt="" />
+            </div>
+            <div className="intro__texts">
+              <div className="t-headline-24">привет, я твой личный ассистент</div>
+              <div className="t-body-16 intro__sub">
+                помогу с выбором, подскажу что подходит именно тебе исходя из прошлых покупок.
+                {'\n'}а ещё всегда отвечу на вопросы 💚
+              </div>
+            </div>
+            <div className="bottom-container">
+              <ChatInput onSend={enter} onActivate={enter} />
+              <HomeIndicator />
+            </div>
+          </motion.div>
+        </>
+      )}
+    </AnimatePresence>
+  );
+}
+
+/* ------------------------------------------------------------- share */
+
+function ShareSheet() {
+  const { sheet, closeSheet, openSheet, favorites, toggleFavorite } = useStore();
+  const open = sheet?.name === 'share';
+  const pid = sheet?.name === 'share' ? sheet.productId : 'procollagen';
+  const p = PRODUCTS[pid];
+
+  return (
+    <BottomSheet open={open} onClose={closeSheet} title="ссылкой удобнее">
+      <div className="share__row">
+        <img src={p.image} alt="" />
+        <div className="share__main">
+          <div className="t-card-15">{p.name}</div>
+          <div className="share__vol">{p.volume}</div>
+        </div>
+        <button className="press" onClick={() => toggleFavorite(pid)} aria-label="В избранное">
+          <Heart filled={favorites.includes(pid)} />
+        </button>
+      </div>
+      <div className="share__banner">
+        <button className="press" onClick={() => openSheet({ name: 'ai-intro' })}>
+          <AiBanner variant="advice" />
+        </button>
+      </div>
+      <div className="share__cta">
+        <Button onClick={closeSheet}>поделиться</Button>
+      </div>
+      <HomeIndicator />
+    </BottomSheet>
+  );
+}
+
+/* --------------------------------------------------------------- why */
+
+function WhySheet() {
+  const { sheet, closeSheet, openSheet, profile, conversation } = useStore();
+  const open = sheet?.name === 'why';
+  const ids = sheet?.name === 'why' ? sheet.productIds : [];
+  const checks = ids[0] ? preferenceChecks(ids[0], conversation, profile) : [];
+
+  return (
+    <BottomSheet
+      open={open}
+      onClose={closeSheet}
+      title="почему это тебе подходит"
+      footer={
+        <>
+          <Button onClick={() => openSheet({ name: 'sources', productIds: ids })}>показать источники</Button>
+          <Button variant="ghost" onClick={closeSheet}>
+            понятно
+          </Button>
+        </>
+      }
+    >
+      {checks.length > 0 && (
+        <div className="why__profile">
+          <div className="why__caveats-title t-caption-12">твои предпочтения</div>
+          <ul className="why__list">
+            {checks.map((c) => (
+              <li key={c.text} className="t-body-14">
+                <span className={`why__tick${c.ok ? '' : ' why__tick--no'}`} />
+                {c.text}
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+
+      {ids.map((id) => {
+        const p = PRODUCTS[id];
+        return (
+          <div className="why" key={id}>
+            <div className="why__head">
+              <img src={p.image} alt="" />
+              <div>
+                <div className="t-card-15">{p.name}</div>
+                <div className="why__price">{formatPrice(p.price)}</div>
+              </div>
+            </div>
+            <ul className="why__list">
+              {p.why.map((w) => (
+                <li key={w} className="t-body-14">
+                  <span className="why__tick" />
+                  {w}
+                </li>
+              ))}
+            </ul>
+
+            <div className="why__profile">
+              <div className="why__caveats-title t-caption-12">покупатели чаще отмечают</div>
+              {p.pros.map((x) => (
+                <div key={x} className="aicard__sign t-body-14">
+                  <span className="aicard__plus">+</span>
+                  {x}
+                </div>
+              ))}
+              {p.cons.map((x) => (
+                <div key={x} className="aicard__sign t-body-14">
+                  <span className="aicard__minus">–</span>
+                  {x}
+                </div>
+              ))}
+            </div>
+
+            {p.caveats.length > 0 && (
+              <div className="why__caveats">
+                <div className="why__caveats-title t-caption-12">честно говорю</div>
+                {p.caveats.map((c) => (
+                  <div key={c} className="t-body-14 why__caveat">
+                    {c}
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        );
+      })}
+
+      {profile.learned.length > 0 && (
+        <div className="why__profile">
+          <div className="why__caveats-title t-caption-12">учитываю из твоего профиля</div>
+          {profile.learned.map((l) => (
+            <div key={l} className="memory">
+              <span className="memory__dot" />
+              <span className="t-body-14">{l}</span>
+            </div>
+          ))}
+        </div>
+      )}
+    </BottomSheet>
+  );
+}
+
+/* ----------------------------------------------------------- sources */
+
+const KIND_LABEL: Record<string, string> = {
+  community: 'отзывы и рейтинг',
+  lab: 'характеристики',
+  content: 'редакция и контент',
+  profile: 'твой профиль',
+};
+
+function SourcesSheet() {
+  const { sheet, closeSheet, openSheet, profile } = useStore();
+  const open = sheet?.name === 'sources';
+  const ids = sheet?.name === 'sources' ? sheet.productIds : [];
+  const list = ids.flatMap((id) => sourcesFor(id, profile));
+
+  return (
+    <BottomSheet
+      open={open}
+      onClose={closeSheet}
+      title="откуда я это знаю"
+      footer={
+        <>
+          <Button variant="ghost" onClick={() => openSheet({ name: 'consultant' })}>
+            позвать консультанта
+          </Button>
+          <Button onClick={closeSheet}>вернуться к подборке</Button>
+        </>
+      }
+    >
+      <div className="sources__lead t-body-14">
+        Я не придумываю ответы. Каждый вывод опирается на источник — можно проверить.
+      </div>
+      {list.map((s) => (
+        <div className="source" key={s.id}>
+          <div className={`source__kind source__kind--${s.kind}`}>{KIND_LABEL[s.kind]}</div>
+          <div className="t-card-15">{s.title}</div>
+          <div className="t-body-14 source__detail">{s.detail}</div>
+          <div className="t-caption-12 source__meta">{s.meta}</div>
+        </div>
+      ))}
+    </BottomSheet>
+  );
+}
+
+/* ----------------------------------------------------------- compare */
+
+function CompareSheet() {
+  const { sheet, closeSheet, push, profile, conversation, addToCart } = useStore();
+  const open = sheet?.name === 'compare';
+  const ids = sheet?.name === 'compare' ? sheet.productIds : [];
+  const [a, b] = ids.map((id) => PRODUCTS[id]);
+  const budget = conversation.slots.budgetMax ?? profile.budgetMax;
+  const { winnerId, text } = compareVerdict(ids, conversation, profile);
+  const winner = winnerId ? PRODUCTS[winnerId] : a;
+
+  const openProduct = (id: string) => push({ name: 'pdp', productId: id });
+  const buy = (id: string) => {
+    addToCart(id);
+    push({ name: 'cart' });
+  };
+
+  const rows: [string, string, string][] =
+    a && b
+      ? [
+          ['цена', formatPrice(a.price), formatPrice(b.price)],
+          ['рейтинг', `${a.rating}`, `${b.rating}`],
+          [
+            'отзывы',
+            a.reviews.toLocaleString('ru-RU').replace(/,/g, ' '),
+            b.reviews.toLocaleString('ru-RU').replace(/,/g, ' '),
+          ],
+          ['текстура', a.textureLabel, b.textureLabel],
+          ['эффект', a.effects.slice(0, 2).join(', '), b.effects.slice(0, 2).join(', ')],
+          ['отдушка', a.fragranceLabel, b.fragranceLabel],
+          budget
+            ? [
+                `в бюджет ${formatPrice(budget)}`,
+                a.price <= budget ? 'да' : 'нет',
+                b.price <= budget ? 'да' : 'нет',
+              ]
+            : ['подходящий бюджет', 'без ограничения', 'без ограничения'],
+        ]
+      : [];
+
+  return (
+    <BottomSheet
+      open={open}
+      onClose={closeSheet}
+      title="сравнение"
+      footer={
+        winner ? (
+          <>
+            <Button onClick={() => buy(winner.id)}>в корзину · {winner.brand}</Button>
+            <Button variant="ghost" onClick={() => openProduct(winner.id)}>
+              выбрать {winner.brand}
+            </Button>
+          </>
+        ) : undefined
+      }
+    >
+      {a && b && (
+        <>
+          <div className="cmp__head">
+            {[a, b].map((p) => (
+              <div className="cmp__col" key={p.id}>
+                <div className="cmp__media">
+                  <button type="button" className="cmp__photo press" onClick={() => openProduct(p.id)} aria-label={p.name}>
+                    <img src={p.image} alt="" />
+                  </button>
+                  <button
+                    type="button"
+                    className="pcard__bag press"
+                    onClick={() => buy(p.id)}
+                    aria-label={`В корзину ${p.brand}`}
+                  >
+                    <Bag color="#fff" size={18} />
+                  </button>
+                </div>
+                <button type="button" className="cmp__name press t-body-14" onClick={() => openProduct(p.id)}>
+                  {p.brand}
+                </button>
+              </div>
+            ))}
+          </div>
+          <div className="cmp__rows">
+            {rows.map(([label, va, vb]) => (
+              <div className="cmp__row" key={label}>
+                <div className="cmp__label t-caption-12">{label}</div>
+                <div className="cmp__vals">
+                  <span className="t-body-14">{va}</span>
+                  <span className="t-body-14">{vb}</span>
+                </div>
+              </div>
+            ))}
+          </div>
+          <div className="cmp__verdict">
+            <img src="/assets/mascot-avatar.png" alt="" />
+            <div className="t-body-14">{text}</div>
+          </div>
+        </>
+      )}
+    </BottomSheet>
+  );
+}
+
+/* ---------------------------------------------------------- feedback */
+
+const REASONS = ['Запах', 'Текстура', 'Эффект', 'Цена', 'Другое'];
+
+/**
+ * Scenario 21. The sheet only collects the answer — the profile update and the
+ * follow-up in chat go through the same conversation turn the quick replies use.
+ */
+function FeedbackSheet() {
+  const { sheet, closeSheet, push } = useStore();
+  const { run } = useAssistant();
+  const open = sheet?.name === 'feedback';
+  const pid = sheet?.name === 'feedback' ? sheet.productId : 'frangipani';
+  const [stage, setStage] = useState<'ask' | 'reasons' | 'done'>('ask');
+  const [reason, setReason] = useState<string | null>(null);
+
+  const close = () => {
+    closeSheet();
+    window.setTimeout(() => {
+      setStage('ask');
+      setReason(null);
+    }, 260);
+  };
+
+  const like = () => {
+    run(`fb-like:${pid}`);
+    setStage('done');
+  };
+
+  const commit = (r: string) => {
+    setReason(r);
+    run(`fb-reason:${pid}`, r);
+    setStage('done');
+  };
+
+  return (
+    <BottomSheet
+      open={open}
+      onClose={close}
+      title={stage === 'reasons' ? 'что не зашло?' : stage === 'done' ? 'Запомнила.' : 'ну как тебе?'}
+      footer={
+        stage === 'done' ? (
+          <>
+            <Button
+              onClick={() => {
+                close();
+                push({ name: 'profile' });
+              }}
+            >
+              посмотреть профиль
+            </Button>
+            <Button variant="ghost" onClick={close}>
+              закрыть
+            </Button>
+          </>
+        ) : undefined
+      }
+    >
+      <div className="fb__product">
+        <img src={PRODUCTS[pid].image} alt="" />
+        <div className="t-card-15">{PRODUCTS[pid].name}</div>
+      </div>
+
+      {stage === 'ask' && (
+        <div className="fb__actions">
+          <Button onClick={like}>моё 💚</Button>
+          <Button variant="ghost" onClick={() => setStage('reasons')}>
+            не моё
+          </Button>
+        </div>
+      )}
+
+      {stage === 'reasons' && (
+        <div className="fb__reasons">
+          {REASONS.map((r) => (
+            <Pill key={r} label={r} selected={reason === r} onClick={() => commit(r)} />
+          ))}
+        </div>
+      )}
+
+      {stage === 'done' && (
+        <motion.div className="fb__done" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}>
+          <CheckCircle size={26} />
+          <div className="t-body-16">
+            {reason
+              ? 'Поняла. Учту это в следующих рекомендациях.'
+              : 'Запомнила, что тебе это подошло. Буду искать похожее.'}
+          </div>
+        </motion.div>
+      )}
+    </BottomSheet>
+  );
+}
+
+/* -------------------------------------------------------- consultant */
+
+function ConsultantSheet() {
+  const { sheet, closeSheet, profile, chatContext, conversation } = useStore();
+  const { run } = useAssistant();
+  const open = sheet?.name === 'consultant';
+  const rows = handoffContext(conversation, profile, chatContext);
+
+  return (
+    <BottomSheet
+      open={open}
+      onClose={closeSheet}
+      title="позвать консультанта"
+      footer={
+        <>
+          <Button
+            onClick={() => {
+              closeSheet();
+              run('consultant-go');
+            }}
+          >
+            передать консультанту
+          </Button>
+          <Button variant="ghost" onClick={closeSheet}>
+            остаться с ассистентом
+          </Button>
+        </>
+      }
+    >
+      <div className="sources__lead t-body-14">
+        Передам всё, что ты уже рассказала — не придётся объяснять заново.
+      </div>
+      <div className="handoff handoff--plain">
+        {rows.map(([k, v]) => (
+          <div key={k} className="handoff__row">
+            <span className="t-caption-12">{k}</span>
+            <span className="t-body-14">{v}</span>
+          </div>
+        ))}
+      </div>
+    </BottomSheet>
+  );
+}

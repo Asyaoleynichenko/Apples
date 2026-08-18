@@ -1,0 +1,109 @@
+/*
+ * Every value here is read straight out of the Figma file
+ * "11.08.26 🍏" → page "Прототип". Do not tweak these by eye.
+ */
+
+:root {
+  /* Device */
+  --screen-w: 375px;
+  --screen-h: 812px;
+  --screen-radius: 40px;
+
+  /* Surfaces */
+  --app-bg: #eaebed;
+  --surface: #ffffff;
+  --bubble-ai: #ededed;
+  --pill: #ededed;
+  --input-bg: #f0f1f3;
+  --tile: #f2f2f2;
+  --hairline: #ebebeb;
+
+  /* Onboarding backdrop */
+  --onb-header: #a3a4b2;
+  --onb-grad-from: #a3a4b2;
+  --onb-grad-to: #dcdbe0;
+  --onb-back-arrow: #000;
+
+  /* Text */
+  --text: #000000;
+  --text-muted: #b3b3b3;
+  --text-placeholder: #b3b3b3;
+  --text-caption: #b3b3b3;
+  --icon-close: rgba(39, 43, 55, 0.3);
+
+  /* Brand */
+  --black: #000000;
+  --black-30: #b3b3b3;
+  --black-15: #d9d9d9;
+  --black-3: #f9f9f9;
+  --brand: #dcff00;
+  --accent: #c6b09f;
+  --accent-dark: #ac8c75;
+  --marketing: #8d01ff;
+  --purple-from: #b459ff;
+  --purple-to: #8d01ff;
+  --purple-stroke: #a392f6;
+  --purple-solid: #8d01ff;
+  --ai-green: #2fee0b;
+  --lime: #dcff00;
+  --link: #c6b09f;
+
+  /* Merch badges */
+  --badge-sale: #ff0a6c;
+  --badge-hit: #f5ff00;
+  --badge-express: #ff5c00;
+
+  /* Type */
+  --font: 'Graphik LCG', 'Graphik', 'Golos Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+
+  /* Motion — quick, native-feeling, matching the design's restraint */
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Text styles, named after the Figma layers that use them. */
+.t-headline-24 {
+  font-weight: 500;
+  font-size: 24px;
+  line-height: 28px;
+  letter-spacing: 0;
+}
+.t-title-17 {
+  font-weight: 500;
+  font-size: 17px;
+  line-height: 22px;
+}
+.t-body-16 {
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 20px;
+}
+.t-bubble-15 {
+  font-weight: 400;
+  font-size: 15px;
+  line-height: 20px;
+}
+.t-card-15 {
+  font-weight: 500;
+  font-size: 15px;
+  line-height: 20px;
+}
+.t-label-14 {
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 18px;
+}
+.t-body-14 {
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 18px;
+}
+.t-caption-12 {
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 16px;
+}
+.t-tag-12 {
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 16px;
+}

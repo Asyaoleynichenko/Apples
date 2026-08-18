@@ -1,0 +1,5 @@
+.chrome-profile/
+shots/
+node_modules/
+dist/
+.env
