@@ -1,5 +1,6 @@
 import { AnimatePresence, motion } from 'framer-motion';
 import { useRef, useState, useEffect } from 'react';
+import { flushSync } from 'react-dom';
 import { BottomSheet, Button, AiBanner } from '../components/UI';
 import { ChatInput, Pill } from '../components/Chat';
 import { HomeIndicator } from '../components/Chrome';
@@ -46,36 +47,37 @@ function AiIntroSheet() {
   const openAssistant = () => {
     if (opened.current) return;
     opened.current = true;
-    setExpanding(true);
+    flushSync(() => setExpanding(true));
     push(profile.metAssistant ? { name: 'chat' } : { name: 'onboarding' }, 'expand');
     closeSheet();
   };
 
+  // Unmount as soon as we expand: an opacity-0 sheet at z-index 21
+  // would sit on top of onboarding and swallow «давай» / «пройду позже».
+  const show = open && !expanding;
+
   return (
     <AnimatePresence>
-      {open && (
-        <>
+      {show && (
           <motion.div
-            className="sheet-backdrop"
+            key="intro-backdrop"
+            className="sheet-backdrop sheet-backdrop--intro"
             initial={{ opacity: 0 }}
-            animate={{ opacity: expanding ? 0 : 1 }}
-            exit={{ opacity: 0 }}
-            style={{ pointerEvents: expanding ? 'none' : 'auto' }}
-            transition={{ duration: expanding ? 0.28 : 0.22 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0, pointerEvents: 'none' }}
+            transition={{ duration: 0.18 }}
             onClick={closeSheet}
           />
+      )}
+      {show && (
           <motion.div
+            key="intro-sheet"
             className="sheet sheet--intro"
             initial={{ y: '100%' }}
             animate={{ y: 0, height: '72%' }}
-            exit={expanding ? { opacity: 0 } : { y: '100%' }}
-            style={{ pointerEvents: expanding ? 'none' : 'auto' }}
-            transition={
-              expanding
-                ? { duration: 0.28, ease: [0.32, 0.72, 0, 1] }
-                : { type: 'spring', stiffness: 420, damping: 40, mass: 0.9 }
-            }
-            drag={expanding ? false : 'y'}
+            exit={{ opacity: 0, pointerEvents: 'none' }}
+            transition={{ duration: 0.18, ease: [0.32, 0.72, 0, 1] }}
+            drag="y"
             dragConstraints={{ top: 0, bottom: 0 }}
             dragElastic={{ top: 0.55, bottom: 0.4 }}
             onDragEnd={(_, info) => {
@@ -112,7 +114,6 @@ function AiIntroSheet() {
               <HomeIndicator />
             </div>
           </motion.div>
-        </>
       )}
     </AnimatePresence>
   );

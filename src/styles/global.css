@@ -37,7 +37,7 @@ input {
   outline: none;
 }
 
-/* Desktop just centres the phone; the design is not adapted for wide screens. */
+/* Desktop centres a 375×812 phone. On a real phone, responsive.css makes it full-bleed. */
 .stage {
   min-height: 100%;
   display: grid;

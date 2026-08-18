@@ -1,4 +1,5 @@
 import { AnimatePresence, motion, type Variants } from 'framer-motion';
+import { useLiveShell } from './lib/shell';
 import { StoreProvider, useStore, type NavKind, type Route } from './lib/store';
 import Onboarding from './screens/Onboarding';
 import Chat from './screens/Chat';
@@ -131,11 +132,14 @@ function Router() {
 
 function Device() {
   const { restart } = useStore();
+  useLiveShell();
   return (
     <div className="stage">
-      <div className="device">
-        <Router />
-        <Sheets />
+      <div className="device-slot">
+        <div className="device">
+          <Router />
+          <Sheets />
+        </div>
       </div>
       <button className="stage__restart" onClick={restart}>
         начать демо заново

@@ -1,0 +1,225 @@
+/*
+ * Two shells:
+ *   data-shell="frame" — desktop demo: 375×812 phone on the stage photo
+ *   data-shell="live"  — real phone/tablet: full-bleed site, no bezel / fake iOS chrome
+ * Fluid widths apply in both so nothing stays glued to the Figma 375 canvas.
+ */
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+html,
+body {
+  overscroll-behavior: none;
+}
+
+button,
+a,
+.press {
+  touch-action: manipulation;
+}
+
+.device-slot {
+  position: relative;
+  width: calc(var(--screen-w) * var(--frame-fit, 1));
+  height: calc(var(--screen-h) * var(--frame-fit, 1));
+}
+
+.stage {
+  --frame-fit: min(1, (100dvw - 48px) / 375, (100dvh - 88px) / 812);
+}
+
+.device {
+  transform: scale(var(--frame-fit, 1));
+  transform-origin: top left;
+}
+
+/* ------------------------------------------------------------ live phone */
+
+html[data-shell='live'],
+html[data-shell='live'] body,
+html[data-shell='live'] #root {
+  height: 100%;
+  overflow: hidden;
+}
+
+html[data-shell='live'] body {
+  background: var(--surface);
+}
+
+html[data-shell='live'] .stage {
+  --frame-fit: 1;
+  position: fixed;
+  top: var(--app-oy, 0px);
+  left: 0;
+  right: 0;
+  width: 100%;
+  height: var(--app-h, 100dvh);
+  height: var(--app-h, 100svh);
+  min-height: 0;
+  padding: 0;
+  display: block;
+  background: none;
+}
+
+html[data-shell='live'] .device-slot,
+html[data-shell='live'] .device {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 100%;
+  max-width: none;
+  border-radius: 0;
+  box-shadow: none;
+  overflow: hidden;
+  transform: none;
+}
+
+html[data-shell='live'] .stage__restart {
+  display: none;
+}
+
+html[data-shell='live'] .statusbar {
+  flex: 0 0 env(safe-area-inset-top, 0px);
+  height: env(safe-area-inset-top, 0px);
+  min-height: env(safe-area-inset-top, 0px);
+  overflow: hidden;
+}
+
+html[data-shell='live'] .statusbar__time,
+html[data-shell='live'] .statusbar__icons {
+  display: none;
+}
+
+html[data-shell='live'] .home-indicator {
+  display: none;
+}
+
+html[data-shell='live'] .tabbar {
+  flex: 0 0 auto;
+  height: auto;
+  min-height: 56px;
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+html[data-shell='live'] .bottom-container {
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+html[data-shell='live'] .sheet {
+  padding-bottom: calc(12px + env(safe-area-inset-bottom, 0px));
+  max-height: min(88%, calc(var(--app-h, 100dvh) - env(safe-area-inset-top, 0px)));
+}
+
+html[data-shell='live'] .sheet__footer {
+  padding-bottom: calc(16px + env(safe-area-inset-bottom, 0px));
+}
+
+html[data-shell='live'] .pdp__cta {
+  padding-bottom: calc(8px + env(safe-area-inset-bottom, 0px));
+}
+
+html[data-shell='live'] .cart__footer {
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+html[data-shell='live'] .shade__actions {
+  padding-bottom: calc(16px + env(safe-area-inset-bottom, 0px));
+}
+
+html[data-shell='live'] .floating-ai {
+  bottom: calc(88px + env(safe-area-inset-bottom, 0px));
+}
+
+html[data-shell='live'] .search-banner {
+  bottom: 0;
+  height: calc(90px + env(safe-area-inset-bottom, 0px));
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+html[data-shell='live'] .kb {
+  display: none !important;
+}
+
+/* Fluid chat / banners: stretch with the real viewport, not the 375 canvas. */
+html[data-shell='live'] .bubble-wrap {
+  max-width: min(280px, calc(100% - 8px));
+}
+
+html[data-shell='live'] .row--ai .bubble-wrap {
+  max-width: min(280px, calc(100% - 60px));
+}
+
+html[data-shell='live'] .welcome__texts {
+  max-width: 100%;
+}
+
+html[data-shell='live'] .ai-banner--search .ai-banner__copy,
+html[data-shell='live'] .ai-banner--pdp .ai-banner__copy,
+html[data-shell='live'] .ai-banner--advice .ai-banner__copy {
+  width: min(226px, calc(100% - 96px));
+}
+
+html[data-shell='live'] .onb__art--head {
+  min-height: 0;
+  flex: 1 1 auto;
+  max-height: min(248px, 36svh);
+}
+
+html[data-shell='live'] .onb__banner {
+  width: min(303.28px, 100%);
+  height: auto;
+  aspect-ratio: 303.28 / 227.93;
+  max-height: 100%;
+}
+
+html[data-shell='live'] .onb__banner img {
+  width: 113%;
+  height: auto;
+  aspect-ratio: 342.64 / 248.37;
+  left: 50%;
+  top: 46%;
+  transform: translate(-50%, -50%);
+}
+
+html[data-shell='live'] .input-wrap__field {
+  font-size: 16px;
+}
+
+/* Catalog: more columns when the live viewport is actually wide. */
+@media (min-width: 600px) {
+  html[data-shell='live'] .grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+@media (min-width: 900px) {
+  html[data-shell='live'] .grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+@media (min-width: 720px) {
+  html[data-shell='live'] .pcards .pcard {
+    width: 200px !important;
+  }
+
+  html[data-shell='live'] .bubble-wrap,
+  html[data-shell='live'] .row--ai .bubble-wrap {
+    max-width: min(420px, 72%);
+  }
+}
+
+@media (max-height: 500px) {
+  html[data-shell='live'] .onb__art,
+  html[data-shell='live'] .onb__art--head {
+    max-height: 28svh;
+    min-height: 0;
+  }
+
+  html[data-shell='live'] .welcome__mascot {
+    transform: scale(0.86);
+    transform-origin: top center;
+  }
+}

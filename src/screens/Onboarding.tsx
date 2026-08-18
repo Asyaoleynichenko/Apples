@@ -7,6 +7,7 @@ import { Pill } from '../components/Chat';
 import { IosKeyboard } from '../components/Keyboard';
 import { CATALOG, PRODUCTS } from '../data/products';
 import { useStore } from '../lib/store';
+import { useLiveShell } from '../lib/shell';
 import type { ProductType } from '../lib/types';
 
 const PRIORITIES = [
@@ -485,6 +486,7 @@ function ProductPicker({
   onSave: (id: string) => void;
 }) {
   const meta = PICK[picker.field];
+  const live = useLiveShell();
   const [kb, setKb] = useState(picker.phase === 'search');
   const [chosen, setChosen] = useState(selectedId ?? null);
   const ids = productsFor(picker.field, picker.query);
@@ -592,7 +594,7 @@ function ProductPicker({
         ))}
       </div>
 
-      <div className="search-list scroll" style={{ paddingBottom: kb ? 280 : 80 }}>
+      <div className="search-list scroll" style={{ paddingBottom: live ? 80 : kb ? 280 : 80 }}>
         {suggestions.map((s) => (
           <button key={s} className="search-list__row press" onClick={() => goResults(s)}>
             {highlight(s, picker.query)}
@@ -608,7 +610,7 @@ function ProductPicker({
       </div>
 
       <AnimatePresence>
-        {kb && (
+        {kb && !live && (
           <IosKeyboard
             onKey={(ch) => onQuery(picker.query + ch)}
             onBackspace={() => onQuery(picker.query.slice(0, -1))}

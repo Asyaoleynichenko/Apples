@@ -18,6 +18,7 @@ import {
 import { AiBanner, Button, ProductCard, TabBar } from '../components/UI';
 import { IosKeyboard } from '../components/Keyboard';
 import { useStore } from '../lib/store';
+import { useLiveShell } from '../lib/shell';
 import { extractSlots } from '../lib/intent';
 import { formatPrice, productLabel, PRODUCTS } from '../data/products';
 
@@ -114,6 +115,7 @@ export function Favorites() {
 
 export function Search() {
   const { push, openSheet, setChatContext, setConversation, conversation } = useStore();
+  const live = useLiveShell();
   const [q, setQ] = useState('крем');
   const [kb, setKb] = useState(true);
 
@@ -154,7 +156,7 @@ export function Search() {
         ))}
       </div>
 
-      <div className="search-list scroll" style={{ paddingBottom: kb ? 360 : 120 }}>
+      <div className="search-list scroll" style={{ paddingBottom: live ? 120 : kb ? 360 : 120 }}>
         {suggestions.map((s) => (
           <button key={s} className="search-list__row press" onClick={() => push({ name: 'pdp', productId: 'frangipani' })}>
             <b>крем</b>
@@ -171,7 +173,7 @@ export function Search() {
       </div>
 
       <div
-        className="search-banner press"
+        className={`search-banner press${live || !kb ? ' search-banner--ground' : ''}`}
         role="button"
         tabIndex={0}
         onClick={openAi}
@@ -186,7 +188,7 @@ export function Search() {
       </div>
 
       <AnimatePresence>
-        {kb && (
+        {kb && !live && (
           <IosKeyboard
             onKey={(ch) => setQ((v) => v + ch)}
             onBackspace={() => setQ((v) => v.slice(0, -1))}

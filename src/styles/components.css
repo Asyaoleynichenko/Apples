@@ -604,11 +604,12 @@
 }
 .ai-banner--expert .ai-banner__pill {
   position: absolute;
-  left: 24px;
+  left: 50%;
   top: 86px;
   z-index: 3;
-  width: 104px;
+  width: max-content;
   height: 31px;
+  padding: 0 14px;
   border-radius: 100px;
   overflow: hidden;
   display: grid;
@@ -618,6 +619,7 @@
   font-weight: 500;
   color: #fff;
   white-space: nowrap;
+  transform: translateX(-50%);
 }
 .ai-banner--expert .ai-banner__pill > span {
   position: relative;
@@ -631,14 +633,14 @@
   align-items: flex-start;
   padding: 16px;
   isolation: isolate;
-  width: 375px;
+  width: 100%;
   height: 90px;
   background: #fff;
   overflow: visible;
 }
 .ai-banner--search .ai-banner__inner {
   position: relative;
-  width: 343px;
+  width: 100%;
   height: 58px;
   z-index: 0;
   overflow: hidden;
@@ -715,7 +717,7 @@
 }
 .ai-banner--pdp {
   position: relative;
-  width: 343px;
+  width: 100%;
   height: 140px;
   overflow: visible;
   display: block;
@@ -723,8 +725,9 @@
 .ai-banner--pdp .ai-banner__inner {
   position: absolute;
   left: 0;
+  right: 0;
   top: 14px;
-  width: 343px;
+  width: auto;
   height: 111px;
   overflow: hidden;
   border-radius: 999px;
@@ -758,7 +761,8 @@
 }
 .ai-banner--pdp .ai-banner__ill {
   position: absolute;
-  left: 240px;
+  right: 0;
+  left: auto;
   top: -24px;
   width: 106px;
   height: 188px;
@@ -768,7 +772,7 @@
 }
 .ai-banner--advice {
   position: relative;
-  width: 343px;
+  width: 100%;
   height: 74px;
   overflow: visible;
   display: block;
@@ -776,8 +780,9 @@
 .ai-banner--advice .ai-banner__inner {
   position: absolute;
   left: 0;
+  right: 0;
   top: 16px;
-  width: 343px;
+  width: auto;
   height: 58px;
   overflow: hidden;
   border-radius: 999px;
@@ -807,7 +812,8 @@
 }
 .ai-banner--advice .ai-banner__ill {
   position: absolute;
-  left: 182px;
+  right: 0;
+  left: auto;
   top: -25px;
   width: 162px;
   height: 99px;

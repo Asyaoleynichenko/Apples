@@ -2,7 +2,26 @@
 <html lang="ru">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1, interactive-widget=resizes-content"
+    />
+    <meta name="theme-color" content="#ffffff" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="format-detection" content="telephone=no" />
+    <script>
+      (function () {
+        var live = window.matchMedia('(hover: none) and (pointer: coarse), (max-width: 480px)').matches;
+        var root = document.documentElement;
+        root.dataset.shell = live ? 'live' : 'frame';
+        if (!live) return;
+        var vv = window.visualViewport;
+        root.style.setProperty('--app-h', Math.round(vv ? vv.height : window.innerHeight) + 'px');
+        root.style.setProperty('--app-oy', Math.round(vv ? vv.offsetTop : 0) + 'px');
+      })();
+    </script>
     <title>Золотое Яблоко — AI-ассистент</title>
     <link rel="icon" type="image/png" href="/favicon.png" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />

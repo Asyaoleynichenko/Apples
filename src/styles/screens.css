@@ -609,7 +609,7 @@
   white-space: nowrap;
 }
 .chip--promo {
-  color: #7bbf1f;
+  color: #2a6b00;
 }
 .chips-row--soft {
   padding-top: 12px;
@@ -724,8 +724,10 @@
 .search-banner {
   position: absolute;
   left: 0;
-  width: 375px;
-  top: 469px;
+  right: 0;
+  width: auto;
+  top: auto;
+  bottom: 232px;
   height: 90px;
   z-index: 9;
   overflow: visible;
@@ -734,6 +736,9 @@
 /* Scale would turn overflow into a clip; dim instead. */
 .search-banner.press:active {
   transform: none;
+}
+.search-banner--ground {
+  bottom: 0;
 }
 
 /* ----------------------------------------------------------- keyboard */
@@ -1002,7 +1007,7 @@
 }
 .pdp__ai > button {
   display: block;
-  width: 343px;
+  width: 100%;
   margin: 0 auto;
   overflow: visible;
 }
@@ -1355,6 +1360,12 @@
 /* ------------------------------------------------------------- sheets */
 
 /* Intro overlay (240:26798): square plate. Drag up expands to full chat. */
+.device:has(.onb) .sheet.sheet--intro,
+.device:has(.onb) .sheet-backdrop--intro,
+.device:has(.chat) .sheet.sheet--intro,
+.device:has(.chat) .sheet-backdrop--intro {
+  pointer-events: none !important;
+}
 .sheet.sheet--intro {
   height: 72%;
   max-height: none;
@@ -1443,7 +1454,7 @@
 }
 .share__banner > button {
   display: block;
-  width: 343px;
+  width: 100%;
   overflow: visible;
 }
 .share__cta {
