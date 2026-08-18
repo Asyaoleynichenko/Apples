@@ -7,6 +7,7 @@ import {
   cheaperThan,
   giftPicks,
   mostMentioned,
+  namedAvoid,
   recommend,
   similarTo,
   similarityNote,
@@ -313,6 +314,7 @@ function plan(slots: Slots, profile: BeautyProfile): string[] {
   if (!slots.group) steps.push('group');
   if (!slots.priority && !profile.priorities.length) steps.push('priority');
   if (!slots.budgetMax && !profile.budgetMax) steps.push('budget');
+  // `'none'` in avoid means she already said there is nothing to skip.
   if (!slots.avoid.length && !profile.dislikes.length) steps.push('avoid');
   return steps;
 }
@@ -539,15 +541,15 @@ export function runAction(action: string, value: string | undefined, ctx: Ctx): 
       }
 
       if (arg === 'avoid') {
-        const avoid = value === 'none' ? [] : [value!];
+        const avoid = value === 'none' ? ['none'] : [value!];
         const next = { ...conv, slots: { ...conv.slots, avoid } };
         const turn = advance(next, profile);
         return {
           userText: label,
           ...turn,
           conversation: { ...turn.conversation, ...withSlots(conv, { avoid }) },
-          profile: avoid.length ? { dislikes: dedupe([...profile.dislikes, ...avoid]) } : undefined,
-          learn: avoid.length ? [`Не любит ${avoid[0].toLowerCase()}`] : undefined,
+          profile: value === 'none' ? undefined : { dislikes: dedupe([...profile.dislikes, ...avoid]) },
+          learn: value === 'none' ? undefined : [`Не любит ${avoid[0].toLowerCase()}`],
         };
       }
 
@@ -1307,7 +1309,7 @@ function compareReason(winner: string, loser: string, slots: Slots, profile: Bea
   const w = PRODUCTS[winner];
   const l = PRODUCTS[loser];
   const budget = slots.budgetMax ?? profile.budgetMax;
-  const avoidsFragrance = [...slots.avoid, ...profile.dislikes].some((d) => /отдушк|запах/i.test(d));
+  const avoidsFragrance = namedAvoid(slots, profile).some((d) => /отдушк|запах/i.test(d));
 
   if (avoidsFragrance && w.fragrance !== 'strong' && l.fragrance === 'strong')
     return 'Ты говорила, что сильные отдушки — не твоё, а у второго аромат заметный.';
@@ -1323,7 +1325,7 @@ function compareReason(winner: string, loser: string, slots: Slots, profile: Bea
 /** The single strongest reason, so the explanation matches why it actually won. */
 function explainLead(productId: string, slots: Slots, profile: BeautyProfile): string {
   const p = PRODUCTS[productId];
-  const avoid = dedupe([...slots.avoid, ...profile.dislikes]);
+  const avoid = namedAvoid(slots, profile);
 
   if (avoid.some((a) => /отдушк|запах|аромат/i.test(a)) && p.fragrance !== 'strong')
     return p.fragrance === 'none'
@@ -1430,7 +1432,7 @@ export function handoffContext(
     ['бюджет', slots.budgetLabel ?? profile.budget ?? 'не назван'],
     ['тип продукта', slots.type ? TYPE_WORD[slots.type] : slots.group ? GROUP_WORD[slots.group] : 'не уточнён'],
     ['предпочтения', dedupe([...profile.preferences, ...profile.priorities]).join(', ') || 'не указаны'],
-    ['не подходит', dedupe([...slots.avoid, ...profile.dislikes]).join(', ').toLowerCase() || 'не указано'],
+    ['не подходит', namedAvoid(slots, profile).join(', ').toLowerCase() || 'не указано'],
     ['смотрела', viewed.map((i) => PRODUCTS[i]?.name).filter(Boolean).join(', ') || 'пока ничего'],
     ['точка входа', chatContext.from],
   ];

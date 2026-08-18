@@ -4,10 +4,11 @@ import { StatusBar, HomeIndicator } from '../components/Chrome';
 import { AiTag, ChevronLeft, Heart, Share, Bag } from '../components/Icons';
 import { AiBanner, Badges, TabBar } from '../components/UI';
 import { useStore } from '../lib/store';
-import { formatPrice, PRODUCTS } from '../data/products';
+import { formatPrice, productLabel, PRODUCTS } from '../data/products';
 
 export default function Pdp({ productId }: { productId: string }) {
   const p = PRODUCTS[productId];
+  const { brand, title } = productLabel(p);
   const {
     back,
     addToCart,
@@ -64,10 +65,10 @@ export default function Pdp({ productId }: { productId: string }) {
         </div>
         <div className="pdp__topbar-right">
           <button className="press" onClick={askAi} aria-label="AI">
-            <AiTag width={32} height={20} />
+            <AiTag width={48} height={32} />
           </button>
           <button className="press" onClick={() => openSheet({ name: 'share', productId })} aria-label="Поделиться">
-            <Share size={22} />
+            <Share size={24} />
           </button>
         </div>
       </div>
@@ -77,7 +78,8 @@ export default function Pdp({ productId }: { productId: string }) {
 
         <div className="pdp__titleblock">
           <div className="pdp__cat">{p.category}</div>
-          <h1 className="pdp__title">{p.name}</h1>
+          <div className="pdp__brand">{brand}</div>
+          <h1 className="pdp__title">{title}</h1>
           <div className="pdp__badges">
             <Badges discount={p.discount} hit={p.hit} />
           </div>

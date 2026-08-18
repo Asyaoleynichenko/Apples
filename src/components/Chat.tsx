@@ -4,7 +4,7 @@ import { SendArrow } from './Icons';
 import { LOADING_BEATS, LOADING_BEAT_MS } from '../lib/loading';
 import type { QuickReply } from '../lib/types';
 
-export function Avatar({ size = 42 }: { size?: number }) {
+export function Avatar({ size = 44 }: { size?: number }) {
   return (
     <div className="avatar" style={{ width: size, height: size }}>
       <img src="/assets/mascot-avatar.png" alt="" />

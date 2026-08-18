@@ -653,3 +653,10 @@ export const plural = (n: number, one: string, few: string, many: string) => {
 };
 
 export const formatPrice = (value: number) => `${value.toLocaleString('ru-RU').replace(/,/g, ' ')} ₽`;
+
+/** Brand in caps, product title without the brand prefix. */
+export function productLabel(p: { brand: string; name: string }) {
+  const escaped = p.brand.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const title = p.name.replace(new RegExp(`^${escaped}\\s*`, 'i'), '').trim() || p.name;
+  return { brand: p.brand, title };
+}

@@ -1,5 +1,5 @@
 import { AnimatePresence, motion } from 'framer-motion';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { StatusBar, HomeIndicator } from '../components/Chrome';
 import {
   ChevronLeft,
@@ -19,49 +19,13 @@ import { AiBanner, Button, ProductCard, TabBar } from '../components/UI';
 import { IosKeyboard } from '../components/Keyboard';
 import { useStore } from '../lib/store';
 import { extractSlots } from '../lib/intent';
-import { formatPrice, PRODUCTS } from '../data/products';
+import { formatPrice, productLabel, PRODUCTS } from '../data/products';
 
 /* ------------------------------------------------------------ favorites */
 
-const IDLE_MS = 8000;
-
-function useIdle(enabled: boolean, delay = IDLE_MS) {
-  const [idle, setIdle] = useState(false);
-  useEffect(() => {
-    if (!enabled) {
-      setIdle(false);
-      return;
-    }
-    let timer = 0;
-    const arm = (e?: Event) => {
-      if (e && (e.target as Element | null)?.closest?.('.pcard__nudge')) return;
-      setIdle(false);
-      window.clearTimeout(timer);
-      timer = window.setTimeout(() => setIdle(true), delay);
-    };
-    arm();
-    const opts = { capture: true } as const;
-    window.addEventListener('pointerdown', arm, opts);
-    window.addEventListener('keydown', arm, opts);
-    window.addEventListener('wheel', arm, opts);
-    const scroller = document.querySelector('.shop .shop__scroll');
-    scroller?.addEventListener('scroll', arm, opts);
-    return () => {
-      window.clearTimeout(timer);
-      window.removeEventListener('pointerdown', arm, opts);
-      window.removeEventListener('keydown', arm, opts);
-      window.removeEventListener('wheel', arm, opts);
-      scroller?.removeEventListener('scroll', arm, opts);
-    };
-  }, [enabled, delay]);
-  return idle;
-}
-
 export function Favorites() {
-  const { push, openSheet, setChatContext, favorites, sheet } = useStore();
+  const { push, openSheet, setChatContext, favorites } = useStore();
   const ids = ['frangipani', 'clarins', 'procollagen'];
-  const idle = useIdle(sheet === null);
-  const nudgeId = idle ? ids[1] ?? ids[0] : null;
 
   const openAi = () => {
     setChatContext({ from: 'favorites' });
@@ -77,7 +41,7 @@ export function Favorites() {
         </button>
         <div className="shop__topbar-actions">
           <button className="press" onClick={openAi} aria-label="AI">
-            <AiTag width={32} height={20} />
+            <AiTag width={48} height={32} />
           </button>
         </div>
       </div>
@@ -130,7 +94,6 @@ export function Favorites() {
               width={166}
               onOpen={() => push({ name: 'pdp', productId: id })}
               onAdd={() => push({ name: 'pdp', productId: id })}
-              onAskExpert={nudgeId === id ? openAi : undefined}
             />
           ))}
         </div>
@@ -140,6 +103,9 @@ export function Favorites() {
       <div className="promo-bar promo-bar--blue">До −60% на большой летней распродаже</div>
       <TabBar active="favorites" />
       <HomeIndicator />
+      <button type="button" className="floating-ai press" onClick={openAi} aria-label="спросить эксперта">
+        <AiBanner variant="expert" />
+      </button>
     </div>
   );
 }
@@ -176,7 +142,7 @@ export function Search() {
       <div className="search-field">
         <input value={q} onChange={(e) => setQ(e.target.value)} onFocus={() => setKb(true)} />
         <button className="search-field__clear press" onClick={() => setQ('')} aria-label="Очистить">
-          <Close size={14} color="#fff" />
+          <Close size={16} color="#fff" />
         </button>
       </div>
 
@@ -250,7 +216,7 @@ export function Cart() {
               <Trash />
             </button>
             <button className="press" aria-label="Поделиться">
-              <Share size={22} />
+              <Share size={24} />
             </button>
             <CheckCircle />
           </div>
@@ -262,12 +228,13 @@ export function Cart() {
 
         {cart.map((l) => {
           const p = PRODUCTS[l.productId];
+          const { brand, title } = productLabel(p);
           return (
             <div className="cart-line" key={l.productId}>
               <img className="cart-line__img press" src={p.image} alt="" onClick={() => push({ name: 'pdp', productId: p.id })} />
               <div className="cart-line__main">
-                <div className="cart-line__cat">{p.category}</div>
-                <div className="cart-line__name t-card-15">{p.name}</div>
+                <div className="cart-line__brand">{brand}</div>
+                <div className="cart-line__name">{title}</div>
                 <div className="cart-line__vol">{p.volume}</div>
               </div>
               <CheckCircle />
@@ -297,9 +264,9 @@ export function Cart() {
         <div className="cart-line cart-line--off">
           <div className="cart-line__img cart-line__img--ghost" />
           <div className="cart-line__main">
-            <div className="cart-line__cat">ПЕНКА ДЛЯ УМЫВАНИЯ</div>
-            <div className="cart-line__name t-card-15">CELIMAX relief madecica ph balancing</div>
-            <div className="cart-line__vol">150 МЛ</div>
+            <div className="cart-line__brand">CELIMAX</div>
+            <div className="cart-line__name">relief madecica ph balancing</div>
+            <div className="cart-line__vol">150 мл</div>
           </div>
           <div className="cart-line__foot">
             <div className="stepper stepper--off">

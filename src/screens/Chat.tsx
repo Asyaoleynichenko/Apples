@@ -223,7 +223,7 @@ function HandoffCard() {
     ['бюджет', slots.budgetLabel ?? profile.budget ?? 'не назван'],
     ['тип продукта', slots.type ? PRODUCTS[lastIds[0]]?.category.toLowerCase() ?? '—' : 'не уточнён'],
     ['предпочтения', [...profile.preferences, ...profile.priorities].join(', ') || 'не указаны'],
-    ['не подходит', [...slots.avoid, ...profile.dislikes].join(', ').toLowerCase() || 'не указано'],
+    ['не подходит', [...slots.avoid, ...profile.dislikes].filter((a) => a && a !== 'none').join(', ').toLowerCase() || 'не указано'],
     ['смотрела', viewed.map((i) => PRODUCTS[i]?.name).filter(Boolean).join(', ') || 'пока ничего'],
     ['точка входа', chatContext.from],
   ];

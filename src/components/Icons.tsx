@@ -50,14 +50,23 @@ export const Bag = ({ size = 20, color = '#000' }: P) => (
   </svg>
 );
 
-export const Search = ({ size = 22, color = '#000' }: P) => (
+export const Search = ({ size = 24, color = '#000' }: P) => (
   <svg width={size} height={size} viewBox="0 0 22 22" fill="none">
     <circle cx="9.8" cy="9.8" r="6.3" stroke={color} strokeWidth="1.5" />
     <path d="M14.6 14.6 19 19" stroke={color} strokeWidth="1.5" strokeLinecap="round" />
   </svg>
 );
 
-export const Catalog = ({ size = 22, color = '#000' }: P) => (
+/** Catalog tab: magnifying glass + list lines, as on the ЗЯ tab bar. */
+export const SearchList = ({ size = 24, color = '#000' }: P) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+    <circle cx="9" cy="11" r="5.4" stroke={color} strokeWidth="1.6" />
+    <path d="M13 15.1 16.4 18.5" stroke={color} strokeWidth="1.6" strokeLinecap="round" />
+    <path d="M16.6 8.2h6.2M16.6 11.4h6.2M16.6 14.6h4.4" stroke={color} strokeWidth="1.6" strokeLinecap="round" />
+  </svg>
+);
+
+export const Catalog = ({ size = 24, color = '#000' }: P) => (
   <svg width={size} height={size} viewBox="0 0 22 22" fill="none">
     <path d="M3 6.5h16M3 11h16M3 15.5h16" stroke={color} strokeWidth="1.6" strokeLinecap="round" />
     <circle cx="7.5" cy="6.5" r="2" fill="#fff" stroke={color} strokeWidth="1.6" />
@@ -65,10 +74,25 @@ export const Catalog = ({ size = 22, color = '#000' }: P) => (
   </svg>
 );
 
-export const Person = ({ size = 22, color = '#000' }: P) => (
-  <svg width={size} height={size} viewBox="0 0 22 22" fill="none">
-    <circle cx="11" cy="8.4" r="3.2" stroke={color} strokeWidth="1.5" />
-    <path d="M4.8 18.2a6.4 6.4 0 0 1 12.4 0" stroke={color} strokeWidth="1.5" strokeLinecap="round" />
+/** Center tab — Золотое Яблоко mark: two mirrored apple lobes. */
+export const AppleMark = ({ size = 24, color = '#000' }: P) => (
+  <svg width={size} height={size} viewBox="0 0 26 24" fill="none">
+    <path
+      d="M12.2 3.6c-.5 2.1-2.2 3.6-4.2 4.2C5.2 9 3.4 11.6 3.4 14.6c0 3.4 2.6 6.4 6.1 6.8 1.1.1 1.9-.6 2.3-1.6-1.9-1.3-3.2-3.8-3.2-6.6 0-2.4.9-4.5 2.4-6 .3-1.6.7-2.6 1.2-3.6Z"
+      fill={color}
+    />
+    <path
+      d="M13.8 3.6c.5 2.1 2.2 3.6 4.2 4.2 2.8 1.2 4.6 3.8 4.6 6.8 0 3.4-2.6 6.4-6.1 6.8-1.1.1-1.9-.6-2.3-1.6 1.9-1.3 3.2-3.8 3.2-6.6 0-2.4-.9-4.5-2.4-6-.3-1.6-.7-2.6-1.2-3.6Z"
+      fill={color}
+    />
+  </svg>
+);
+
+export const Person = ({ size = 24, color = '#000' }: P) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+    <circle cx="12" cy="12" r="9.2" stroke={color} strokeWidth="1.6" />
+    <circle cx="12" cy="10" r="3.1" stroke={color} strokeWidth="1.6" />
+    <path d="M6.4 18.6c1.5-2.6 3.4-3.8 5.6-3.8s4.1 1.2 5.6 3.8" stroke={color} strokeWidth="1.6" strokeLinecap="round" />
   </svg>
 );
 
@@ -116,33 +140,33 @@ export const Layers = ({ size = 24, color = '#000' }: P) => (
   </svg>
 );
 
-export const Plus = ({ size = 18, color = '#000' }: P) => (
+export const Plus = ({ size = 16, color = '#000' }: P) => (
   <svg width={size} height={size} viewBox="0 0 18 18" fill="none">
     <path d="M9 3.5v11M3.5 9h11" stroke={color} strokeWidth="1.5" strokeLinecap="round" />
   </svg>
 );
 
-export const Minus = ({ size = 18, color = '#000' }: P) => (
+export const Minus = ({ size = 16, color = '#000' }: P) => (
   <svg width={size} height={size} viewBox="0 0 18 18" fill="none">
     <path d="M3.5 9h11" stroke={color} strokeWidth="1.5" strokeLinecap="round" />
   </svg>
 );
 
-export const CheckCircle = ({ size = 22, color = '#000' }: P) => (
+export const CheckCircle = ({ size = 24, color = '#000' }: P) => (
   <svg width={size} height={size} viewBox="0 0 22 22" fill="none">
     <circle cx="11" cy="11" r="11" fill={color} />
     <path d="M6.6 11.3 9.6 14.2 15.4 8" stroke="#fff" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" />
   </svg>
 );
 
-export const Trash = ({ size = 22, color = '#000' }: P) => (
+export const Trash = ({ size = 24, color = '#000' }: P) => (
   <svg width={size} height={size} viewBox="0 0 22 22" fill="none">
     <path d="M4.5 6h13M9 6V4.4A1 1 0 0 1 10 3.4h2a1 1 0 0 1 1 1V6" stroke={color} strokeWidth="1.5" strokeLinecap="round" />
     <path d="M6.4 6l.8 11.4a1 1 0 0 0 1 .9h5.6a1 1 0 0 0 1-.9L15.6 6" stroke={color} strokeWidth="1.5" />
   </svg>
 );
 
-export const Sliders = ({ size = 22, color = '#000' }: P) => (
+export const Sliders = ({ size = 24, color = '#000' }: P) => (
   <svg width={size} height={size} viewBox="0 0 22 22" fill="none">
     <path d="M3 7h16M3 15h16" stroke={color} strokeWidth="1.5" strokeLinecap="round" />
     <circle cx="8" cy="7" r="2.4" fill="#fff" stroke={color} strokeWidth="1.5" />
@@ -150,14 +174,14 @@ export const Sliders = ({ size = 22, color = '#000' }: P) => (
   </svg>
 );
 
-export const Sort = ({ size = 22, color = '#000' }: P) => (
+export const Sort = ({ size = 24, color = '#000' }: P) => (
   <svg width={size} height={size} viewBox="0 0 22 22" fill="none">
     <path d="M7 4.5v13M7 4.5 4.5 7M7 4.5 9.5 7" stroke={color} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
     <path d="M15 17.5V4.5M15 17.5 12.5 15M15 17.5 17.5 15" stroke={color} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
   </svg>
 );
 
-export const Scan = ({ size = 22, color = '#000' }: P) => (
+export const Scan = ({ size = 24, color = '#000' }: P) => (
   <svg width={size} height={size} viewBox="0 0 22 22" fill="none">
     <path d="M3.5 7.5v-3a1 1 0 0 1 1-1h3M14.5 3.5h3a1 1 0 0 1 1 1v3M18.5 14.5v3a1 1 0 0 1-1 1h-3M7.5 18.5h-3a1 1 0 0 1-1-1v-3" stroke={color} strokeWidth="1.6" strokeLinecap="round" />
   </svg>
@@ -173,8 +197,8 @@ const AI_TAG_PATH =
   'A5.25 5.25 0 0 1 .95 14.8V6.2A5.25 5.25 0 0 1 6.2.95Z';
 
 export const AiTag = ({
-  width = 32,
-  height = 20,
+  width = 48,
+  height = 32,
   filled = false,
 }: {
   width?: number;
@@ -205,3 +229,50 @@ export const AiTag = ({
   ) : (
     <img src="/assets/ai-tag.svg" width={width} height={height} alt="" draggable={false} />
   );
+
+export const TickOk = ({ size = 16 }: P) => (
+  <svg width={size} height={size} viewBox="0 0 18 18" fill="none" aria-hidden>
+    <circle cx="9" cy="9" r="9" fill="var(--ai-green)" />
+    <path
+      d="M5.1 9.15 7.7 11.7 12.9 6.4"
+      stroke="#16350c"
+      strokeWidth="1.7"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+  </svg>
+);
+
+export const TickWarn = ({ size = 16 }: P) => (
+  <svg width={size} height={size} viewBox="0 0 18 18" fill="none" aria-hidden>
+    <circle cx="9" cy="9" r="9" fill="#ffcf4a" />
+    <path d="M9 5.1v5.4" stroke="#6b4c00" strokeWidth="1.7" strokeLinecap="round" />
+    <circle cx="9" cy="12.9" r="1.05" fill="#6b4c00" />
+  </svg>
+);
+
+export const StarRating = ({ size = 16, color = '#2a2a2a' }: P) => (
+  <svg width={size} height={size} viewBox="0 0 20 20" fill="none" aria-hidden>
+    <path
+      d="M10 2.4 12.2 7l5.2.8-3.8 3.6.9 5.2L10 14.3 5.5 16.6l.9-5.2L2.6 7.8 7.8 7 10 2.4Z"
+      fill={color}
+      stroke={color}
+      strokeWidth="1.2"
+      strokeLinejoin="round"
+    />
+  </svg>
+);
+
+export const PlusBadge = ({ size = 16 }: P) => (
+  <svg width={size} height={size} viewBox="0 0 18 18" fill="none" aria-hidden>
+    <circle cx="9" cy="9" r="8.25" fill="#e7f5e3" />
+    <path d="M9 5.2v7.6M5.2 9h7.6" stroke="#2f7a12" strokeWidth="1.7" strokeLinecap="round" />
+  </svg>
+);
+
+export const MinusBadge = ({ size = 16 }: P) => (
+  <svg width={size} height={size} viewBox="0 0 18 18" fill="none" aria-hidden>
+    <circle cx="9" cy="9" r="8.25" fill="#f8e6e6" />
+    <path d="M5.2 9h7.6" stroke="#b03a3a" strokeWidth="1.7" strokeLinecap="round" />
+  </svg>
+);

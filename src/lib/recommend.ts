@@ -24,13 +24,18 @@ export const EMPTY_SLOTS: Slots = {
   giftFor: null,
 };
 
+/** Real constraints only — `'none'` means the user skipped the question. */
+export function namedAvoid(slots: Slots, profile: BeautyProfile) {
+  return [...slots.avoid, ...profile.dislikes].filter((a) => a && a !== 'none');
+}
+
 /* ------------------------------------------------------------- filtering */
 
 /** Constraints the assistant refuses to break, because the user named them. */
 function passesHardFilters(p: Product, slots: Slots, profile: BeautyProfile): boolean {
   if (profile.dislikedProducts.includes(p.id)) return false;
 
-  const avoid = [...slots.avoid, ...profile.dislikes];
+  const avoid = namedAvoid(slots, profile);
   const avoidsFragrance = avoid.some((a) => /отдушк|запах|аромат/i.test(a));
   const avoidsRich = avoid.some((a) => /плотн|густ|тяжёл|тяжел/i.test(a));
 
@@ -162,7 +167,7 @@ function impossibleReason(slots: Slots, profile: BeautyProfile): string {
   const parts: string[] = [];
   if (slots.group === 'fragrance') parts.push('парфюмерии в подборке, которую я знаю, пока нет');
   else if (slots.type) parts.push(`подходящего варианта в категории «${TYPE_LABEL[slots.type]}»`);
-  const avoid = [...slots.avoid, ...profile.dislikes];
+  const avoid = namedAvoid(slots, profile);
   if (avoid.length) parts.push(`без ${avoid.join(' и ').toLowerCase()}`);
   if (slots.budgetMax) parts.push(`до ${formatPrice(slots.budgetMax)}`);
   return parts.length
@@ -250,7 +255,7 @@ export function suitability(productId: string, slots: Slots, profile: BeautyProf
   const p = PRODUCTS[productId];
   const budget = slots.budgetMax ?? profile.budgetMax;
   const skin = slots.need ?? profile.skinType;
-  const avoid = [...slots.avoid, ...profile.dislikes];
+  const avoid = namedAvoid(slots, profile);
 
   const items: { ok: boolean; text: string }[] = [];
 

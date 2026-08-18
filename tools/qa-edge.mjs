@@ -73,8 +73,8 @@ async function toChat() {
   await page.goto(`http://localhost:${PORT}/`, { waitUntil: 'networkidle0' });
   await page.evaluate(() => document.fonts.ready);
   await tapSel('.floating-ai');
-  await tapSel('.sheet--intro .send');
-  await tap('пройду позже', { exact: true, wait: 900 });
+  await tapSel('.sheet--intro .send', 1000);
+  await tap('пройду позже', { exact: true, wait: 1000 });
 }
 
 console.log('A — assistant refuses to invent an answer');
@@ -83,31 +83,30 @@ await type('какой SPF у этого крема в цифрах?');
 await shot('A-unknown');
 if (!(await tap('позвать консультанта', { exact: true, wait: 900 }))) process.exitCode = 1;
 await shot('A-consultant-sheet');
-await tap('закрыть', { exact: true });
+await tap('остаться с ассистентом', { exact: true });
 
 console.log('B — no product worth a confident yes');
 await toChat();
-await tap('выбери подарок', { exact: true, wait: 1400 });
-await tap('до 1 000 ₽', { exact: true, wait: 1400 });
-await tap('любит Clarins', { exact: true, wait: 1600 });
-await tap('не подходит', { exact: true, wait: 1400 });
+await type('Ищу парфюм до 1000 ₽');
+await wait(1600);
 await shot('B-no-match');
-await tap('расширить параметры', { exact: true, wait: 1500 });
+await tap('показать ближайшие варианты', { exact: true, wait: 2800 });
 await shot('B-widened');
 
 console.log('C — the user does not trust the assistant');
 await toChat();
 await type('почему я должна тебе верить?');
 await shot('C-trust-sources');
-await tap('вернуться к подборке', { exact: true });
+await tap('посмотреть источники', { exact: true, wait: 1600 });
 
 console.log('D — hand-off carries the context');
 await toChat();
 await type('позови консультанта');
+await wait(900);
 await shot('D-handoff');
 
 console.log('E — PDP entry point keeps the product in context');
-await toChat(); // returning user: onboarding already dismissed
+await toChat();
 await tapSel('.chat-header__close', 900);
 await tapSel('.pcard__media');
 await shot('E-pdp');

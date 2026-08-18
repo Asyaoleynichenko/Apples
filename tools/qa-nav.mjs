@@ -48,8 +48,13 @@ const tapText = async (t, ms = 800) => {
   return ok;
 };
 const screenClass = () =>
-  page.evaluate(() => document.querySelector('.screen')?.className.replace('screen ', '') ?? 'none');
+  page.evaluate(() => {
+    const modal = document.querySelector('.route--modal .screen');
+    const el = modal ?? document.querySelector('.screen');
+    return el?.className.replace(/\bscreen\b/g, '').trim() ?? 'none';
+  });
 const sheetOpen = () => page.evaluate(() => !!document.querySelector('.sheet'));
+const chatCards = () => page.evaluate(() => document.querySelectorAll('.chat .pcard').length);
 const isScrollable = (sel) =>
   page.evaluate((s) => {
     const el = document.querySelector(s);
@@ -97,35 +102,73 @@ for (const key of ['cart', 'profile', 'search', 'favorites']) {
 
 console.log('\nshare sheet from PDP');
 await tapSel('.pcard__media');
-await tapSel('.pdp__topbar .press:last-of-type');
+await tapSel('.pdp__topbar [aria-label="Поделиться"]');
 check(await sheetOpen(), 'share sheet opens');
 await tapText('поделиться');
 check(!(await sheetOpen()), 'share sheet closes');
+await tapSel('.pdp__topbar [aria-label="Назад"]');
 
-console.log('\nassistant sheets close and return to chat');
+console.log('\nfull onboarding reaches chat');
 await reset();
 await tapSel('.floating-ai');
 await tapSel('.sheet--intro .send');
-await tapText('пройду позже', 900);
-check((await screenClass()) === 'chat', 'skipping onboarding lands in chat');
-await tapText('выбери подарок', 1500);
-await tapText('до 5 000 ₽', 1500);
-await tapText('любит clarins', 1700);
+check(await page.evaluate(() => !!document.querySelector('.onb')), 'intro sheet opens onboarding');
+await tapText('давай', 800);
+await tapText('✨ эффект', 500);
+await tapText('далее', 800);
+await tapText('2 000–5 000 ₽', 500);
+await tapText('далее', 800);
+await tapText('сильные отдушки', 500);
+await tapText('далее', 800);
 check(
-  await page.evaluate(() => document.querySelectorAll('.pcard').length > 0),
-  'recommendation cards render',
+  await page.evaluate(() => (document.body.innerText || '').includes('продукты, которые используешь')),
+  'routine step shows',
 );
-for (const [label, closer] of [
-  ['почему подходит', 'понятно'],
-  ['сравнить', 'закрыть'],
-  ['откуда данные', 'вернуться к подборке'],
-]) {
-  await tapText(label, 1900);
-  check(await sheetOpen(), `${label} opens its sheet`);
-  await tapText(closer, 700);
-  check(!(await sheetOpen()), `${label} sheet closes`);
-}
-check((await screenClass()) === 'chat', 'still in chat after sheets');
+check(await page.$('.onb__banner img'), 'routine uses the ready banner illustration');
+await tapText('далее', 800);
+await tapText('начать', 900);
+check((await screenClass()) === 'chat', 'finishing onboarding lands in chat');
+await reset();
+await tapSel('.floating-ai');
+await tapSel('.sheet--intro .send', 1000);
+await tapText('пройду позже', 1000);
+check((await screenClass()) === 'chat', 'skipping onboarding lands in chat');
+
+console.log('\ngift funnel');
+await tapText('выбери подарок', 900);
+await tapText('до 5 000 ₽', 900);
+await tapText('не знаю', 3200);
+check((await chatCards()) > 0, 'gift recommendation cards render');
+
+console.log('\ncream recommendations and evidence');
+await reset();
+await tapSel('.floating-ai');
+await tapSel('.sheet--intro .send', 1000);
+await tapText('пройду позже', 1000);
+check((await screenClass()) === 'chat', 'second skip lands in chat');
+await wait(500);
+check(!(await page.$('.sheet.sheet--intro')), 'intro sheet unmounts after expand');
+await tapText('посоветуй крем', 1000);
+await tapText('лёгкую', 3500);
+check((await chatCards()) > 0, 'cream recommendation cards render');
+
+await tapText('почему именно он?', 1600);
+check(
+  await page.evaluate(() => !!document.querySelector('.chat .aicard')),
+  'why stays in chat as evidence',
+);
+check(await tapText('развернуть подробно', 900), 'why sheet trigger exists');
+check(await sheetOpen(), 'why sheet opens');
+await wait(400);
+await tapText('понятно', 800);
+check(!(await sheetOpen()), 'why sheet closes');
+
+await tapText('сравнить', 2800);
+check(await page.evaluate(() => !!document.querySelector('.chat .aicard--cmp, .chat .cmp__head')), 'compare renders in chat');
+
+await tapText('откуда данные', 1600);
+check(await page.evaluate(() => !!document.querySelector('.chat .source, .chat .aicard')), 'sources render in chat');
+check((await screenClass()) === 'chat', 'still in chat after evidence');
 
 console.log('\nchat back button');
 await tapSel('.chat-header__back');

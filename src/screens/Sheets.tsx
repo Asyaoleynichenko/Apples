@@ -3,7 +3,7 @@ import { useRef, useState, useEffect } from 'react';
 import { BottomSheet, Button, AiBanner } from '../components/UI';
 import { ChatInput, Pill } from '../components/Chat';
 import { HomeIndicator } from '../components/Chrome';
-import { Heart, CheckCircle, Bag } from '../components/Icons';
+import { Heart, CheckCircle, Bag, MinusBadge, PlusBadge, TickOk, TickWarn } from '../components/Icons';
 import { useStore } from '../lib/store';
 import { useAssistant } from '../lib/useAssistant';
 import { compareVerdict, handoffContext, preferenceChecks } from '../lib/ai';
@@ -47,9 +47,8 @@ function AiIntroSheet() {
     if (opened.current) return;
     opened.current = true;
     setExpanding(true);
-    window.setTimeout(() => {
-      push(profile.metAssistant ? { name: 'chat' } : { name: 'onboarding' }, 'expand');
-    }, 24);
+    push(profile.metAssistant ? { name: 'chat' } : { name: 'onboarding' }, 'expand');
+    closeSheet();
   };
 
   return (
@@ -61,6 +60,7 @@ function AiIntroSheet() {
             initial={{ opacity: 0 }}
             animate={{ opacity: expanding ? 0 : 1 }}
             exit={{ opacity: 0 }}
+            style={{ pointerEvents: expanding ? 'none' : 'auto' }}
             transition={{ duration: expanding ? 0.28 : 0.22 }}
             onClick={closeSheet}
           />
@@ -69,6 +69,7 @@ function AiIntroSheet() {
             initial={{ y: '100%' }}
             animate={{ y: 0, height: '72%' }}
             exit={expanding ? { opacity: 0 } : { y: '100%' }}
+            style={{ pointerEvents: expanding ? 'none' : 'auto' }}
             transition={
               expanding
                 ? { duration: 0.28, ease: [0.32, 0.72, 0, 1] }
@@ -170,12 +171,14 @@ function WhySheet() {
       onClose={closeSheet}
       title="почему это тебе подходит"
       footer={
-        <>
-          <Button onClick={() => openSheet({ name: 'sources', productIds: ids })}>показать источники</Button>
-          <Button variant="ghost" onClick={closeSheet}>
+        <div className="sheet__actions">
+          <button type="button" className="pill t-label-14 press" onClick={() => openSheet({ name: 'sources', productIds: ids })}>
+            показать источники
+          </button>
+          <button type="button" className="pill t-label-14 press" onClick={closeSheet}>
             понятно
-          </Button>
-        </>
+          </button>
+        </div>
       }
     >
       {checks.length > 0 && (
@@ -184,7 +187,7 @@ function WhySheet() {
           <ul className="why__list">
             {checks.map((c) => (
               <li key={c.text} className="t-body-14">
-                <span className={`why__tick${c.ok ? '' : ' why__tick--no'}`} />
+                <span className={`why__icon`}>{c.ok ? <TickOk /> : <TickWarn />}</span>
                 {c.text}
               </li>
             ))}
@@ -206,7 +209,7 @@ function WhySheet() {
             <ul className="why__list">
               {p.why.map((w) => (
                 <li key={w} className="t-body-14">
-                  <span className="why__tick" />
+                  <TickOk />
                   {w}
                 </li>
               ))}
@@ -216,13 +219,17 @@ function WhySheet() {
               <div className="why__caveats-title t-caption-12">покупатели чаще отмечают</div>
               {p.pros.map((x) => (
                 <div key={x} className="aicard__sign t-body-14">
-                  <span className="aicard__plus">+</span>
+                  <span className="aicard__icon">
+                    <PlusBadge />
+                  </span>
                   {x}
                 </div>
               ))}
               {p.cons.map((x) => (
                 <div key={x} className="aicard__sign t-body-14">
-                  <span className="aicard__minus">–</span>
+                  <span className="aicard__icon">
+                    <MinusBadge />
+                  </span>
                   {x}
                 </div>
               ))}
@@ -278,12 +285,14 @@ function SourcesSheet() {
       onClose={closeSheet}
       title="откуда я это знаю"
       footer={
-        <>
-          <Button variant="ghost" onClick={() => openSheet({ name: 'consultant' })}>
+        <div className="sheet__actions">
+          <button type="button" className="pill t-label-14 press" onClick={() => openSheet({ name: 'consultant' })}>
             позвать консультанта
-          </Button>
-          <Button onClick={closeSheet}>вернуться к подборке</Button>
-        </>
+          </button>
+          <button type="button" className="pill t-label-14 press" onClick={closeSheet}>
+            вернуться к подборке
+          </button>
+        </div>
       }
     >
       <div className="sources__lead t-body-14">
@@ -292,8 +301,8 @@ function SourcesSheet() {
       {list.map((s) => (
         <div className="source" key={s.id}>
           <div className={`source__kind source__kind--${s.kind}`}>{KIND_LABEL[s.kind]}</div>
-          <div className="t-card-15">{s.title}</div>
-          <div className="t-body-14 source__detail">{s.detail}</div>
+          <div className="source__title">{s.title}</div>
+          <div className="source__detail">{s.detail}</div>
           <div className="t-caption-12 source__meta">{s.meta}</div>
         </div>
       ))}
@@ -372,7 +381,7 @@ function CompareSheet() {
                     onClick={() => buy(p.id)}
                     aria-label={`В корзину ${p.brand}`}
                   >
-                    <Bag color="#fff" size={18} />
+                    <Bag color="#fff" size={16} />
                   </button>
                 </div>
                 <button type="button" className="cmp__name press t-body-14" onClick={() => openProduct(p.id)}>
@@ -484,7 +493,7 @@ function FeedbackSheet() {
 
       {stage === 'done' && (
         <motion.div className="fb__done" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}>
-          <CheckCircle size={26} />
+          <CheckCircle size={24} />
           <div className="t-body-16">
             {reason
               ? 'Поняла. Учту это в следующих рекомендациях.'

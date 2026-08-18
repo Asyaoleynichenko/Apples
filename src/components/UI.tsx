@@ -1,7 +1,7 @@
 import { AnimatePresence, motion } from 'framer-motion';
 import type { ReactNode } from 'react';
-import { Bag, Close, Heart, Search, Catalog, Person } from './Icons';
-import { formatPrice, PRODUCTS } from '../data/products';
+import { AppleMark, Bag, Close, Heart, Person, SearchList } from './Icons';
+import { formatPrice, productLabel, PRODUCTS } from '../data/products';
 import { useStore } from '../lib/store';
 
 export function Button({
@@ -42,7 +42,6 @@ export function ProductCard({
   onOpen,
   onAdd,
   onPick,
-  onAskExpert,
 }: {
   productId: string;
   width?: number;
@@ -54,15 +53,14 @@ export function ProductCard({
   onAdd?: () => void;
   /** Onboarding pick: radio instead of bag, tap selects the card. */
   onPick?: () => void;
-  /** Idle nudge: the expert FAB sits on this card. */
-  onAskExpert?: () => void;
 }) {
   const p = PRODUCTS[productId];
   const { favorites, toggleFavorite } = useStore();
   const liked = favorites.includes(productId);
+  const { brand, title } = productLabel(p);
   return (
     <motion.div
-      className={`pcard${onAskExpert ? ' pcard--nudge' : ''}`}
+      className="pcard"
       style={{ width }}
       initial={{ opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
@@ -92,29 +90,10 @@ export function ProductCard({
             }}
             aria-label="В корзину"
           >
-            <Bag color="#fff" size={18} />
+            <Bag color="#fff" size={16} />
           </button>
         )}
       </div>
-      <AnimatePresence>
-        {onAskExpert && (
-          <motion.button
-            type="button"
-            className="pcard__nudge press"
-            aria-label="спросить эксперта"
-            initial={{ opacity: 0, scale: 0.84, y: 16 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.9, y: 8 }}
-            transition={{ duration: 0.38, ease: [0.22, 1, 0.36, 1] }}
-            onClick={(e) => {
-              e.stopPropagation();
-              onAskExpert();
-            }}
-          >
-            <AiBanner variant="expert" />
-          </motion.button>
-        )}
-      </AnimatePresence>
       <div className="pcard__cat">{p.category}</div>
       {onPick && (
         <div className="pcard__rate">
@@ -122,7 +101,8 @@ export function ProductCard({
           <span>{p.reviews}</span>
         </div>
       )}
-      <div className="pcard__name">{p.name}</div>
+      <div className="pcard__brand">{brand}</div>
+      <div className="pcard__name">{title}</div>
       <div className="pcard__price">
         <b>{formatPrice(p.price)}</b>
         <s>{formatPrice(p.oldPrice)}</s>
@@ -193,7 +173,9 @@ export function AiBanner({ variant = 'expert' }: { variant?: 'expert' | 'search'
     return (
       <span className="ai-banner ai-banner--expert">
         <img src="/assets/banner-expert-fab.png" alt="" />
-        <span className="ai-banner__pill fill-send">спросить эксперта</span>
+        <span className="ai-banner__pill fill-send">
+          <span>спросить эксперта</span>
+        </span>
       </span>
     );
   }
@@ -243,19 +225,21 @@ export function AiBanner({ variant = 'expert' }: { variant?: 'expert' | 'search'
 export function TabBar({ active }: { active: 'search' | 'favorites' | 'catalog' | 'profile' | 'cart' }) {
   const { resetTo, cartCount } = useStore();
   const items = [
-    { key: 'search', icon: <Search />, go: () => resetTo({ name: 'search' }) },
-    { key: 'favorites', icon: <Heart size={22} />, go: () => resetTo({ name: 'favorites' }) },
-    { key: 'catalog', icon: <Catalog />, go: () => resetTo({ name: 'favorites' }) },
-    { key: 'profile', icon: <Person />, go: () => resetTo({ name: 'profile' }) },
-    { key: 'cart', icon: <Bag size={22} />, go: () => resetTo({ name: 'cart' }) },
+    { key: 'search', icon: <SearchList />, go: () => resetTo({ name: 'search' }) },
+    { key: 'favorites', icon: <Heart size={24} />, go: () => resetTo({ name: 'favorites' }) },
+    { key: 'catalog', icon: <AppleMark />, go: () => resetTo({ name: 'favorites' }) },
+    { key: 'profile', icon: <Person color="var(--accent)" />, go: () => resetTo({ name: 'profile' }) },
+    { key: 'cart', icon: <Bag size={24} />, go: () => resetTo({ name: 'cart' }) },
   ] as const;
   return (
     <div className="tabbar">
       {items.map((it) => (
         <button key={it.key} className="tabbar__item press" onClick={it.go} aria-label={it.key}>
-          <span style={{ opacity: active === it.key ? 1 : 0.85 }}>{it.icon}</span>
-          {it.key === 'cart' && cartCount > 0 && <span className="tabbar__badge">{cartCount}</span>}
-          {it.key === 'profile' && <span className="tabbar__dot" />}
+          <span className="tabbar__icon" style={{ opacity: active === it.key ? 1 : 0.92 }}>
+            {it.icon}
+            {it.key === 'cart' && cartCount > 0 && <span className="tabbar__badge">{cartCount}</span>}
+            {it.key === 'profile' && <span className="tabbar__dot" />}
+          </span>
         </button>
       ))}
     </div>

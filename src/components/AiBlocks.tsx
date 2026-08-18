@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
 import type { ReactNode } from 'react';
-import { Bag } from './Icons';
+import { Bag, MinusBadge, PlusBadge, StarRating, TickOk, TickWarn } from './Icons';
 import { EDITORIAL, PRODUCTS, formatPrice, plural, sourcesFor } from '../data/products';
 import { useStore } from '../lib/store';
 import type { CheckItem, RoutineLine } from '../lib/types';
@@ -28,7 +28,7 @@ export function ChecksBlock({ title, items }: { title: string; items: CheckItem[
       <ul className="why__list">
         {items.map((it) => (
           <li key={it.text} className="t-body-14">
-            <span className={`why__tick${it.ok ? '' : ' why__tick--no'}`} />
+            {it.ok ? <TickOk /> : <TickWarn />}
             {it.text}
           </li>
         ))}
@@ -60,7 +60,7 @@ export function EvidenceBlock({ productId }: { productId: string }) {
         <ul className="why__list">
           {Array.from(new Set(prefs)).map((x) => (
             <li key={x} className="t-body-14">
-              <span className="why__tick" />
+              <TickOk />
               {x}
             </li>
           ))}
@@ -70,7 +70,10 @@ export function EvidenceBlock({ productId }: { productId: string }) {
       <div className="aicard__section">
         <div className="aicard__title t-caption-12">о продукте</div>
         <div className="aicard__rating">
-          <span className="aicard__star t-headline-24">★ {p.rating}</span>
+          <span className="aicard__star">
+            <StarRating size={20} />
+            {p.rating}
+          </span>
           <span className="t-body-14">
             {p.reviews.toLocaleString('ru-RU').replace(/,/g, ' ')} {plural(p.reviews, 'отзыв', 'отзыва', 'отзывов')}
           </span>
@@ -84,13 +87,17 @@ export function EvidenceBlock({ productId }: { productId: string }) {
         <div className="aicard__title t-caption-12">покупатели чаще отмечают</div>
         {p.pros.map((x) => (
           <div key={x} className="aicard__sign t-body-14">
-            <span className="aicard__plus">+</span>
+            <span className="aicard__icon">
+              <PlusBadge />
+            </span>
             {x}
           </div>
         ))}
         {p.cons.map((x) => (
           <div key={x} className="aicard__sign t-body-14">
-            <span className="aicard__minus">–</span>
+            <span className="aicard__icon">
+              <MinusBadge />
+            </span>
             {x}
           </div>
         ))}
@@ -105,7 +112,10 @@ export function ReviewsBlock({ productId }: { productId: string }) {
   return (
     <Card title={`${p.brand} · отзывы`}>
       <div className="aicard__rating">
-        <span className="aicard__star t-headline-24">★ {p.rating}</span>
+        <span className="aicard__star">
+          <StarRating size={20} />
+          {p.rating}
+        </span>
         <span className="t-body-14">
           {p.reviews.toLocaleString('ru-RU').replace(/,/g, ' ')} {plural(p.reviews, 'отзыв', 'отзыва', 'отзывов')}
         </span>
@@ -114,7 +124,9 @@ export function ReviewsBlock({ productId }: { productId: string }) {
         <div className="aicard__title t-caption-12">позитив</div>
         {p.pros.map((x) => (
           <div key={x} className="aicard__sign t-body-14">
-            <span className="aicard__plus">+</span>
+            <span className="aicard__icon">
+              <PlusBadge />
+            </span>
             {x}
           </div>
         ))}
@@ -124,7 +136,9 @@ export function ReviewsBlock({ productId }: { productId: string }) {
         {p.cons.length ? (
           p.cons.map((x) => (
             <div key={x} className="aicard__sign t-body-14">
-              <span className="aicard__minus">–</span>
+              <span className="aicard__icon">
+                <MinusBadge />
+              </span>
               {x}
             </div>
           ))
@@ -152,8 +166,8 @@ export function SourcesBlock({ productId }: { productId: string }) {
       {list.map((s) => (
         <div className="source" key={s.id}>
           <div className={`source__kind source__kind--${s.kind}`}>{KIND_LABEL[s.kind]}</div>
-          <div className="t-card-15">{s.title}</div>
-          <div className="t-body-14 source__detail">{s.detail}</div>
+          <div className="source__title">{s.title}</div>
+          <div className="source__detail">{s.detail}</div>
           <div className="source__foot">
             <span className="t-caption-12 source__meta">{s.meta}</span>
             <button className="source__open t-caption-12 press" onClick={() => openSheet({ name: 'sources', productIds: [productId] })}>
@@ -295,7 +309,7 @@ export function CompareBlock({ productIds }: { productIds: string[] }) {
                 }}
                 aria-label={`В корзину ${p.brand}`}
               >
-                <Bag color="#fff" size={18} />
+                <Bag color="#fff" size={16} />
               </button>
             </div>
             <button type="button" className="cmp__name press t-body-14" onClick={() => push({ name: 'pdp', productId: p.id })}>

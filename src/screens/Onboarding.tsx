@@ -1,7 +1,7 @@
 import { AnimatePresence, motion } from 'framer-motion';
 import { useState } from 'react';
 import { StatusBar } from '../components/Chrome';
-import { AiTag, ChevronDown, ChevronLeft, Close, Scan, Search as SearchIcon, Sliders, Sort } from '../components/Icons';
+import { ChevronDown, ChevronLeft, Close, Scan, Search as SearchIcon, Sliders, Sort } from '../components/Icons';
 import { Button, ProductCard } from '../components/UI';
 import { Pill } from '../components/Chat';
 import { IosKeyboard } from '../components/Keyboard';
@@ -99,7 +99,7 @@ const BUDGET_CEILING: Record<string, number | null> = {
 };
 
 export default function Onboarding() {
-  const { setProfile, setConversation, conversation, resetTo, push, replace } = useStore();
+  const { setProfile, setConversation, conversation, resetTo, replace } = useStore();
   const [step, setStep] = useState<Step>('intro');
   const [priorities, setPriorities] = useState<string[]>([]);
   const [budget, setBudget] = useState<string | null>(null);
@@ -211,14 +211,14 @@ export default function Onboarding() {
       </div>
 
       <div className="onb__stage">
-      <AnimatePresence initial={false}>
+      <AnimatePresence initial={false} mode="wait">
         <motion.div
           key={step}
           className="onb__body"
           initial={{ opacity: 0, x: 24 }}
           animate={{ opacity: 1, x: 0 }}
-          exit={{ opacity: 0, x: -16, position: 'absolute', inset: 0 }}
-          transition={{ duration: 0.32, ease: [0.32, 0.72, 0, 1] }}
+          exit={{ opacity: 0, x: -16 }}
+          transition={{ duration: 0.28, ease: [0.32, 0.72, 0, 1] }}
         >
           {step === 'intro' && (
             <>
@@ -281,12 +281,9 @@ export default function Onboarding() {
             <>
               <div className="onb__title t-headline-24">продукты, которые используешь 24/7</div>
               <div className="onb__art onb__art--head">
-                <span className="onb__art-mascot">
-                  <img src="/assets/mascot-head-ai.png" alt="" />
-                  <span className="onb__art-tag">
-                    <AiTag width={85} height={56} filled />
-                  </span>
-                </span>
+                <div className="onb__banner">
+                  <img src="/assets/banner-onboarding.png" alt="" />
+                </div>
               </div>
               <div className="onb__fields">
                 {ROUTINE_FIELDS.map((f) => (
@@ -412,7 +409,7 @@ function ShadePicker({
           value={q}
           onChange={(e) => setQ(e.target.value)}
         />
-        <SearchIcon size={22} color="#9b9b9b" />
+        <SearchIcon size={24} color="#9b9b9b" />
       </div>
       <div className="shade__list scroll">
         {list.map(([name, color]) => (
@@ -576,7 +573,7 @@ function ProductPicker({
           onFocus={() => setKb(true)}
         />
         <button className="search-field__clear press" onClick={() => onQuery('')} aria-label="Очистить">
-          <Close size={14} color="#fff" />
+          <Close size={16} color="#fff" />
         </button>
       </div>
 
