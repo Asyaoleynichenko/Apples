@@ -1,12 +1,26 @@
+.shop-stack {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  background: var(--surface);
+  transform-origin: 50% 100%;
+  will-change: transform;
+}
 .route {
   position: absolute;
   inset: 0;
   background: var(--surface);
   overflow: hidden;
+  will-change: transform;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
 }
 .route--modal {
   z-index: 12;
-  box-shadow: 0 -18px 48px rgba(0, 16, 61, 0.16);
+}
+.route-fade {
+  position: absolute;
+  inset: 0;
 }
 .route:has(.onb) {
   background: linear-gradient(180deg, var(--onb-grad-from) 0%, var(--onb-grad-to) 100%);
@@ -44,12 +58,20 @@
   place-items: center;
   margin-left: -12px;
 }
+.onb__stage {
+  flex: 1 1 auto;
+  min-height: 0;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
 .onb__body {
   flex: 1 1 auto;
   min-height: 0;
   display: flex;
   flex-direction: column;
   position: relative;
+  width: 100%;
 }
 .onb__title {
   padding: 0 17px;
@@ -76,8 +98,15 @@
   height: auto;
   object-fit: contain;
 }
+.onb__art--wave {
+  overflow: visible;
+}
+.onb__art--wave img {
+  transform: translate(-50%, -50%) rotate(-12deg);
+  transform-origin: 52% 58%;
+}
 .onb__art--head {
-  flex: 0 1 210px;
+  flex: 0 1 248px;
   display: grid;
   place-items: center;
   overflow: visible;
@@ -85,16 +114,20 @@
 .onb__art-mascot {
   position: relative;
   display: block;
-  width: 250px;
-  max-width: 70%;
+  width: 343px;
+  height: 248px;
+  max-width: 100%;
+  justify-self: center;
+  transform: translateX(-4px) rotate(-12deg);
+  transform-origin: 48% 58%;
 }
 .onb__art-mascot img {
   position: static;
   top: auto;
   left: auto;
   transform: none;
-  width: 100%;
-  height: auto;
+  width: 343px;
+  height: 248px;
   max-width: none;
   max-height: none;
   object-fit: contain;
@@ -102,9 +135,20 @@
 }
 .onb__art-tag {
   position: absolute;
-  right: 22px;
-  top: -12px;
-  transform: rotate(-9deg);
+  left: 166px;
+  top: 30px;
+  width: 85px;
+  height: 56px;
+  transform: rotate(20.07deg);
+  transform-origin: center center;
+  z-index: 2;
+  pointer-events: none;
+}
+.onb__art-tag svg,
+.onb__art-tag img {
+  display: block;
+  width: 85px;
+  height: 56px;
 }
 .onb__texts {
   padding: 0 16px;
@@ -317,6 +361,8 @@
   flex-direction: column;
   justify-content: space-between;
   text-align: left;
+  overflow: visible;
+  isolation: isolate;
 }
 .cap__icon {
   width: 32px;
@@ -324,19 +370,24 @@
   display: grid;
   place-items: center;
 }
+.cap__icon svg {
+  width: 24px;
+  height: 24px;
+}
 .cap__tag {
   position: absolute;
-  right: 8px;
-  top: 6px;
-  background: var(--ai-green);
-  border-radius: 6px;
-  padding: 3px 6px;
-  font-size: 12px;
-  font-weight: 500;
-  transform: rotate(-6deg);
+  width: 51px;
+  height: 37px;
+  left: 71px;
+  top: 3px;
+  z-index: 2;
+  pointer-events: none;
+  display: block;
 }
 .cap__title {
   display: block;
+  width: 104px;
+  white-space: pre-line;
 }
 
 .memory {
@@ -411,6 +462,7 @@
   min-height: 0;
 }
 .shop__topbar {
+  flex: 0 0 44px;
   height: 44px;
   display: flex;
   align-items: center;
@@ -418,6 +470,11 @@
 }
 .shop__topbar--between {
   justify-content: space-between;
+}
+.shop__topbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
 }
 .shop__h1 {
   margin: 8px 0 16px;
@@ -521,19 +578,21 @@
 .filters {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  gap: 12px;
   padding: 6px 16px 14px;
 }
-.filters__count {
-  font-size: 15px;
+.filters > .press {
+  flex: 0 0 auto;
 }
-.filters__ai {
-  width: 44px;
-  height: 28px;
-  display: grid;
-  place-items: center;
-  border: 1px solid #000;
-  border-radius: 6px;
+.filters__count {
+  flex: 1 1 auto;
+  min-width: 0;
+  font-size: 15px;
+  line-height: 20px;
+  text-align: right;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .chips-row {
@@ -584,8 +643,10 @@
 
 .floating-ai {
   position: absolute;
-  right: 2px;
-  bottom: 108px;
+  left: 214px;
+  top: 591px;
+  width: 161px;
+  height: 121px;
   z-index: 6;
   overflow: visible;
 }
@@ -662,19 +723,20 @@
   font-weight: 600;
   letter-spacing: 0.02em;
 }
-/* Floats above the keyboard, exactly as it sits in the design. */
+/* Floats above the keyboard. Not a <button>: WebKit/Chromium clip overflowing mascots. */
 .search-banner {
   position: absolute;
-  left: 16px;
-  right: 16px;
-  bottom: var(--kb-offset, 16px);
+  left: 0;
+  width: 375px;
+  top: 469px;
+  height: 90px;
   z-index: 9;
   overflow: visible;
+  cursor: pointer;
 }
-.search-banner > button,
-.search-banner .ai-banner--purple {
-  display: block;
-  width: 100%;
+/* Scale would turn overflow into a clip; dim instead. */
+.search-banner.press:active {
+  transform: none;
 }
 
 /* ----------------------------------------------------------- keyboard */
@@ -685,7 +747,7 @@
   right: 0;
   bottom: 0;
   background: #d1d3d9;
-  padding: 8px 3px 0;
+  padding: 8px 3px 10px;
   z-index: 8;
   display: flex;
   flex-direction: column;
@@ -728,14 +790,6 @@
   background: #007aff;
   color: #fff;
   font-size: 15px;
-}
-.kb__bottom {
-  height: 44px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 18px;
-  font-size: 20px;
 }
 
 /* ---------------------------------------------------------------- pdp */
@@ -927,12 +981,13 @@
   background: linear-gradient(to top right, transparent 47%, #e4e4e4 47%, #e4e4e4 53%, transparent 53%);
 }
 .pdp__ai {
-  padding: 22px 16px 0;
+  padding: 0 16px;
   overflow: visible;
 }
 .pdp__ai > button {
   display: block;
-  width: 100%;
+  width: 343px;
+  margin: 0 auto;
   overflow: visible;
 }
 .pdp__desc {
@@ -1260,10 +1315,17 @@
 
 /* ------------------------------------------------------------- sheets */
 
-.sheet--intro {
+/* Intro overlay (240:26798): square plate. Drag up expands to full chat. */
+.sheet.sheet--intro {
   height: 72%;
+  max-height: none;
   display: flex;
   flex-direction: column;
+  border-radius: 0;
+}
+.sheet.sheet--intro .sheet__grabber {
+  cursor: grab;
+  touch-action: none;
 }
 .sheet__close-x {
   position: relative;
@@ -1278,7 +1340,7 @@
   top: 7px;
   width: 16px;
   height: 1.8px;
-  background: var(--icon-close);
+  background: #000;
   border-radius: 2px;
 }
 .sheet__close-x::before {
@@ -1336,7 +1398,12 @@
   color: var(--text-caption);
 }
 .share__banner {
-  padding-bottom: 16px;
+  padding: 0 0 16px;
+  overflow: visible;
+}
+.share__banner > button {
+  display: block;
+  width: 343px;
   overflow: visible;
 }
 .share__cta {

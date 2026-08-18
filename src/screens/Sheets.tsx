@@ -1,5 +1,5 @@
 import { AnimatePresence, motion } from 'framer-motion';
-import { useState } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import { BottomSheet, Button, AiBanner } from '../components/UI';
 import { ChatInput, Pill } from '../components/Chat';
 import { HomeIndicator } from '../components/Chrome';
@@ -33,10 +33,23 @@ export default function Sheets() {
 function AiIntroSheet() {
   const { sheet, closeSheet, push, profile } = useStore();
   const open = sheet?.name === 'ai-intro';
+  const [expanding, setExpanding] = useState(false);
+  const opened = useRef(false);
 
-  const enter = () => {
-    closeSheet();
-    push(profile.metAssistant ? { name: 'chat' } : { name: 'onboarding' });
+  useEffect(() => {
+    if (open) {
+      setExpanding(false);
+      opened.current = false;
+    }
+  }, [open]);
+
+  const openAssistant = () => {
+    if (opened.current) return;
+    opened.current = true;
+    setExpanding(true);
+    window.setTimeout(() => {
+      push(profile.metAssistant ? { name: 'chat' } : { name: 'onboarding' }, 'expand');
+    }, 24);
   };
 
   return (
@@ -46,22 +59,41 @@ function AiIntroSheet() {
           <motion.div
             className="sheet-backdrop"
             initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
+            animate={{ opacity: expanding ? 0 : 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.22 }}
+            transition={{ duration: expanding ? 0.28 : 0.22 }}
             onClick={closeSheet}
           />
           <motion.div
             className="sheet sheet--intro"
             initial={{ y: '100%' }}
-            animate={{ y: 0 }}
-            exit={{ y: '100%' }}
-            transition={{ type: 'spring', stiffness: 420, damping: 40, mass: 0.9 }}
+            animate={{ y: 0, height: '72%' }}
+            exit={expanding ? { opacity: 0 } : { y: '100%' }}
+            transition={
+              expanding
+                ? { duration: 0.28, ease: [0.32, 0.72, 0, 1] }
+                : { type: 'spring', stiffness: 420, damping: 40, mass: 0.9 }
+            }
+            drag={expanding ? false : 'y'}
+            dragConstraints={{ top: 0, bottom: 0 }}
+            dragElastic={{ top: 0.55, bottom: 0.4 }}
+            onDragEnd={(_, info) => {
+              if (info.offset.y < -64 || info.velocity.y < -450) {
+                openAssistant();
+                return;
+              }
+              if (info.offset.y > 110 || info.velocity.y > 600) closeSheet();
+            }}
           >
             <div className="sheet__grabber">
               <span />
             </div>
-            <button className="sheet__close press" onClick={closeSheet} aria-label="Закрыть">
+            <button
+              className="sheet__close press"
+              onPointerDown={(e) => e.stopPropagation()}
+              onClick={closeSheet}
+              aria-label="Закрыть"
+            >
               <span className="sheet__close-x" />
             </button>
             <div className="intro__art">
@@ -74,8 +106,8 @@ function AiIntroSheet() {
                 {'\n'}а ещё всегда отвечу на вопросы 💚
               </div>
             </div>
-            <div className="bottom-container">
-              <ChatInput onSend={enter} onActivate={enter} />
+            <div className="bottom-container" onPointerDown={(e) => e.stopPropagation()}>
+              <ChatInput onSend={openAssistant} onActivate={openAssistant} />
               <HomeIndicator />
             </div>
           </motion.div>
@@ -88,7 +120,7 @@ function AiIntroSheet() {
 /* ------------------------------------------------------------- share */
 
 function ShareSheet() {
-  const { sheet, closeSheet, openSheet, favorites, toggleFavorite } = useStore();
+  const { sheet, closeSheet, openSheet, favorites, toggleFavorite, setChatContext } = useStore();
   const open = sheet?.name === 'share';
   const pid = sheet?.name === 'share' ? sheet.productId : 'procollagen';
   const p = PRODUCTS[pid];
@@ -106,7 +138,13 @@ function ShareSheet() {
         </button>
       </div>
       <div className="share__banner">
-        <button className="press" onClick={() => openSheet({ name: 'ai-intro' })}>
+        <button
+          className="press"
+          onClick={() => {
+            setChatContext({ from: 'pdp', productId: pid });
+            openSheet({ name: 'ai-intro' });
+          }}
+        >
           <AiBanner variant="advice" />
         </button>
       </div>

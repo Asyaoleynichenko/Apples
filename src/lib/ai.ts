@@ -932,6 +932,7 @@ export function runAction(action: string, value: string | undefined, ctx: Ctx): 
         replies: [
           reply('а что популярно', 'gift-popular'),
           reply('может у неё есть вишлист', 'gift-wishlist'),
+          reply('не знаю', 'gift-go'),
         ],
         conversation: { state: 'CLARIFYING', intent: 'gift', slots },
       };
@@ -951,7 +952,7 @@ export function runAction(action: string, value: string | undefined, ctx: Ctx): 
     }
 
     case 'gift-go':
-      return presentGifts(conv.slots);
+      return { userText: 'не знаю', ...presentGifts(conv.slots) };
 
     case 'cream': {
       const slots: Slots = { ...conv.slots, type: 'cream', group: 'care' };

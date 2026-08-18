@@ -30,10 +30,10 @@ const STARTERS = [
 ] as const;
 
 const CAPABILITIES = [
-  { title: 'подбери полезное', icon: <Sparkle />, action: 'q:buy' },
-  { title: 'нужен совет', icon: <Bulb />, action: 'routine' },
-  { title: 'как пользоваться', icon: <Doc />, action: 'content' },
-  { title: 'создай подборку', icon: <Layers />, action: 'popular' },
+  { title: 'подбери\nполезное', icon: <Sparkle />, action: 'q:buy', tag: true },
+  { title: 'нужен\nсовет', icon: <Bulb />, action: 'routine' },
+  { title: 'как\nпользоваться', icon: <Doc />, action: 'content' },
+  { title: 'создай\nподборку', icon: <Layers />, action: 'popular' },
 ] as const;
 
 export default function Chat() {
@@ -111,7 +111,9 @@ export default function Chat() {
                   {CAPABILITIES.map((c) => (
                     <button key={c.title} className="cap press" onClick={() => start(c.action)}>
                       <span className="cap__icon">{c.icon}</span>
-                      <span className="cap__tag">новое</span>
+                      {'tag' in c && c.tag && (
+                        <img className="cap__tag" src="/assets/cap-tag-new.svg" alt="" />
+                      )}
                       <span className="cap__title t-card-15">{c.title}</span>
                     </button>
                   ))}

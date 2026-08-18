@@ -20,8 +20,16 @@ if (!token) {
 
 const FILE = 'h0ShQ3o8k37L6Z33ZW1L31';
 const names = {
-  'I240:26779;133:18779;167:24738': 'banner-expert',
-  'I240:26773;167:24738': 'banner-expert-fab',
+  'I240:26776;99:38185': 'banner-pdp',
+  'I240:26776;99:38185;96:38084': 'banner-pdp-pill',
+  'I240:26776;99:38185;148:21742': 'mascot-banner-pdp',
+  'I240:26777;99:38706': 'banner-search',
+  'I240:26777;99:38707': 'banner-search-pill',
+  'I240:26777;102:39228': 'mascot-banner-search',
+  'I240:26777;167:23144': 'banner-search-glow',
+  'I240:26778;80:35789': 'banner-share',
+  'I240:26778;102:39251': 'banner-share-pill',
+  'I240:26778;153:21782': 'mascot-banner-share',
 };
 
 async function figma(url) {

@@ -217,7 +217,6 @@
 }
 
 .send {
-  position: relative;
   flex: 0 0 42px;
   width: 42px;
   height: 42px;
@@ -225,22 +224,57 @@
   display: grid;
   place-items: center;
   overflow: hidden;
-  background: linear-gradient(90deg, var(--purple-from) 0%, var(--purple-to) 100%);
   border: 1px solid var(--purple-stroke);
   box-shadow:
     inset 0 0 4.9px #ff01e6,
     inset 0 2px 8.2px #f4e6ff;
 }
+/* Same fill as the purple banners: Default ↔ Variant2, 1.5s linear loop. */
+.fill-send {
+  position: relative;
+  background: linear-gradient(180deg, var(--purple-from) 0%, var(--purple-to) 100%);
+}
+.fill-send::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(180deg, #b459ff 0%, #8d01ff 55%, #ff01e6 100%);
+  background-size: 100% 220%;
+  animation: send-gradient 3s linear infinite alternate;
+  pointer-events: none;
+}
 .send__gloss {
   position: absolute;
   inset: 2px 4px auto 4px;
   height: 25px;
+  z-index: 1;
   border-radius: 21px 21px 60% 60%;
   background: linear-gradient(180deg, rgba(255, 255, 255, 0.55), rgba(255, 255, 255, 0));
   pointer-events: none;
+  animation: send-gloss 3s linear infinite alternate;
 }
 .send svg {
   position: relative;
+  z-index: 1;
+}
+@keyframes send-gradient {
+  from {
+    background-position: 0% 0%;
+  }
+  to {
+    background-position: 0% 100%;
+  }
+}
+@keyframes send-gloss {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0.72;
+    transform: translateY(2px);
+  }
 }
 
 .disclaimer {
@@ -294,6 +328,21 @@
   flex: 0 0 auto;
   display: flex;
   flex-direction: column;
+  position: relative;
+  overflow: visible;
+}
+.pcard--nudge {
+  z-index: 4;
+}
+.pcard__nudge {
+  position: absolute;
+  left: calc(50% - 80.5px);
+  top: 12px;
+  width: 161px;
+  height: 121px;
+  padding: 0;
+  z-index: 5;
+  overflow: visible;
 }
 .pcard__media {
   position: relative;
@@ -522,101 +571,139 @@
   pointer-events: none;
 }
 
-/* Purple AI banners only: capsule radius. Promo bars and grey plates stay square. */
-.ai-banner--purple {
-  width: 343px;
-  display: flex;
-  align-items: center;
-  overflow: visible;
-  filter: drop-shadow(0 10px 18px rgba(110, 0, 180, 0.22));
-}
-.ai-banner--purple .ai-banner__copy {
-  position: relative;
-  overflow: hidden;
-  background: linear-gradient(180deg, #b459ff 0%, #8d01ff 100%);
-  color: #fff;
-  border-radius: 999px;
-  padding: 14px 80px 14px 20px;
+/* Compact / search / PDP / share — Figma exports, overflow mascots overlaid. */
+.ai-banner--search {
   display: flex;
   flex-direction: column;
-  font-size: 16px;
-  line-height: 20px;
-  font-weight: 500;
-  text-align: left;
-  width: 100%;
-  box-shadow:
-    inset 0 0 11.4px #ff01e6,
-    inset 0 0 40px #f4e6ff;
-}
-.ai-banner--purple .ai-banner__copy > span {
-  position: relative;
-  z-index: 1;
-}
-.ai-banner--purple .ai-banner__copy::before {
-  content: '';
-  position: absolute;
-  left: 11px;
-  right: 4px;
-  top: 6px;
-  height: 62px;
-  border-radius: 0;
-  background: linear-gradient(180deg, #fff 0%, rgba(255, 255, 255, 0) 100%);
-  pointer-events: none;
-}
-.ai-banner--search .ai-banner__copy::before,
-.ai-banner--advice .ai-banner__copy::before {
-  height: 46%;
-}
-.ai-banner--advice .ai-banner__copy {
-  padding-right: 88px;
-}
-.ai-banner--pdp {
-  height: 140px;
-  align-items: flex-end;
+  align-items: flex-start;
+  padding: 16px;
+  isolation: isolate;
+  width: 375px;
+  height: 90px;
+  background: #fff;
   overflow: visible;
 }
-.ai-banner--pdp .ai-banner__copy {
-  height: 111px;
-  padding: 24px 76px 23px 41px;
-  gap: 4px;
-  justify-content: center;
+.ai-banner--search .ai-banner__inner {
+  position: relative;
+  width: 343px;
+  height: 58px;
+  z-index: 0;
+  overflow: hidden;
+  border-radius: 999px;
+  background: linear-gradient(180deg, #b459ff 0%, #8d01ff 100%);
+  box-shadow:
+    inset 0 0 18px #f4e6ff,
+    inset 0 0 11.4px #ff01e6;
 }
-.ai-banner--pdp .ai-banner__copy span:first-child {
-  max-width: 226px;
-  font-size: 16px;
-  font-weight: 500;
-  line-height: 20px;
-}
-.ai-banner--pdp .ai-banner__copy span:not(:first-child) {
-  max-width: 226px;
-  font-size: 15px;
-  font-weight: 400;
-  line-height: 20px;
-}
-.ai-banner__side {
+.ai-banner--search .ai-banner__gloss {
   position: absolute;
-  pointer-events: none;
-  z-index: 2;
-}
-.ai-banner--search .ai-banner__side {
-  right: -30px;
-  bottom: -8px;
-  height: 88px;
-  filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.22)) drop-shadow(0 2px 10px rgba(219, 255, 1, 0.28));
-}
-.ai-banner--advice .ai-banner__side {
+  height: 26px;
+  left: 0;
   right: 0;
-  bottom: -6px;
-  height: 104px;
-  filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.2));
+  top: 3px;
+  border-radius: 999px 999px 0 0;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.5) 0%, rgba(255, 255, 255, 0) 100%);
+  pointer-events: none;
 }
-.ai-banner--pdp .ai-banner__side {
-  right: -3px;
-  bottom: -24px;
+.ai-banner--search .ai-banner__copy {
+  position: absolute;
+  left: 22px;
+  top: calc(50% - 40px / 2);
+  width: 226px;
+  height: 40px;
+  z-index: 1;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 20px;
+  color: #fff;
+  white-space: pre-line;
+}
+.ai-banner--search .ai-banner__blob--a {
+  position: absolute;
+  width: 13px;
+  height: 7px;
+  right: 32px;
+  top: 17px;
+  z-index: 1;
+  background: #d5f301;
+  filter: blur(1.5px);
+  border-radius: 50%;
+  pointer-events: none;
+}
+.ai-banner--search .ai-banner__blob--b {
+  position: absolute;
+  width: 12px;
+  height: 7px;
+  right: 32px;
+  top: 13px;
+  z-index: 2;
+  background: #66a201;
+  filter: blur(1.5px);
+  border-radius: 50%;
+  pointer-events: none;
+}
+.ai-banner--search .ai-banner__ill {
+  position: absolute;
+  width: 166px;
+  height: 106px;
+  right: 0;
+  top: -32px;
+  z-index: 3;
+  object-fit: contain;
+  object-position: top right;
+  pointer-events: none;
+}
+.ai-banner--search .ai-banner__glow {
+  position: absolute;
+  width: 83px;
+  height: 76px;
+  right: 42px;
+  top: -13px;
+  z-index: 4;
+  object-fit: contain;
+  pointer-events: none;
+}
+.ai-banner--pdp {
+  position: relative;
+  width: 343px;
+  height: 140px;
+  overflow: visible;
+  display: block;
+}
+.ai-banner--pdp .ai-banner__full {
+  display: block;
+  width: 343px;
+  height: 140px;
+}
+.ai-banner--pdp .ai-banner__ill {
+  position: absolute;
+  left: 240px;
+  top: -24px;
   width: 106px;
   height: 188px;
   object-fit: contain;
-  filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.28)) drop-shadow(0 2px 10px rgba(219, 255, 1, 0.22));
+  pointer-events: none;
+}
+.ai-banner--advice {
+  position: relative;
+  width: 343px;
+  height: 74px;
+  overflow: visible;
+  display: block;
+}
+.ai-banner--advice .ai-banner__full {
+  display: block;
+  width: 343px;
+  height: 74px;
+}
+.ai-banner--advice .ai-banner__ill {
+  position: absolute;
+  left: 182px;
+  top: -25px;
+  width: 162px;
+  height: 99px;
+  object-fit: contain;
+  pointer-events: none;
 }
 
 /* -------------------------------------------------------------- tabbar */
@@ -668,15 +755,18 @@
 
 .aicard {
   margin: 0 16px;
-  background: var(--pill);
+  background: #fff;
+  border: 1px solid var(--hairline);
   border-radius: 16px;
-  padding: 14px;
+  padding: 16px;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 12px;
+  color: var(--text);
 }
 .aicard--flush {
   background: none;
+  border: none;
   padding: 0;
   gap: 8px;
 }
@@ -684,9 +774,13 @@
   border-radius: 0;
 }
 .aicard__title {
-  color: var(--text-muted);
+  color: #6f6f6f;
+  font-weight: 500;
   text-transform: uppercase;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.06em;
+}
+.aicard .t-body-14 {
+  color: var(--text);
 }
 .aicard__section {
   display: flex;
@@ -694,11 +788,11 @@
   gap: 8px;
 }
 .aicard__section + .aicard__section {
-  padding-top: 10px;
-  border-top: 1px solid rgba(0, 0, 0, 0.07);
+  padding-top: 12px;
+  border-top: 1px solid var(--hairline);
 }
 .aicard__muted {
-  color: var(--text-muted);
+  color: #6f6f6f;
 }
 .aicard__rating {
   display: flex;

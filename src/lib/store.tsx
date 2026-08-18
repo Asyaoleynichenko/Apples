@@ -17,7 +17,7 @@ export type Route =
   | { name: 'onboarding' };
 
 /** How the last stack change should be staged on screen. */
-export type NavKind = 'push' | 'back' | 'tab';
+export type NavKind = 'push' | 'back' | 'tab' | 'expand';
 
 export type Sheet =
   | { name: 'ai-intro' }
@@ -36,8 +36,8 @@ type Store = {
   stack: Route[];
   navKind: NavKind;
   sheet: Sheet | null;
-  push: (r: Route) => void;
-  replace: (r: Route) => void;
+  push: (r: Route, kind?: NavKind) => void;
+  replace: (r: Route, kind?: NavKind) => void;
   back: () => void;
   resetTo: (r: Route) => void;
   openSheet: (s: Sheet) => void;
@@ -89,14 +89,14 @@ export function StoreProvider({ children }: { children: ReactNode }) {
   const route = stack[stack.length - 1];
 
   // Navigating always dismisses whatever sheet is open, like a real app.
-  const push = useCallback((r: Route) => {
+  const push = useCallback((r: Route, kind: NavKind = 'push') => {
     setSheet(null);
-    setNavKind('push');
+    setNavKind(kind);
     setStack((s) => [...s, r]);
   }, []);
-  const replace = useCallback((r: Route) => {
+  const replace = useCallback((r: Route, kind: NavKind = 'push') => {
     setSheet(null);
-    setNavKind('push');
+    setNavKind(kind);
     setStack((s) => [...s.slice(0, -1), r]);
   }, []);
   const resetTo = useCallback((r: Route) => {

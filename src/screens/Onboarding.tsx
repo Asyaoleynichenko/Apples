@@ -1,6 +1,6 @@
 import { AnimatePresence, motion } from 'framer-motion';
 import { useState } from 'react';
-import { StatusBar, HomeIndicator } from '../components/Chrome';
+import { StatusBar } from '../components/Chrome';
 import { AiTag, ChevronDown, ChevronLeft, Close, Scan, Search as SearchIcon, Sliders, Sort } from '../components/Icons';
 import { Button, ProductCard } from '../components/UI';
 import { Pill } from '../components/Chat';
@@ -99,7 +99,7 @@ const BUDGET_CEILING: Record<string, number | null> = {
 };
 
 export default function Onboarding() {
-  const { setProfile, setConversation, conversation, resetTo, push } = useStore();
+  const { setProfile, setConversation, conversation, resetTo, push, replace } = useStore();
   const [step, setStep] = useState<Step>('intro');
   const [priorities, setPriorities] = useState<string[]>([]);
   const [budget, setBudget] = useState<string | null>(null);
@@ -161,7 +161,7 @@ export default function Onboarding() {
       },
     });
 
-    push({ name: 'chat' });
+    replace({ name: 'chat' }, 'expand');
   };
 
   const toggle = (list: string[], set: (v: string[]) => void, item: string) =>
@@ -210,14 +210,15 @@ export default function Onboarding() {
         </button>
       </div>
 
-      <AnimatePresence mode="wait">
+      <div className="onb__stage">
+      <AnimatePresence initial={false}>
         <motion.div
           key={step}
           className="onb__body"
-          initial={{ opacity: 0, x: 18 }}
+          initial={{ opacity: 0, x: 24 }}
           animate={{ opacity: 1, x: 0 }}
-          exit={{ opacity: 0, x: -18 }}
-          transition={{ duration: 0.26, ease: [0.22, 1, 0.36, 1] }}
+          exit={{ opacity: 0, x: -16, position: 'absolute', inset: 0 }}
+          transition={{ duration: 0.32, ease: [0.32, 0.72, 0, 1] }}
         >
           {step === 'intro' && (
             <>
@@ -255,6 +256,7 @@ export default function Onboarding() {
             <StepChips
               title="твой бюджет"
               art="/assets/mascot-waving.png"
+              artClass="onb__art--wave"
               label="На какую сумму в месяц обычно рассчитываешь?"
               items={BUDGETS}
               selected={budget ? [budget] : []}
@@ -280,9 +282,9 @@ export default function Onboarding() {
               <div className="onb__title t-headline-24">продукты, которые используешь 24/7</div>
               <div className="onb__art onb__art--head">
                 <span className="onb__art-mascot">
-                  <img src="/assets/mascot-head-glossy.png" alt="" />
+                  <img src="/assets/mascot-head-ai.png" alt="" />
                   <span className="onb__art-tag">
-                    <AiTag width={56} height={35} filled />
+                    <AiTag width={85} height={56} filled />
                   </span>
                 </span>
               </div>
@@ -335,7 +337,7 @@ export default function Onboarding() {
           )}
         </motion.div>
       </AnimatePresence>
-      <HomeIndicator />
+      </div>
     </div>
   );
 }
@@ -343,6 +345,7 @@ export default function Onboarding() {
 function StepChips({
   title,
   art,
+  artClass,
   label,
   items,
   selected,
@@ -351,6 +354,7 @@ function StepChips({
 }: {
   title: string;
   art: string;
+  artClass?: string;
   label: string;
   items: readonly string[];
   selected: string[];
@@ -360,7 +364,7 @@ function StepChips({
   return (
     <>
       <div className="onb__title t-headline-24">{title}</div>
-      <div className="onb__art">
+      <div className={['onb__art', artClass].filter(Boolean).join(' ')}>
         <img src={art} alt="" />
       </div>
       <div className="onb__chips-block">
@@ -430,7 +434,6 @@ function ShadePicker({
           вернуться назад
         </Button>
       </div>
-      <HomeIndicator />
     </div>
   );
 }
@@ -550,7 +553,6 @@ function ProductPicker({
             вернуться назад
           </Button>
         </div>
-        <HomeIndicator />
       </div>
     );
   }

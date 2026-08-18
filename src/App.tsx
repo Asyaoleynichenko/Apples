@@ -7,10 +7,11 @@ import Sheets from './screens/Sheets';
 import { Cart, Favorites, Profile, Search } from './screens/Shop';
 
 const MODAL_ROUTES = new Set(['chat', 'onboarding']);
-const EASE = [0.32, 0.72, 0, 1] as const;
-const PUSH_MS = 0.42;
+/** iOS UIViewAnimationCurve — push/pop and coverVertical. */
+const IOS_EASE = [0.32, 0.72, 0, 1] as const;
+const PUSH_MS = 0.4;
 const TAB_MS = 0.22;
-const MODAL_MS = 0.44;
+const MODAL_MS = 0.42;
 
 type ShopRoute = Exclude<Route, { name: 'chat' } | { name: 'onboarding' }>;
 
@@ -32,31 +33,33 @@ function ShopScreen({ route }: { route: ShopRoute }) {
 
 const shopMotion: Variants = {
   initial: (kind: NavKind) => {
-    if (kind === 'tab') return { opacity: 0 };
-    if (kind === 'back') return { x: '-28%', zIndex: 0 };
-    return { x: '100%', zIndex: 2, boxShadow: '-16px 0 40px rgba(0, 16, 61, 0.18)' };
+    if (kind === 'tab' || kind === 'expand') return { x: 0, opacity: 0 };
+    if (kind === 'back') return { x: '-22%', zIndex: 0 };
+    return { x: '100%', zIndex: 2 };
   },
   animate: (kind: NavKind) => {
-    if (kind === 'tab') return { opacity: 1, x: 0, transition: { duration: TAB_MS, ease: EASE } };
+    if (kind === 'tab' || kind === 'expand') {
+      return { x: 0, opacity: 1, transition: { duration: TAB_MS, ease: IOS_EASE } };
+    }
     return {
       x: 0,
       opacity: 1,
       zIndex: kind === 'back' ? 0 : 1,
-      boxShadow: '0 0 0 rgba(0, 16, 61, 0)',
-      transition: { duration: PUSH_MS, ease: EASE },
+      transition: { duration: PUSH_MS, ease: IOS_EASE },
     };
   },
   exit: (kind: NavKind) => {
-    if (kind === 'tab') return { opacity: 0, transition: { duration: TAB_MS, ease: EASE } };
+    if (kind === 'tab' || kind === 'expand') {
+      return { opacity: 0, transition: { duration: TAB_MS, ease: IOS_EASE } };
+    }
     if (kind === 'back') {
       return {
         x: '100%',
         zIndex: 2,
-        boxShadow: '-16px 0 40px rgba(0, 16, 61, 0.18)',
-        transition: { duration: PUSH_MS, ease: EASE },
+        transition: { duration: PUSH_MS, ease: IOS_EASE },
       };
     }
-    return { x: '-28%', zIndex: 0, transition: { duration: PUSH_MS, ease: EASE } };
+    return { x: '-22%', zIndex: 0, transition: { duration: PUSH_MS, ease: IOS_EASE } };
   },
 };
 
@@ -68,34 +71,57 @@ function Router() {
   // product / cart must actually appear, otherwise "выбрать" from comparison
   // never leaves the assistant.
   const modal = top && MODAL_ROUTES.has(top.name) ? top : undefined;
+  const fromExpand = navKind === 'expand';
 
   return (
     <>
-      <AnimatePresence initial={false} custom={navKind}>
-        <motion.div
-          key={shopKey(shopRoute)}
-          className="route"
-          custom={navKind}
-          variants={shopMotion}
-          initial="initial"
-          animate="animate"
-          exit="exit"
-        >
-          <ShopScreen route={shopRoute} />
-        </motion.div>
-      </AnimatePresence>
+      <motion.div
+        className="shop-stack"
+        animate={
+          modal && !fromExpand
+            ? { scale: 0.94, y: 10, opacity: 0.9 }
+            : { scale: 1, y: 0, opacity: 1 }
+        }
+        transition={{ duration: fromExpand ? 0 : MODAL_MS, ease: IOS_EASE }}
+        style={{ pointerEvents: modal ? 'none' : 'auto' }}
+      >
+        <AnimatePresence initial={false} custom={navKind}>
+          <motion.div
+            key={shopKey(shopRoute)}
+            className="route"
+            custom={navKind}
+            variants={shopMotion}
+            initial="initial"
+            animate="animate"
+            exit="exit"
+          >
+            <ShopScreen route={shopRoute} />
+          </motion.div>
+        </AnimatePresence>
+      </motion.div>
 
-      <AnimatePresence custom={navKind}>
+      <AnimatePresence>
         {modal && (
           <motion.div
-            key={modal.name}
+            key="assistant"
             className="route route--modal"
-            initial={{ y: '100%' }}
+            initial={fromExpand ? { y: 0 } : { y: '100%' }}
             animate={{ y: 0 }}
             exit={{ y: '100%' }}
-            transition={{ duration: MODAL_MS, ease: EASE }}
+            transition={fromExpand ? { duration: 0 } : { duration: MODAL_MS, ease: IOS_EASE }}
           >
-            {modal.name === 'chat' ? <Chat /> : <Onboarding />}
+            <AnimatePresence initial={false}>
+              <motion.div
+                key={modal.name}
+                className="route-fade"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: TAB_MS, ease: IOS_EASE }}
+              >
+                {modal.name === 'chat' ? <Chat /> : <Onboarding />}
+              </motion.div>
+            </AnimatePresence>
           </motion.div>
         )}
       </AnimatePresence>

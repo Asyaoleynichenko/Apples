@@ -159,7 +159,7 @@ export function QuickReplies({
 
 export function SendButton({ onClick, disabled }: { onClick?: () => void; disabled?: boolean }) {
   return (
-    <button className="send press" onClick={onClick} disabled={disabled} aria-label="Отправить">
+    <button className="send fill-send press" onClick={onClick} disabled={disabled} aria-label="Отправить">
       <span className="send__gloss" />
       <SendArrow />
     </button>

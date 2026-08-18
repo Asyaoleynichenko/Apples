@@ -55,10 +55,6 @@ export function IosKeyboard({
           {submitLabel}
         </button>
       </div>
-      <div className="kb__bottom">
-        <span>🌐</span>
-        <span>🎤</span>
-      </div>
     </motion.div>
   );
 }

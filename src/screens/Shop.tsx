@@ -1,5 +1,5 @@
 import { AnimatePresence, motion } from 'framer-motion';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { StatusBar, HomeIndicator } from '../components/Chrome';
 import {
   ChevronLeft,
@@ -23,9 +23,45 @@ import { formatPrice, PRODUCTS } from '../data/products';
 
 /* ------------------------------------------------------------ favorites */
 
+const IDLE_MS = 8000;
+
+function useIdle(enabled: boolean, delay = IDLE_MS) {
+  const [idle, setIdle] = useState(false);
+  useEffect(() => {
+    if (!enabled) {
+      setIdle(false);
+      return;
+    }
+    let timer = 0;
+    const arm = (e?: Event) => {
+      if (e && (e.target as Element | null)?.closest?.('.pcard__nudge')) return;
+      setIdle(false);
+      window.clearTimeout(timer);
+      timer = window.setTimeout(() => setIdle(true), delay);
+    };
+    arm();
+    const opts = { capture: true } as const;
+    window.addEventListener('pointerdown', arm, opts);
+    window.addEventListener('keydown', arm, opts);
+    window.addEventListener('wheel', arm, opts);
+    const scroller = document.querySelector('.shop .shop__scroll');
+    scroller?.addEventListener('scroll', arm, opts);
+    return () => {
+      window.clearTimeout(timer);
+      window.removeEventListener('pointerdown', arm, opts);
+      window.removeEventListener('keydown', arm, opts);
+      window.removeEventListener('wheel', arm, opts);
+      scroller?.removeEventListener('scroll', arm, opts);
+    };
+  }, [enabled, delay]);
+  return idle;
+}
+
 export function Favorites() {
-  const { push, openSheet, setChatContext, favorites } = useStore();
+  const { push, openSheet, setChatContext, favorites, sheet } = useStore();
   const ids = ['frangipani', 'clarins', 'procollagen'];
+  const idle = useIdle(sheet === null);
+  const nudgeId = idle ? ids[1] ?? ids[0] : null;
 
   const openAi = () => {
     setChatContext({ from: 'favorites' });
@@ -35,12 +71,17 @@ export function Favorites() {
   return (
     <div className="screen shop">
       <StatusBar />
-      <div className="shop__scroll scroll">
-        <div className="shop__topbar">
-          <button className="press" onClick={() => push({ name: 'search' })} aria-label="Назад">
-            <ChevronLeft />
+      <div className="shop__topbar shop__topbar--between">
+        <button className="press" onClick={() => push({ name: 'search' })} aria-label="Назад">
+          <ChevronLeft />
+        </button>
+        <div className="shop__topbar-actions">
+          <button className="press" onClick={openAi} aria-label="AI">
+            <AiTag width={32} height={20} />
           </button>
         </div>
+      </div>
+      <div className="shop__scroll scroll">
         <h1 className="shop__h1">избранное</h1>
         <div className="tabs">
           <button className="tabs__item tabs__item--on">
@@ -70,9 +111,6 @@ export function Favorites() {
             <Sliders />
           </button>
           <div className="filters__count t-body-14">{611 + favorites.length} продуктов</div>
-          <button className="filters__ai press" onClick={openAi} aria-label="AI">
-            <AiTag width={32} height={20} />
-          </button>
         </div>
 
         <div className="chips-row hscroll">
@@ -92,15 +130,12 @@ export function Favorites() {
               width={166}
               onOpen={() => push({ name: 'pdp', productId: id })}
               onAdd={() => push({ name: 'pdp', productId: id })}
+              onAskExpert={nudgeId === id ? openAi : undefined}
             />
           ))}
         </div>
         <div className="shop__pad" />
       </div>
-
-      <button className="floating-ai press" onClick={openAi}>
-        <AiBanner variant="expert" />
-      </button>
 
       <div className="promo-bar promo-bar--blue">До −60% на большой летней распродаже</div>
       <TabBar active="favorites" />
@@ -169,10 +204,19 @@ export function Search() {
         </div>
       </div>
 
-      <div className="search-banner" style={{ ['--kb-offset' as string]: kb ? '272px' : '24px' }}>
-        <button className="press" onClick={openAi}>
-          <AiBanner variant="search" />
-        </button>
+      <div
+        className="search-banner press"
+        role="button"
+        tabIndex={0}
+        onClick={openAi}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            openAi();
+          }
+        }}
+      >
+        <AiBanner variant="search" />
       </div>
 
       <AnimatePresence>

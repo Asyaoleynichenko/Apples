@@ -42,6 +42,7 @@ export function ProductCard({
   onOpen,
   onAdd,
   onPick,
+  onAskExpert,
 }: {
   productId: string;
   width?: number;
@@ -53,13 +54,15 @@ export function ProductCard({
   onAdd?: () => void;
   /** Onboarding pick: radio instead of bag, tap selects the card. */
   onPick?: () => void;
+  /** Idle nudge: the expert FAB sits on this card. */
+  onAskExpert?: () => void;
 }) {
   const p = PRODUCTS[productId];
   const { favorites, toggleFavorite } = useStore();
   const liked = favorites.includes(productId);
   return (
     <motion.div
-      className="pcard"
+      className={`pcard${onAskExpert ? ' pcard--nudge' : ''}`}
       style={{ width }}
       initial={{ opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
@@ -93,6 +96,25 @@ export function ProductCard({
           </button>
         )}
       </div>
+      <AnimatePresence>
+        {onAskExpert && (
+          <motion.button
+            type="button"
+            className="pcard__nudge press"
+            aria-label="спросить эксперта"
+            initial={{ opacity: 0, scale: 0.84, y: 16 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.9, y: 8 }}
+            transition={{ duration: 0.38, ease: [0.22, 1, 0.36, 1] }}
+            onClick={(e) => {
+              e.stopPropagation();
+              onAskExpert();
+            }}
+          >
+            <AiBanner variant="expert" />
+          </motion.button>
+        )}
+      </AnimatePresence>
       <div className="pcard__cat">{p.category}</div>
       {onPick && (
         <div className="pcard__rate">
@@ -166,39 +188,54 @@ export function BottomSheet({
 }
 
 /** The mascot banner that opens the assistant, used across entry points. */
-/** The four banner treatments that appear in the file, keyed by where they live. */
-const BANNERS = {
-  search: {
-    copy: ['не знаешь, что выбрать?', 'могу подсказать'],
-    mascot: '/assets/mascot-banner-search.png',
-  },
-  pdp: {
-    copy: ['не знаешь, что выбрать?', 'расскажи, что хочется — я найду подходящие варианты'],
-    mascot: '/assets/mascot-banner-pdp.png',
-  },
-  advice: {
-    copy: ['нужен бьюти совет?', 'давай помогу'],
-    mascot: '/assets/mascot-banner-share.png',
-  },
-} as const;
-
-export function AiBanner({ variant = 'expert' }: { variant?: 'expert' | keyof typeof BANNERS }) {
+export function AiBanner({ variant = 'expert' }: { variant?: 'expert' | 'search' | 'pdp' | 'advice' }) {
   if (variant === 'expert') {
     return (
       <span className="ai-banner ai-banner--expert">
         <img src="/assets/banner-expert-fab.png" alt="" />
+        <span className="ai-banner__pill fill-send">спросить эксперта</span>
       </span>
     );
   }
-  const { copy, mascot } = BANNERS[variant];
-  return (
-    <span className={`ai-banner ai-banner--purple ai-banner--${variant}`}>
-      <span className="ai-banner__copy">
-        {copy.map((line) => (
-          <span key={line}>{line}</span>
-        ))}
+  if (variant === 'pdp') {
+    return (
+      <span className="ai-banner ai-banner--pdp">
+        <span className="ai-banner__inner fill-send">
+          <span className="ai-banner__gloss" />
+          <span className="ai-banner__copy">
+            <b>не знаешь, что выбрать?</b>
+            {'\n'}расскажи, что хочется — я найду подходящие варианты
+          </span>
+        </span>
+        <img className="ai-banner__ill" src="/assets/mascot-banner-pdp.png" alt="" />
       </span>
-      <img className="ai-banner__side" src={mascot} alt="" />
+    );
+  }
+  if (variant === 'search') {
+    return (
+      <span className="ai-banner ai-banner--search">
+        <span className="ai-banner__inner fill-send">
+          <span className="ai-banner__gloss" />
+          <span className="ai-banner__copy">
+            не знаешь, что выбрать?{'\n'}могу подсказать
+          </span>
+        </span>
+        <span className="ai-banner__blob ai-banner__blob--a" />
+        <span className="ai-banner__blob ai-banner__blob--b" />
+        <img className="ai-banner__ill" src="/assets/mascot-banner-search.png" alt="" />
+        <img className="ai-banner__glow" src="/assets/banner-search-glow.png" alt="" />
+      </span>
+    );
+  }
+  return (
+    <span className="ai-banner ai-banner--advice">
+      <span className="ai-banner__inner fill-send">
+        <span className="ai-banner__gloss" />
+        <span className="ai-banner__copy">
+          нужен бьюти совет?{'\n'}давай помогу
+        </span>
+      </span>
+      <img className="ai-banner__ill" src="/assets/mascot-banner-share.png" alt="" />
     </span>
   );
 }
