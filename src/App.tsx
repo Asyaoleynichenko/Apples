@@ -130,20 +130,30 @@ function Router() {
   );
 }
 
+const TELEGRAM = 'https://t.me/pnkprty';
+const FIGMA =
+  'https://www.figma.com/design/QUmYjklBOEq4LUDxWsv8r9/11.08.26-%F0%9F%8D%8F--Copy-?node-id=55-9703';
+
 function Device() {
   const { restart } = useStore();
   useLiveShell();
   return (
     <div className="stage">
+      <button type="button" className="stage-chip stage-chip--restart" onClick={restart}>
+        Начать заново
+      </button>
+      <a className="stage-chip stage-chip--msg" href={TELEGRAM} target="_blank" rel="noopener noreferrer">
+        Написать мне
+      </a>
+      <a className="stage-chip stage-chip--figma" href={FIGMA} target="_blank" rel="noopener noreferrer">
+        Figma
+      </a>
       <div className="device-slot">
         <div className="device">
           <Router />
           <Sheets />
         </div>
       </div>
-      <button className="stage__restart" onClick={restart}>
-        начать демо заново
-      </button>
     </div>
   );
 }

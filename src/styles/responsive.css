@@ -77,7 +77,7 @@ html[data-shell='live'] .device {
   transform: none;
 }
 
-html[data-shell='live'] .stage__restart {
+html[data-shell='live'] .stage-chip {
   display: none;
 }
 

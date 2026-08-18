@@ -65,9 +65,7 @@ await shot('02-intro-sheet');
 
 await tapSel('.sheet--intro .send');
 await wait(600);
-await shot('03-onb-intro');
-await tap('пройду позже', { exact: true, wait: 900 });
-await shot('04-chat-welcome');
+await shot('03-chat-welcome');
 
 await tap('выбери подарок', { exact: true, wait: 1600 });
 await shot('05-chat-gift-budget');

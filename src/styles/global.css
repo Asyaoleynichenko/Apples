@@ -39,11 +39,88 @@ input {
 
 /* Desktop centres a 375×812 phone. On a real phone, responsive.css makes it full-bleed. */
 .stage {
+  position: relative;
   min-height: 100%;
   display: grid;
   place-items: center;
   padding: 24px;
+  overflow: hidden;
   background: #7eb8e8 url('/assets/stage-bg.jpg') center / cover no-repeat;
+}
+
+.stage-chip {
+  --notch: 10px;
+  --tilt: 0deg;
+  position: absolute;
+  z-index: 4;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 52px;
+  padding: 14px 28px;
+  border: 0;
+  background: var(--lime);
+  color: #000;
+  font-family: var(--font-display);
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  text-decoration: none;
+  white-space: nowrap;
+  cursor: pointer;
+  transform: rotate(var(--tilt));
+  transform-origin: center;
+  transition: transform 0.18s var(--ease);
+  -webkit-mask-image:
+    radial-gradient(circle at 50% 0, #0000 var(--notch), #000 calc(var(--notch) + 0.6px)),
+    radial-gradient(circle at 50% 100%, #0000 var(--notch), #000 calc(var(--notch) + 0.6px));
+  -webkit-mask-size: 100% 51%, 100% 51%;
+  -webkit-mask-position: top, bottom;
+  -webkit-mask-repeat: no-repeat;
+  -webkit-mask-composite: source-in;
+  mask-image:
+    radial-gradient(circle at 50% 0, #0000 var(--notch), #000 calc(var(--notch) + 0.6px)),
+    radial-gradient(circle at 50% 100%, #0000 var(--notch), #000 calc(var(--notch) + 0.6px));
+  mask-size: 100% 51%, 100% 51%;
+  mask-position: top, bottom;
+  mask-repeat: no-repeat;
+  mask-composite: intersect;
+  filter: drop-shadow(0 8px 18px rgba(16, 40, 80, 0.16));
+}
+.stage-chip:hover,
+.stage-chip:focus-visible {
+  transform: rotate(var(--tilt)) scale(1.06);
+}
+.stage-chip--restart {
+  top: 14%;
+  left: max(16px, calc(50% - 430px));
+  --tilt: -18deg;
+}
+.stage-chip--msg {
+  top: 12%;
+  right: max(16px, calc(50% - 420px));
+  --tilt: 22deg;
+}
+@media (max-width: 900px) {
+  .stage-chip {
+    font-size: 14px;
+    min-height: 44px;
+    padding: 12px 20px;
+    --notch: 8px;
+  }
+  .stage-chip--restart {
+    left: 12px;
+    top: 8%;
+  }
+  .stage-chip--msg {
+    right: 12px;
+    top: 8%;
+  }
+  .stage-chip--figma {
+    left: 16px;
+    bottom: 10%;
+  }
 }
 
 .device {

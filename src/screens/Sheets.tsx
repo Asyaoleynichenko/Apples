@@ -32,7 +32,7 @@ export default function Sheets() {
 /* --------------------------------------------------- entry point sheet */
 
 function AiIntroSheet() {
-  const { sheet, closeSheet, push, profile } = useStore();
+  const { sheet, closeSheet, push } = useStore();
   const open = sheet?.name === 'ai-intro';
   const [expanding, setExpanding] = useState(false);
   const opened = useRef(false);
@@ -48,12 +48,11 @@ function AiIntroSheet() {
     if (opened.current) return;
     opened.current = true;
     flushSync(() => setExpanding(true));
-    push(profile.metAssistant ? { name: 'chat' } : { name: 'onboarding' }, 'expand');
+    push({ name: 'chat' }, 'expand');
     closeSheet();
   };
 
-  // Unmount as soon as we expand: an opacity-0 sheet at z-index 21
-  // would sit on top of onboarding and swallow «давай» / «пройду позже».
+  // Unmount as soon as we expand so an opacity-0 sheet cannot sit on chat.
   const show = open && !expanding;
 
   return (

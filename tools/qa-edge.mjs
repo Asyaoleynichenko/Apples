@@ -68,13 +68,12 @@ const type = async (t) => {
   await wait(1500);
 };
 
-/** Fast-forward through onboarding into the assistant. */
+/** Open the assistant chat from the intro sheet. */
 async function toChat() {
   await page.goto(`http://localhost:${PORT}/`, { waitUntil: 'networkidle0' });
   await page.evaluate(() => document.fonts.ready);
   await tapSel('.floating-ai');
   await tapSel('.sheet--intro .send', 1000);
-  await tap('пройду позже', { exact: true, wait: 1000 });
 }
 
 console.log('A — assistant refuses to invent an answer');

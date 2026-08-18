@@ -78,9 +78,14 @@ await shot('01-favorites');
 await tapSel('.floating-ai', 'floating AI banner');
 await shot('02-ai-intro-sheet');
 
-// 3 — onboarding
+// 3 — chat (intro sheet expands here, not into onboarding)
 await tapSel('.sheet--intro .send', 'intro send');
 await wait(600);
+await shot('03-chat-from-intro');
+
+await tapSel('.chat-header__close', 'close chat');
+await tapSel('.tabbar__item[aria-label=profile]', 'profile tab');
+await tap('пройти знакомство', { exact: true, wait: 800 });
 await shot('03-onb-intro');
 await tap('давай', { exact: true });
 await shot('04-onb-priorities');

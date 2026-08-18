@@ -74,18 +74,25 @@ export const Catalog = ({ size = 24, color = '#000' }: P) => (
   </svg>
 );
 
-/** Center tab — Золотое Яблоко mark: two mirrored apple lobes. */
+/** Center tab — official Золотое Яблоко mark from the attached brand logo. */
 export const AppleMark = ({ size = 24, color = '#000' }: P) => (
-  <svg width={size} height={size} viewBox="0 0 26 24" fill="none">
-    <path
-      d="M12.2 3.6c-.5 2.1-2.2 3.6-4.2 4.2C5.2 9 3.4 11.6 3.4 14.6c0 3.4 2.6 6.4 6.1 6.8 1.1.1 1.9-.6 2.3-1.6-1.9-1.3-3.2-3.8-3.2-6.6 0-2.4.9-4.5 2.4-6 .3-1.6.7-2.6 1.2-3.6Z"
-      fill={color}
-    />
-    <path
-      d="M13.8 3.6c.5 2.1 2.2 3.6 4.2 4.2 2.8 1.2 4.6 3.8 4.6 6.8 0 3.4-2.6 6.4-6.1 6.8-1.1.1-1.9-.6-2.3-1.6 1.9-1.3 3.2-3.8 3.2-6.6 0-2.4-.9-4.5-2.4-6-.3-1.6-.7-2.6-1.2-3.6Z"
-      fill={color}
-    />
-  </svg>
+  <span
+    className="apple-mark"
+    style={{
+      width: size,
+      height: size,
+      display: 'block',
+      backgroundColor: color,
+      WebkitMaskImage: 'url(/assets/gold-apple-mark.png)',
+      WebkitMaskSize: 'contain',
+      WebkitMaskRepeat: 'no-repeat',
+      WebkitMaskPosition: 'center',
+      maskImage: 'url(/assets/gold-apple-mark.png)',
+      maskSize: 'contain',
+      maskRepeat: 'no-repeat',
+      maskPosition: 'center',
+    }}
+  />
 );
 
 export const Person = ({ size = 24, color = '#000' }: P) => (
