@@ -1014,7 +1014,7 @@
   background: linear-gradient(to top right, transparent 47%, #e4e4e4 47%, #e4e4e4 53%, transparent 53%);
 }
 .pdp__ai {
-  padding: 40px 16px 32px;
+  padding: 16px;
   overflow: visible;
 }
 .pdp__ai > button {

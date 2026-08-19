@@ -114,20 +114,17 @@ input {
   --teg-x: 144px;
   --teg-y: 87px;
   --tilt: -22.5deg;
-  --teg-fs: 36px;
 }
 .stage-chip--msg {
   --teg-x: 1257px;
   --teg-y: 143px;
   --tilt: 20.07deg;
-  --teg-fs: 42px;
 }
 .stage-chip--figma {
   --teg-x: 144px;
   --teg-y: 662px;
   --teg-w: 274.46px;
   --teg-h: 172.52px;
-  --teg-fs: 65.0483px;
   --tilt: -14.51deg;
 }
 

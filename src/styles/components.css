@@ -718,7 +718,7 @@
 .ai-banner--pdp {
   position: relative;
   width: 100%;
-  height: 140px;
+  height: 120px;
   overflow: visible;
   display: block;
 }
@@ -728,9 +728,23 @@
   right: 0;
   top: 14px;
   width: auto;
-  height: 111px;
+  height: auto;
+  padding: 16px 16px 16px 40px;
   overflow: hidden;
   border-radius: 999px;
+}
+.ai-banner--pdp .ai-banner__copy {
+  position: relative;
+  z-index: 1;
+  display: block;
+  margin: 0;
+  width: 226px;
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 20px;
+  color: #fff;
+  white-space: pre-line;
+  text-align: left;
 }
 .ai-banner--pdp .ai-banner__gloss {
   position: absolute;
@@ -742,18 +756,6 @@
   background: linear-gradient(180deg, rgba(255, 255, 255, 0.5) 0%, rgba(255, 255, 255, 0) 100%);
   pointer-events: none;
   z-index: 1;
-}
-.ai-banner--pdp .ai-banner__copy {
-  position: relative;
-  z-index: 1;
-  display: block;
-  margin: 24px 0 0 40px;
-  width: 226px;
-  font-size: 15px;
-  font-weight: 400;
-  line-height: 20px;
-  color: #fff;
-  white-space: pre-line;
 }
 .ai-banner--pdp .ai-banner__copy b {
   font-size: 16px;

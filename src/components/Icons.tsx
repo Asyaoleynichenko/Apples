@@ -197,13 +197,21 @@ export const Scan = ({ size = 24, color = '#000' }: P) => (
 );
 
 /**
- * Outline badge is the Figma export (node 154:22149).
- * Filled lime variant is only used on the mascot, not in the shop chrome.
+ * Ticket badge from Figma AI Icon (154:22148).
+ * Outline uses the inner boolean path + outside stroke (paint-order),
+ * not the Figma mask-expanded SVG — that export blurs when scaled as <img>.
+ * Filled lime variant is only used on the mascot.
  */
 const AI_TAG_PATH =
   'M6.2.95H14.05A2.95 2.95 0 0 1 19.95.95H27.8A5.25 5.25 0 0 1 33.05 6.2' +
   'V14.8A5.25 5.25 0 0 1 27.8 20.05H19.95A2.95 2.95 0 0 1 14.05 20.05H6.2' +
   'A5.25 5.25 0 0 1 .95 14.8V6.2A5.25 5.25 0 0 1 6.2.95Z';
+
+const AI_TAG_OUTLINE =
+  'M13.486 1.205c.344 0 .6.317.6.661 0 1.855 1.504 3.358 3.359 3.358 1.855 0 3.358-1.503 3.358-3.358 0-.344.256-.661.6-.661h8.574a3.359 3.359 0 0 1 3.359 3.359v12.872a3.359 3.359 0 0 1-3.359 3.359h-8.682c-.28 0-.492-.252-.492-.532 0-1.855-1.504-3.36-3.358-3.36-1.855 0-3.36 1.505-3.36 3.36 0 .28-.211.532-.492.532H4.564a3.359 3.359 0 0 1-3.359-3.359V4.564A3.359 3.359 0 0 1 4.564 1.205h8.922Z';
+
+const AI_TAG_LETTERS =
+  'M11.544 15.26 14.184 7.363h1.921l2.607 7.897h-1.524l-.63-1.955h-3.015l-.618 1.955h-1.381Zm3.512-6.693-1.17 3.667h2.33l-1.16-3.667ZM19.961 15.26V7.363h1.48V15.26h-1.48Z';
 
 export const AiTag = ({
   width = 48,
@@ -215,7 +223,7 @@ export const AiTag = ({
   filled?: boolean;
 }) =>
   filled ? (
-    <svg width={width} height={height} viewBox="0 0 34 21" fill="none">
+    <svg width={width} height={height} viewBox="0 0 34 21" fill="none" aria-hidden>
       <path
         d={AI_TAG_PATH}
         fill="var(--ai-green)"
@@ -236,7 +244,25 @@ export const AiTag = ({
       </text>
     </svg>
   ) : (
-    <img src={asset('ai-tag.svg')} width={width} height={height} alt="" draggable={false} />
+    <svg
+      width={width}
+      height={height}
+      viewBox="0 0 35 22"
+      fill="none"
+      aria-hidden
+      overflow="visible"
+      style={{ display: 'block' }}
+    >
+      <path
+        d={AI_TAG_OUTLINE}
+        fill="#fff"
+        stroke="#000"
+        strokeWidth="2.41"
+        strokeLinejoin="round"
+        paintOrder="stroke fill"
+      />
+      <path d={AI_TAG_LETTERS} fill="#000" />
+    </svg>
   );
 
 export const TickOk = ({ size = 16 }: P) => (
