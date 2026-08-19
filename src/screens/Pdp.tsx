@@ -146,20 +146,20 @@ export default function Pdp({ productId }: { productId: string }) {
       <div className="pdp__cta">
         {line ? (
           <div className="pdp__stepper">
-            <button className="press" onClick={() => setQty(productId, line.qty - 1)}>
+            <button type="button" className="press" onClick={() => setQty(productId, line.qty - 1)}>
               −
             </button>
             <span>{line.qty} шт.</span>
-            <button className="press" onClick={() => setQty(productId, line.qty + 1)}>
+            <button type="button" className="press" onClick={() => setQty(productId, line.qty + 1)}>
               +
             </button>
           </div>
         ) : (
-          <button className="pdp__add press" onClick={add}>
-            добавить в корзину
+          <button type="button" className="pdp__add press" onClick={add}>
+            <span>добавить в корзину</span>
           </button>
         )}
-        <button className="pdp__like press" onClick={() => toggleFavorite(productId)} aria-label="В избранное">
+        <button type="button" className="pdp__like press" onClick={() => toggleFavorite(productId)} aria-label="В избранное">
           <Heart color="#fff" filled={liked} />
         </button>
       </div>

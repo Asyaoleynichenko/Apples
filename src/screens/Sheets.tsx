@@ -111,7 +111,6 @@ function AiIntroSheet() {
             </div>
             <div className="bottom-container" onPointerDown={(e) => e.stopPropagation()}>
               <ChatInput onSend={openAssistant} onActivate={openAssistant} />
-              <HomeIndicator />
             </div>
           </motion.div>
       )}

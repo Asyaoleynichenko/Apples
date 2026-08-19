@@ -8,6 +8,10 @@
   --screen-w: 375px;
   --screen-h: 812px;
   --screen-radius: 56px;
+  /* Outer iPhone chrome: 0 0 0 15px on .device (2px black + 14px white). */
+  --bezel: 15px;
+  /* Home-indicator offset in Figma chat (pill at y=798 on 812). Shop tab bar uses the same inset. */
+  --screen-pad-bottom: 22px;
 
   /* Surfaces */
   --app-bg: #eaebed;

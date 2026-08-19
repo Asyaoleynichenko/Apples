@@ -31,8 +31,9 @@ export function StatusBar({ dark = false }: { dark?: boolean }) {
   );
 }
 
+/** Safe-area spacer under the screen. The pill is hidden; the 34px inset stays so bars are not clipped by the iPhone radius. */
 export function HomeIndicator() {
-  return null;
+  return <div className="home-indicator" aria-hidden />;
 }
 
 /** Chat header: 52px, back at the left, centred title, close at the right. */

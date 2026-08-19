@@ -10,6 +10,7 @@ body,
 #root {
   height: 100%;
   margin: 0;
+  overflow: hidden;
 }
 
 body {
@@ -40,89 +41,90 @@ input {
 /* Desktop centres a 375×812 phone. On a real phone, responsive.css makes it full-bleed. */
 .stage {
   position: relative;
+  height: 100%;
   min-height: 100%;
+  box-sizing: border-box;
+  container-type: size;
   display: grid;
   place-items: center;
-  padding: 24px;
+  padding: 0;
   overflow: hidden;
   background: #7eb8e8 center / cover no-repeat;
 }
 
+/* Figma Teg: lime subtract + two circular holes. Each sticker has its own instance size. */
 .stage-chip {
-  --notch: 10px;
   --tilt: 0deg;
+  --teg-w: 331.91px;
+  --teg-h: 208.63px;
+  --teg-fs: 36px;
   position: absolute;
   z-index: 4;
-  display: inline-flex;
+  box-sizing: border-box;
+  display: flex;
   align-items: center;
   justify-content: center;
-  height: 48px;
-  padding: 0 28px;
+  margin: 0;
   border: 0;
-  border-radius: 6px;
-  background: var(--lime);
+  padding: 0;
+  background: none;
   color: #000;
   font-family: var(--font-display);
-  font-size: 16px;
   font-weight: 500;
-  line-height: 1;
-  letter-spacing: -0.02em;
+  letter-spacing: 0;
+  text-align: center;
   text-decoration: none;
   white-space: nowrap;
   cursor: pointer;
+  left: calc(var(--figma-left, 0px) + var(--teg-x) * var(--stage-s, 1));
+  top: calc(var(--figma-top, 0px) + var(--teg-y) * var(--stage-s, 1));
+  width: calc(var(--teg-w) * var(--stage-s, 1));
+  height: calc(var(--teg-h) * var(--stage-s, 1));
+  font-size: calc(var(--teg-fs) * var(--stage-s, 1));
+  line-height: 1;
   transform: rotate(var(--tilt));
   transform-origin: center;
   transition: transform 0.18s var(--ease);
-  /* One punch-hole on the bottom edge, like a paper ticket. */
-  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' preserveAspectRatio='none' viewBox='0 0 200 48'%3E%3Cpath fill='%23000' d='M6 0h188a6 6 0 0 1 6 6v36a6 6 0 0 1-6 6h-84a10 10 0 0 1-20 0H6a6 6 0 0 1-6-6V6a6 6 0 0 1 6-6z'/%3E%3C/svg%3E");
-  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' preserveAspectRatio='none' viewBox='0 0 200 48'%3E%3Cpath fill='%23000' d='M6 0h188a6 6 0 0 1 6 6v36a6 6 0 0 1-6 6h-84a10 10 0 0 1-20 0H6a6 6 0 0 1-6-6V6a6 6 0 0 1 6-6z'/%3E%3C/svg%3E");
-  -webkit-mask-size: 100% 100%;
-  mask-size: 100% 100%;
-  -webkit-mask-repeat: no-repeat;
-  mask-repeat: no-repeat;
   filter: drop-shadow(0 8px 18px rgba(16, 40, 80, 0.16));
+}
+.stage-chip__shape {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: fill;
+  pointer-events: none;
+}
+.stage-chip__label {
+  position: relative;
+  z-index: 1;
+  display: block;
+  line-height: 1;
 }
 .stage-chip:hover,
 .stage-chip:focus-visible {
   transform: rotate(var(--tilt)) scale(1.05);
 }
 .stage-chip--restart {
-  top: 14%;
-  left: max(16px, calc(50% - 430px));
-  --tilt: -18deg;
+  --teg-x: 144px;
+  --teg-y: 87px;
+  --tilt: -22.5deg;
+  --teg-fs: 36px;
 }
 .stage-chip--msg {
-  top: 12%;
-  right: max(16px, calc(50% - 420px));
-  --tilt: 18deg;
+  --teg-x: 1257px;
+  --teg-y: 143px;
+  --tilt: 20.07deg;
+  --teg-fs: 42px;
 }
 .stage-chip--figma {
-  bottom: 16%;
-  left: max(20px, calc(50% - 400px));
-  --tilt: 8deg;
-  min-width: 112px;
-  /* Notch on the top edge. */
-  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' preserveAspectRatio='none' viewBox='0 0 200 48'%3E%3Cpath fill='%23000' d='M6 0h84a10 10 0 0 1 20 0h84a6 6 0 0 1 6 6v36a6 6 0 0 1-6 6H6a6 6 0 0 1-6-6V6a6 6 0 0 1 6-6z'/%3E%3C/svg%3E");
-  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' preserveAspectRatio='none' viewBox='0 0 200 48'%3E%3Cpath fill='%23000' d='M6 0h84a10 10 0 0 1 20 0h84a6 6 0 0 1 6 6v36a6 6 0 0 1-6 6H6a6 6 0 0 1-6-6V6a6 6 0 0 1 6-6z'/%3E%3C/svg%3E");
-}
-@media (max-width: 900px) {
-  .stage-chip {
-    font-size: 14px;
-    height: 42px;
-    padding: 0 20px;
-  }
-  .stage-chip--restart {
-    left: 12px;
-    top: 8%;
-  }
-  .stage-chip--msg {
-    right: 12px;
-    top: 8%;
-  }
-  .stage-chip--figma {
-    left: 16px;
-    bottom: 10%;
-  }
+  --teg-x: 144px;
+  --teg-y: 662px;
+  --teg-w: 274.46px;
+  --teg-h: 172.52px;
+  --teg-fs: 65.0483px;
+  --tilt: -14.51deg;
 }
 
 .device {
@@ -131,8 +133,12 @@ input {
   height: var(--screen-h);
   border-radius: var(--screen-radius);
   overflow: hidden;
-  background: var(--app-bg);
-  box-shadow: 0 24px 70px rgba(0, 16, 61, 0.22);
+  background: var(--surface);
+  box-shadow:
+    0 0 0 2px #1c1c1e,
+    0 0 0 14px #ffffff,
+    0 0 0 15px rgba(0, 0, 0, 0.16),
+    0 28px 80px rgba(0, 16, 61, 0.28);
   isolation: isolate;
 }
 

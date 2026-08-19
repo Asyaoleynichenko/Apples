@@ -1,6 +1,6 @@
 import { AnimatePresence, motion } from 'framer-motion';
 import { useEffect, useRef } from 'react';
-import { StatusBar, HomeIndicator, ChatHeader } from '../components/Chrome';
+import { StatusBar, ChatHeader } from '../components/Chrome';
 import { AiBubble, ChatInput, QuickReplies, TypingBubble, UserBubble, Pill } from '../components/Chat';
 import { ProductCard } from '../components/UI';
 import {
@@ -207,7 +207,6 @@ export default function Chat() {
       <div className="bottom-container">
         {started && <QuickReplies replies={quickReplies} onPick={onQuickReply} />}
         <ChatInput onSend={send} />
-        <HomeIndicator />
       </div>
     </div>
   );

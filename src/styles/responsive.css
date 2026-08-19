@@ -28,17 +28,37 @@ a,
 
 .device-slot {
   position: relative;
+  z-index: 3;
+  box-sizing: content-box;
+  /* Screen size after scale; padding keeps the white bezel inside the slot. */
   width: calc(var(--screen-w) * var(--frame-fit, 1));
   height: calc(var(--screen-h) * var(--frame-fit, 1));
+  padding: calc(var(--bezel) * var(--frame-fit, 1));
 }
 
 .stage {
-  --frame-fit: min(1, (100dvw - 48px) / 375, (100dvh - 88px) / 812);
+  /* Figma 1725×996: phone + tickets share one scale and fill the viewport. */
+  --stage-s: min((100svw - 24px) / 1725px, (100svh - 24px) / 996px);
+  --figma-left: calc((100svw - 1725px * var(--stage-s)) / 2);
+  --figma-top: calc((100svh - 996px * var(--stage-s)) / 2);
+  --frame-fit: var(--stage-s);
+}
+
+@supports (container-type: size) {
+  .stage {
+    --stage-s: min((100cqw - 24px) / 1725px, (100cqh - 24px) / 996px);
+    --figma-left: calc((100cqw - 1725px * var(--stage-s)) / 2);
+    --figma-top: calc((100cqh - 996px * var(--stage-s)) / 2);
+    --frame-fit: var(--stage-s);
+  }
 }
 
 .device {
   transform: scale(var(--frame-fit, 1));
   transform-origin: top left;
+  /* Scale does not shrink layout; collapse the leftover so the stage does not clip the tab bar. */
+  margin-right: calc(var(--screen-w) * (var(--frame-fit, 1) - 1));
+  margin-bottom: calc(var(--screen-h) * (var(--frame-fit, 1) - 1));
 }
 
 /* ------------------------------------------------------------ live phone */
@@ -72,10 +92,13 @@ html[data-shell='live'] .stage {
 html[data-shell='live'] .device-slot,
 html[data-shell='live'] .device {
   position: relative;
+  box-sizing: border-box;
   width: 100%;
   height: 100%;
   min-height: 100%;
   max-width: none;
+  padding: 0;
+  margin: 0;
   border-radius: 0;
   box-shadow: none;
   overflow: hidden;
@@ -102,6 +125,10 @@ html[data-shell='live'] .home-indicator {
   display: none;
 }
 
+html[data-shell='live'] .onb .button-group {
+  padding-bottom: max(32px, env(safe-area-inset-bottom, 32px));
+}
+
 html[data-shell='live'] .tabbar {
   flex: 0 0 auto;
   height: auto;
@@ -110,7 +137,7 @@ html[data-shell='live'] .tabbar {
 }
 
 html[data-shell='live'] .bottom-container {
-  padding-bottom: env(safe-area-inset-bottom, 0px);
+  padding-bottom: max(14px, env(safe-area-inset-bottom, 14px));
 }
 
 html[data-shell='live'] .sheet {
@@ -131,11 +158,11 @@ html[data-shell='live'] .cart__footer {
 }
 
 html[data-shell='live'] .shade__actions {
-  padding-bottom: calc(16px + env(safe-area-inset-bottom, 0px));
+  padding: 32px 24px max(32px, env(safe-area-inset-bottom, 32px));
 }
 
 html[data-shell='live'] .floating-ai {
-  bottom: calc(88px + env(safe-area-inset-bottom, 0px));
+  bottom: calc(56px + 32px + 8px + env(safe-area-inset-bottom, 0px));
 }
 
 html[data-shell='live'] .search-banner {

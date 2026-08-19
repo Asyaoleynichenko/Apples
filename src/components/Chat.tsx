@@ -167,7 +167,7 @@ export function SendButton({ onClick, disabled }: { onClick?: () => void; disabl
   );
 }
 
-/** Input + disclaimer + home indicator, the block pinned to every chat screen. */
+/** Input + disclaimer. Bottom inset lives on `.bottom-container`. */
 export function ChatInput({
   onSend,
   onActivate,
