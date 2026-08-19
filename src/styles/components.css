@@ -517,7 +517,7 @@
   bottom: 0;
   max-height: 88%;
   background: var(--surface);
-  border-radius: 20px 20px 0 0;
+  border-radius: 0;
   z-index: 21;
   display: flex;
   flex-direction: column;
@@ -583,6 +583,9 @@
 .ai-banner {
   position: relative;
   display: block;
+}
+.ai-banner__copy {
+  text-align: left;
 }
 .ai-banner--expert {
   width: 161px;

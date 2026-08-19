@@ -13,7 +13,7 @@
     <meta name="format-detection" content="telephone=no" />
     <script>
       (function () {
-        var live = window.matchMedia('(hover: none) and (pointer: coarse), (max-width: 480px)').matches;
+        var live = window.matchMedia('(hover: none) and (pointer: coarse), (max-width: 768px)').matches;
         var root = document.documentElement;
         root.dataset.shell = live ? 'live' : 'frame';
         if (!live) return;

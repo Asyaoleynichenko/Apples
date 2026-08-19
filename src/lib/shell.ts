@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-const LIVE_QUERY = '(hover: none) and (pointer: coarse), (max-width: 480px)';
+const LIVE_QUERY = '(hover: none) and (pointer: coarse), (max-width: 768px)';
 
 export function isLiveShell() {
   return typeof window !== 'undefined' && window.matchMedia(LIVE_QUERY).matches;

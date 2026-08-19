@@ -242,4 +242,115 @@ html[data-shell='live'] .input-wrap__field {
     transform: scale(0.86);
     transform-origin: top center;
   }
+
+  html[data-shell='live'] .shop__h1 {
+    font-size: 28px;
+    line-height: 32px;
+    margin: 4px 0 8px;
+  }
+
+  html[data-shell='live'] .floating-ai {
+    transform: scale(0.84);
+    transform-origin: bottom right;
+  }
+}
+
+/* Narrow desktop window: the 1725 stage cannot fit the tickets. */
+@media (max-width: 1100px) {
+  html[data-shell='frame'] .stage-chip {
+    display: none;
+  }
+}
+
+/*
+ * Live internals: fill the real viewport. Keep Figma 16px gutters and 8px catalog
+ * gap; never leave a 375px-wide column on a 430px phone or an iPad.
+ */
+html[data-shell='live'] .screen,
+html[data-shell='live'] .shop-stack,
+html[data-shell='live'] .route,
+html[data-shell='live'] .onb__body,
+html[data-shell='live'] .chat-scroll,
+html[data-shell='live'] .shop__scroll,
+html[data-shell='live'] .pdp__scroll {
+  width: 100%;
+  min-width: 0;
+}
+
+html[data-shell='live'] .pdp__title,
+html[data-shell='live'] .pdp__brand,
+html[data-shell='live'] .cart-line,
+html[data-shell='live'] .cart-line__name,
+html[data-shell='live'] .pcard,
+html[data-shell='live'] .shop__h1 {
+  min-width: 0;
+  overflow-wrap: break-word;
+}
+
+html[data-shell='live'] .welcome__texts {
+  max-width: min(480px, 100%);
+}
+
+html[data-shell='live'] .pdp__cta {
+  width: 100%;
+}
+
+html[data-shell='live'] .pdp__add,
+html[data-shell='live'] .pdp__stepper {
+  min-width: 0;
+}
+
+html[data-shell='live'] .pdp__media img {
+  width: 100%;
+  height: auto;
+}
+
+html[data-shell='live'] .grid {
+  width: 100%;
+}
+
+html[data-shell='live'] .filters,
+html[data-shell='live'] .chips-row,
+html[data-shell='live'] .tabs {
+  max-width: 100%;
+}
+
+html[data-shell='live'] .ai-banner--search,
+html[data-shell='live'] .ai-banner--pdp,
+html[data-shell='live'] .ai-banner--advice {
+  width: 100%;
+}
+
+html[data-shell='live'] .sheet {
+  width: auto;
+}
+
+html[data-shell='live'] .btn {
+  max-width: 100%;
+}
+
+html[data-shell='live'] .onb__chips {
+  max-width: 100%;
+}
+
+@media (min-width: 720px) {
+  html[data-shell='live'] .chat {
+    width: min(560px, 100%);
+    margin-inline: auto;
+  }
+
+  html[data-shell='live'] .bottom-container {
+    width: min(560px, 100%);
+    margin-inline: auto;
+  }
+
+  html[data-shell='live'] .onb__body {
+    width: min(480px, 100%);
+    margin-inline: auto;
+  }
+
+  html[data-shell='live'] .pdp__media {
+    max-width: 480px;
+    margin-inline: auto;
+  }
 }

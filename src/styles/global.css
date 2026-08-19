@@ -61,9 +61,8 @@ input {
   position: absolute;
   z-index: 4;
   box-sizing: border-box;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  display: grid;
+  place-items: center;
   margin: 0;
   border: 0;
   padding: 0;
@@ -83,7 +82,7 @@ input {
   font-size: calc(var(--teg-fs) * var(--stage-s, 1));
   line-height: 1;
   transform: rotate(var(--tilt));
-  transform-origin: center;
+  transform-origin: center center;
   transition: transform 0.18s var(--ease);
   filter: drop-shadow(0 8px 18px rgba(16, 40, 80, 0.16));
 }
@@ -97,10 +96,15 @@ input {
   pointer-events: none;
 }
 .stage-chip__label {
-  position: relative;
+  position: absolute;
+  inset: 0;
   z-index: 1;
-  display: block;
+  display: grid;
+  place-items: center;
+  margin: 0;
+  padding: 0;
   line-height: 1;
+  transform: none;
 }
 .stage-chip:hover,
 .stage-chip:focus-visible {
