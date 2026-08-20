@@ -42,11 +42,13 @@ a,
 }
 
 .stage {
-  /* Figma 1725×996: phone + tickets share one scale and fill the viewport. */
+  /* Figma 1725×996: tickets share this scale. The phone uses --frame-fit so it
+     does not shrink with the artboard on medium desktop widths. */
   --stage-s: min((100svw - 24px) / 1725px, (100svh - 24px) / 996px);
   --figma-left: calc((100svw - 1725px * var(--stage-s)) / 2);
   --figma-top: calc((100svh - 996px * var(--stage-s)) / 2);
-  --frame-fit: var(--stage-s);
+  --phone-fit: min(1, (100svw - 24px) / 405px, (100svh - 24px) / 842px);
+  --frame-fit: max(var(--stage-s), var(--phone-fit));
 }
 
 @supports (container-type: size) {
@@ -54,7 +56,8 @@ a,
     --stage-s: min((100cqw - 24px) / 1725px, (100cqh - 24px) / 996px);
     --figma-left: calc((100cqw - 1725px * var(--stage-s)) / 2);
     --figma-top: calc((100cqh - 996px * var(--stage-s)) / 2);
-    --frame-fit: var(--stage-s);
+    --phone-fit: min(1, (100cqw - 24px) / 405px, (100cqh - 24px) / 842px);
+    --frame-fit: max(var(--stage-s), var(--phone-fit));
   }
 }
 
@@ -192,7 +195,8 @@ html[data-shell='live'] .toast {
 }
 
 /* Narrow desktop window: the 1725 stage cannot fit the tickets. */
-@media (max-width: 1100px) {
+/* Tickets only when the 1725 stage actually fits; otherwise they sit off the phone. */
+@media (max-width: 1500px) {
   html[data-shell='frame'] .stage-chip {
     display: none;
   }
