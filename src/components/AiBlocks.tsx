@@ -30,7 +30,7 @@ export function ChecksBlock({ title, items }: { title: string; items: CheckItem[
         {items.map((it) => (
           <li key={it.text} className="t-body-14">
             {it.ok ? <TickOk /> : <TickWarn />}
-            {it.text}
+            <span>{it.text}</span>
           </li>
         ))}
       </ul>
@@ -62,7 +62,7 @@ export function EvidenceBlock({ productId }: { productId: string }) {
           {Array.from(new Set(prefs)).map((x) => (
             <li key={x} className="t-body-14">
               <TickOk />
-              {x}
+              <span>{x}</span>
             </li>
           ))}
         </ul>
@@ -86,12 +86,12 @@ export function EvidenceBlock({ productId }: { productId: string }) {
 
       <div className="aicard__section">
         <div className="aicard__title t-caption-12">покупатели чаще отмечают</div>
-        {p.pros.map((x) => (
+          {p.pros.map((x) => (
           <div key={x} className="aicard__sign t-body-14">
             <span className="aicard__icon">
               <PlusBadge />
             </span>
-            {x}
+            <span>{x}</span>
           </div>
         ))}
         {p.cons.map((x) => (
@@ -99,7 +99,7 @@ export function EvidenceBlock({ productId }: { productId: string }) {
             <span className="aicard__icon">
               <MinusBadge />
             </span>
-            {x}
+            <span>{x}</span>
           </div>
         ))}
       </div>
@@ -128,7 +128,7 @@ export function ReviewsBlock({ productId }: { productId: string }) {
             <span className="aicard__icon">
               <PlusBadge />
             </span>
-            {x}
+            <span>{x}</span>
           </div>
         ))}
       </div>
@@ -140,7 +140,7 @@ export function ReviewsBlock({ productId }: { productId: string }) {
               <span className="aicard__icon">
                 <MinusBadge />
               </span>
-              {x}
+              <span>{x}</span>
             </div>
           ))
         ) : (

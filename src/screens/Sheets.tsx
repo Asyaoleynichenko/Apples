@@ -227,7 +227,7 @@ function WhySheet() {
                   <span className="aicard__icon">
                     <PlusBadge />
                   </span>
-                  {x}
+                  <span>{x}</span>
                 </div>
               ))}
               {p.cons.map((x) => (
@@ -235,7 +235,7 @@ function WhySheet() {
                   <span className="aicard__icon">
                     <MinusBadge />
                   </span>
-                  {x}
+                  <span>{x}</span>
                 </div>
               ))}
             </div>

@@ -342,17 +342,25 @@ html[data-shell='live'] .aicard--flush {
 }
 
 html[data-shell='live'] .aicard .t-body-14,
-html[data-shell='live'] .aicard .why__list li,
-html[data-shell='live'] .aicard__sign,
+html[data-shell='live'] .aicard__muted,
 html[data-shell='live'] .source__detail,
 html[data-shell='live'] .sources__lead {
   max-width: min(42ch, 100%);
 }
 
-html[data-shell='live'] .aicard__icon {
+html[data-shell='live'] .aicard__sign,
+html[data-shell='live'] .aicard .why__list li {
+  max-width: none;
+  width: 100%;
+  gap: 12px;
+}
+
+html[data-shell='live'] .aicard__icon,
+html[data-shell='live'] .aicard .why__list li > svg {
+  flex: 0 0 24px;
   width: 24px;
   height: 24px;
-  flex-basis: 24px;
+  flex-shrink: 0;
 }
 
 html[data-shell='live'] .aicard__rating,

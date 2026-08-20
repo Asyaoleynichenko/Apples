@@ -1691,6 +1691,10 @@
   gap: 12px;
   align-items: flex-start;
 }
+.why__list li > span {
+  min-width: 0;
+  flex: 1 1 auto;
+}
 .why__list li > svg,
 .why__icon {
   flex: 0 0 24px;
@@ -1734,12 +1738,16 @@
   padding-left: 0;
   padding-right: 0;
   padding-bottom: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.why__profile .why__kicker,
+.why__caveats .why__kicker {
+  margin-bottom: 0;
 }
 .why__caveat {
   color: var(--text-secondary);
-}
-.why__caveat + .why__caveat {
-  margin-top: 8px;
 }
 .why__profile .aicard__sign {
   max-width: none;
