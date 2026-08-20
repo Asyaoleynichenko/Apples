@@ -25,7 +25,7 @@ const PRIORITIES = [
 
 const BUDGETS = ['до 2 000 ₽', '2 000–5 000 ₽', '5 000–10 000 ₽', 'больше 10 000 ₽', 'зависит от продукта', 'любая сумма'];
 
-const DISLIKES = ['Сильные отдушки', 'бренды', 'Плотные текстуры', 'высокая цена', 'Определённые ингредиенты'];
+const DISLIKES = ['сильные отдушки', 'бренды', 'плотные текстуры', 'высокая цена', 'определённые ингредиенты'];
 
 const ROUTINE_FIELDS = [
   { key: 'foundation', label: 'тональная основа', placeholder: 'выбери бренд и оттенок' },
@@ -247,7 +247,7 @@ export default function Onboarding() {
             <StepChips
               title={'что для тебя важно\nпри выборе косметики?'}
               art={asset('mascot-eyes-closed.png')}
-              label="Можно выбрать несколько"
+              label="можно выбрать несколько"
               items={PRIORITIES}
               selected={priorities}
               onToggle={(i) => toggle(priorities, setPriorities, i)}
@@ -271,7 +271,7 @@ export default function Onboarding() {
             <StepChips
               title="что точно не твоё"
               art={asset('mascot-arms-open.png')}
-              label={'А есть что тебе точно не\u00a0нравится?\nМожно выбрать несколько'}
+              label={'что тебе точно не\u00a0нравится?'}
               items={DISLIKES}
               selected={dislikes}
               onToggle={(i) => toggle(dislikes, setDislikes, i)}

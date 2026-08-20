@@ -152,6 +152,7 @@
 }
 .onb__chips-block .t-title-17 {
   white-space: pre-line;
+  text-transform: lowercase;
 }
 .onb__chips {
   display: flex;
@@ -361,10 +362,11 @@
   height: 120px;
   background: var(--pill);
   border-radius: 16px;
-  padding: 12px;
+  padding: 12px 12px 16px;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: flex-start;
+  gap: 8px;
   text-align: left;
   overflow: visible;
   isolation: isolate;

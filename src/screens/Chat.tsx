@@ -34,7 +34,7 @@ const STARTERS = [
 const CAPABILITIES = [
   { title: 'подбери\nполезное', icon: <Sparkle />, action: 'q:buy', tag: true },
   { title: 'нужен\nсовет', icon: <Bulb />, action: 'routine' },
-  { title: 'как\nпользоваться', icon: <Doc />, action: 'content' },
+  { title: 'применение', icon: <Doc />, action: 'content' },
   { title: 'создай\nподборку', icon: <Layers />, action: 'popular' },
 ] as const;
 

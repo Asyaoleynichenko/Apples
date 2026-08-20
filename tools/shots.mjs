@@ -97,7 +97,7 @@ await shot('06-onb-budget');
 await tap('2 000–5 000 ₽', { exact: true });
 await tap('далее', { exact: true });
 await shot('07-onb-dislikes');
-await tap('Плотные текстуры', { exact: true });
+await tap('плотные текстуры', { exact: true });
 await tap('далее', { exact: true });
 await shot('08-onb-routine');
 await tapSel('.onb__input', 'foundation field');
