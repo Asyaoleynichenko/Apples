@@ -4,8 +4,14 @@
   position: relative;
   flex: 0 0 44px;
   height: 44px;
-  background: transparent;
   z-index: 8;
+}
+.statusbar--light {
+  background: #fff;
+}
+.statusbar--dark,
+.statusbar--clear {
+  background: transparent;
 }
 .statusbar__time {
   position: absolute;
@@ -50,10 +56,22 @@
 .screen.chat {
   --chat-header-top: 44px;
 }
-.screen.chat .statusbar {
-  background: none;
-  background-color: transparent;
+.screen.chat .statusbar--light {
+  background: #fff;
   box-shadow: none;
+}
+.screen.chat .statusbar--clear {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  flex: none;
+  background: transparent;
+  box-shadow: none;
+  pointer-events: none;
+}
+.screen.chat:not(.chat--started) .chat-scroll {
+  padding-top: 20px;
 }
 .screen.chat .chat-header {
   position: absolute;
@@ -92,7 +110,7 @@
   z-index: -1;
 }
 .screen.chat.chat--started {
-  --chat-fade: 40px;
+  --chat-fade: 24px;
 }
 .screen.chat.chat--started .chat-scroll {
   padding-top: 64px;
@@ -220,7 +238,6 @@
   overflow: visible;
   pointer-events: none;
 }
-/* Blur the chat as it slides under — mask keeps the top edge from a hard frost. */
 .screen.chat.chat--started .bottom-container::before {
   content: '';
   position: absolute;
@@ -228,20 +245,22 @@
   z-index: 0;
   pointer-events: none;
   background: none;
-  -webkit-backdrop-filter: blur(15px);
-  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
   -webkit-mask-image: linear-gradient(
     180deg,
     transparent 0,
-    rgba(0, 0, 0, 0.35) 16px,
-    #000 40px,
+    transparent 16px,
+    rgba(0, 0, 0, 0.15) 20px,
+    #000 24px,
     #000 100%
   );
   mask-image: linear-gradient(
     180deg,
     transparent 0,
-    rgba(0, 0, 0, 0.35) 16px,
-    #000 40px,
+    transparent 16px,
+    rgba(0, 0, 0, 0.15) 20px,
+    #000 24px,
     #000 100%
   );
 }
@@ -254,8 +273,9 @@
   background: linear-gradient(
     180deg,
     rgba(255, 255, 255, 0) 0,
-    rgba(255, 255, 255, 0.8) 22px,
-    #fff 40px,
+    rgba(255, 255, 255, 0) 16px,
+    rgba(255, 255, 255, 0.12) 20px,
+    #fff 24px,
     #fff 100%
   );
 }

@@ -158,8 +158,8 @@ html[data-shell='live'] .screen.chat.chat--started .bottom-container {
 }
 html[data-shell='live'] .screen.chat.chat--started .bottom-container::before {
   background: none;
-  -webkit-backdrop-filter: blur(15px);
-  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
 }
 
 html[data-shell='live'] .sheet {
@@ -332,11 +332,12 @@ html[data-shell='live'] .welcome__starters {
 
 html[data-shell='live'] .welcome__starter-row {
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   width: 100%;
   min-width: 0;
   max-width: 100%;
-  overflow: visible;
+  overflow-x: auto;
+  overflow-y: hidden;
 }
 
 html[data-shell='live'] .welcome__starter-row .pill {
@@ -826,8 +827,7 @@ html[data-shell='live'] .intro__art {
   }
 
   html[data-shell='live'] .welcome__hero .welcome__mascot {
-    transform: scale(0.86);
-    transform-origin: top center;
+    transform: none;
   }
 
   html[data-shell='live'] .shop__h1 {

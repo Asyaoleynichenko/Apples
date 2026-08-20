@@ -2,11 +2,17 @@ import { Close } from './Icons';
 import { noOrphan } from '../lib/copy';
 import type { ReactNode } from 'react';
 
-/** iPhone X status bar, 44px, exactly as drawn in the Figma component. */
-export function StatusBar({ dark = false }: { dark?: boolean }) {
-  const fg = dark ? '#fff' : '#000';
+/** iPhone status bar.
+ *  light — white plate, black icons (idle welcome)
+ *  clear — no fill, black icons (conversation already going)
+ *  dark  — no fill, white icons (colored screens)
+ */
+export function StatusBar({ tone = 'light' }: { tone?: 'light' | 'clear' | 'dark' }) {
+  const fg = tone === 'dark' ? '#fff' : '#000';
+  const toneClass =
+    tone === 'clear' ? 'statusbar--clear' : tone === 'dark' ? 'statusbar--dark' : 'statusbar--light';
   return (
-    <div className="statusbar">
+    <div className={`statusbar ${toneClass}`}>
       <div className="statusbar__time" style={{ color: fg }}>
         9:41
       </div>

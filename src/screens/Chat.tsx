@@ -81,7 +81,8 @@ export default function Chat() {
 
   useEffect(() => {
     const el = scrollRef.current;
-    if (el) el.scrollTo({ top: el.scrollHeight, behavior: 'smooth' });
+    if (!el || chat.length === 0) return;
+    el.scrollTo({ top: el.scrollHeight, behavior: 'smooth' });
   }, [chat, quickReplies]);
 
   const onQuickReply = (r: QuickReply) => run(r.action, r.value);
@@ -98,7 +99,7 @@ export default function Chat() {
   return (
     <LayoutGroup>
     <div className={started ? 'screen chat chat--started' : 'screen chat'}>
-      <StatusBar />
+      <StatusBar tone={started ? 'light' : 'clear'} />
       <ChatHeader
         center={started ? <ChatMascot compact /> : undefined}
         onClose={back}
@@ -126,7 +127,7 @@ export default function Chat() {
           <div className="welcome-dock">
             <div className="welcome__section">
               <div className="t-title-17 welcome__section-title">{noOrphan('С чего начнём?')}</div>
-              <div className="welcome__starter-row">
+              <div className="welcome__starter-row hscroll">
                 {starters.map(([label, action]) => (
                   <Pill key={label} label={label} onClick={() => start(action)} />
                 ))}
