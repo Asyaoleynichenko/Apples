@@ -318,8 +318,7 @@ function CompareSheet() {
   const ids = sheet?.name === 'compare' ? sheet.productIds : [];
   const [a, b] = ids.map((id) => PRODUCTS[id]);
   const budget = conversation.slots.budgetMax ?? profile.budgetMax;
-  const { winnerId, text } = compareVerdict(ids, conversation, profile);
-  const winner = winnerId ? PRODUCTS[winnerId] : a;
+  const { text } = compareVerdict(ids, conversation, profile);
   const flacon = flaconForProducts(ids, 2);
 
   const openProduct = (id: string) => push({ name: 'pdp', productId: id });
@@ -357,11 +356,11 @@ function CompareSheet() {
       onClose={closeSheet}
       title="сравнение"
       footer={
-        winner ? (
+        a && b ? (
           <>
-            <Button onClick={() => buy(winner.id)}>в корзину · {winner.brand}</Button>
-            <Button variant="ghost" onClick={() => openProduct(winner.id)}>
-              выбрать {winner.brand}
+            <Button onClick={() => buy(a.id)}>в корзину · {a.brand}</Button>
+            <Button variant="ghost" onClick={() => buy(b.id)}>
+              в корзину · {b.brand}
             </Button>
           </>
         ) : undefined

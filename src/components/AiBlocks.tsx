@@ -327,7 +327,7 @@ export function CompareBlock({ productIds }: { productIds: string[] }) {
           </div>
         ))}
       </div>
-      <button className="source__open t-caption-12 press aicard__more" onClick={() => openSheet({ name: 'compare', productIds })}>
+      <button className="source__open t-label-14 press aicard__more" onClick={() => openSheet({ name: 'compare', productIds })}>
         развернуть сравнение
       </button>
     </motion.div>
