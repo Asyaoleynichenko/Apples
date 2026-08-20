@@ -310,14 +310,14 @@ export const StarRating = ({ size = 16, color = '#2a2a2a' }: P) => (
 
 export const PlusBadge = ({ size = 16 }: P) => (
   <svg width={size} height={size} viewBox="0 0 18 18" fill="none" aria-hidden>
-    <circle cx="9" cy="9" r="8.25" fill="#e7f5e3" />
-    <path d="M9 5.2v7.6M5.2 9h7.6" stroke="#2f7a12" strokeWidth="1.7" strokeLinecap="round" />
+    <circle cx="9" cy="9" r="9" fill="var(--ai-green)" />
+    <path d="M9 5.1v7.8M5.1 9h7.8" stroke="#16350c" strokeWidth="1.7" strokeLinecap="round" />
   </svg>
 );
 
 export const MinusBadge = ({ size = 16 }: P) => (
   <svg width={size} height={size} viewBox="0 0 18 18" fill="none" aria-hidden>
-    <circle cx="9" cy="9" r="8.25" fill="#f8e6e6" />
-    <path d="M5.2 9h7.6" stroke="#b03a3a" strokeWidth="1.7" strokeLinecap="round" />
+    <circle cx="9" cy="9" r="9" fill="#ffcf4a" />
+    <path d="M5.1 9h7.8" stroke="#6b4c00" strokeWidth="1.7" strokeLinecap="round" />
   </svg>
 );

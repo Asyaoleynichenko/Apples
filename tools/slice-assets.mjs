@@ -35,7 +35,73 @@ async function sampleColor(src, x, y) {
   return { r: data[0], g: data[1], b: data[2], alpha: 1 };
 }
 
-async function productTile({ src, dest, left, top, width, height, grey, erase, padLeft = 0, size = 640 }) {
+/** Largest blob of non-background pixels, skipping 1px crop seams and leftover chrome. */
+async function contentBBox(buf, grey, threshold = 18) {
+  const { data, info } = await sharp(buf).ensureAlpha().raw().toBuffer({ resolveWithObject: true });
+  const { width, height, channels } = info;
+  const rowHits = Array.from({ length: height }, () => ({ n: 0, min: width, max: -1 }));
+  for (let y = 0; y < height; y++) {
+    const row = rowHits[y];
+    for (let x = 0; x < width; x++) {
+      const i = (y * width + x) * channels;
+      const d = Math.abs(data[i] - grey.r) + Math.abs(data[i + 1] - grey.g) + Math.abs(data[i + 2] - grey.b);
+      if (d > threshold) {
+        row.n++;
+        if (x < row.min) row.min = x;
+        if (x > row.max) row.max = x;
+      }
+    }
+  }
+
+  let bestS = 0;
+  let bestE = -1;
+  let run = -1;
+  for (let y = 0; y <= height; y++) {
+    const hit = y < height && rowHits[y].n >= 12;
+    if (hit) {
+      if (run < 0) run = y;
+    } else if (run >= 0) {
+      if (y - 1 - run > bestE - bestS) {
+        bestS = run;
+        bestE = y - 1;
+      }
+      run = -1;
+    }
+  }
+
+  let minX = width;
+  let maxX = -1;
+  for (let y = bestS; y <= bestE; y++) {
+    if (rowHits[y].n < 12) continue;
+    if (rowHits[y].min < minX) minX = rowHits[y].min;
+    if (rowHits[y].max > maxX) maxX = rowHits[y].max;
+  }
+  return { left: minX, top: bestS, width: maxX - minX + 1, height: bestE - bestS + 1 };
+}
+
+async function centerProduct(buf, grey, size) {
+  const bbox = await contentBBox(buf, grey);
+  const bleed = 8;
+  const meta = await sharp(buf).metadata();
+  const left = Math.max(0, bbox.left - bleed);
+  const top = Math.max(0, bbox.top - bleed);
+  const width = Math.min(meta.width - left, bbox.width + bleed * 2);
+  const height = Math.min(meta.height - top, bbox.height + bleed * 2);
+  const cropped = await sharp(buf).extract({ left, top, width, height }).png().toBuffer();
+
+  const fill = size * 0.76;
+  const scale = fill / Math.max(width, height);
+  const nw = Math.max(1, Math.round(width * scale));
+  const nh = Math.max(1, Math.round(height * scale));
+  const resized = await sharp(cropped).resize(nw, nh).png().toBuffer();
+
+  return sharp({ create: { width: size, height: size, channels: 4, background: grey } })
+    .composite([{ input: resized, left: Math.round((size - nw) / 2), top: Math.round((size - nh) / 2) }])
+    .png({ compressionLevel: 9 })
+    .toBuffer();
+}
+
+async function productTile({ src, dest, left, top, width, height, grey, erase, padLeft = 0, center = false, size = 640 }) {
   let img = sharp(src).extract({ left, top, width, height });
   const patches = [];
   for (const [x, y, w, h] of erase) {
@@ -49,6 +115,14 @@ async function productTile({ src, dest, left, top, width, height, grey, erase, p
       .png()
       .toBuffer();
   }
+
+  if (center) {
+    buf = await centerProduct(buf, grey, size);
+    await sharp(buf).toFile(dest);
+    log('tile', dest, await sharp(dest).metadata());
+    return;
+  }
+
   const meta = await sharp(buf).metadata();
   const side = Math.max(meta.width, meta.height);
   buf = await sharp(buf)
@@ -84,8 +158,8 @@ await productTile({
   ],
 });
 
-// Card 2 — CLARINS body firming. The tile is clipped by the artboard edge, so
-// skip the gutter pixels and pad the left side to re-centre the bottle.
+// Card 2 — CLARINS body firming. The screenshot crop is right-heavy and the
+// tube sits against the artboard edge, so detect the bottle and centre it.
 await productTile({
   src: cardsSrc,
   dest: `${OUT}/product-clarins-body-firming.png`,
@@ -98,7 +172,7 @@ await productTile({
     [0, 0, 74, 74],
     [388, 500, 94, 75],
   ],
-  padLeft: 92,
+  center: true,
 });
 
 // ELEMIS pro-collagen — the product on the entry-point PDP.

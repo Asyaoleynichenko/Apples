@@ -836,12 +836,20 @@
   align-items: center;
   gap: 12px;
 }
+.pdp__topbar-left {
+  flex: 1 1 auto;
+  min-width: 0;
+  justify-content: flex-start;
+}
 .pdp__rating {
   display: flex;
-  align-items: center;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  align-items: baseline;
   gap: 8px;
   font-size: 14px;
   line-height: 20px;
+  text-align: left;
 }
 .pdp__stars {
   letter-spacing: 1px;
@@ -852,6 +860,7 @@
 .pdp__reviews {
   font-style: italic;
   color: #000;
+  text-align: left;
 }
 .pdp__scroll {
   flex: 1 1 auto;

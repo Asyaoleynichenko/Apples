@@ -74,7 +74,7 @@ export function EvidenceBlock({ productId }: { productId: string }) {
             <StarRating size={20} />
             {p.rating}
           </span>
-          <span className="t-body-14">
+          <span className="t-body-14 aicard__reviews">
             {p.reviews.toLocaleString('ru-RU').replace(/,/g, ' ')} {plural(p.reviews, 'отзыв', 'отзыва', 'отзывов')}
           </span>
         </div>
@@ -116,7 +116,7 @@ export function ReviewsBlock({ productId }: { productId: string }) {
           <StarRating size={20} />
           {p.rating}
         </span>
-        <span className="t-body-14">
+        <span className="t-body-14 aicard__reviews">
           {p.reviews.toLocaleString('ru-RU').replace(/,/g, ' ')} {plural(p.reviews, 'отзыв', 'отзыва', 'отзывов')}
         </span>
       </div>

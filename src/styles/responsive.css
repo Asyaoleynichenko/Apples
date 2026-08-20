@@ -337,13 +337,26 @@ html[data-shell='live'] .onb__chips {
 
 @media (min-width: 720px) {
   html[data-shell='live'] .chat {
+    width: 100%;
+    margin-inline: 0;
+  }
+
+  html[data-shell='live'] .chat-body > .aicard {
+    align-self: flex-start;
+    width: min(560px, calc(100% - 32px));
+    margin-right: auto;
+  }
+
+  html[data-shell='live'] .chat-body > .row,
+  html[data-shell='live'] .chat-body > .pcards,
+  html[data-shell='live'] .chat-body > .memory {
+    align-self: flex-start;
     width: min(560px, 100%);
-    margin-inline: auto;
   }
 
   html[data-shell='live'] .bottom-container {
     width: min(560px, 100%);
-    margin-inline: auto;
+    margin-inline: 0 auto;
   }
 
   html[data-shell='live'] .onb__body {

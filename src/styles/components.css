@@ -854,7 +854,6 @@
   align-items: center;
   justify-content: space-evenly;
   background: var(--surface);
-  border-top: 2px solid #b7d8ea;
   padding: 0 8px;
 }
 .tabbar__item {
@@ -909,11 +908,11 @@
 }
 
 /* ------------------------------------------------- assistant answer cards */
-/* Structured answers: same plate as shop/sources — square, no floating-card radius. */
+/* Structured answers: square plate, outline instead of a grey fill. */
 .aicard {
   margin: 0 16px;
-  background: var(--bubble-ai);
-  border: none;
+  background: var(--surface);
+  border: 1px solid var(--black-15);
   border-radius: 0;
   padding: 16px;
   display: flex;
@@ -951,11 +950,13 @@
   display: flex;
   flex-direction: column;
   gap: 8px;
-  align-items: flex-start;
+  align-items: stretch;
+  width: 100%;
+  text-align: left;
 }
 .aicard__section + .aicard__section {
   padding-top: 16px;
-  border-top: 1px solid var(--hairline);
+  border-top: 1px solid var(--black-15);
 }
 .aicard__muted {
   color: var(--text-secondary);
@@ -964,12 +965,17 @@
 }
 .aicard__rating {
   display: flex;
-  align-items: center;
-  gap: 12px;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  align-items: baseline;
+  gap: 8px 12px;
+  width: 100%;
+  text-align: left;
 }
 .aicard__star {
   display: flex;
-  align-items: center;
+  align-items: baseline;
+  justify-content: flex-start;
   gap: 8px;
   font-size: 24px;
   line-height: 32px;
@@ -978,9 +984,12 @@
 }
 .aicard__star svg {
   flex: 0 0 auto;
+  align-self: center;
 }
-.aicard__rating .t-body-14 {
+.aicard .aicard__reviews {
+  max-width: none;
   color: var(--text-secondary);
+  text-align: left;
 }
 .aicard__sign {
   display: flex;
