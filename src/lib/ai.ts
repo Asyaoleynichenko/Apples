@@ -1,10 +1,11 @@
 import { EDITORIAL, PRODUCTS, formatPrice, plural } from '../data/products';
-import { parse } from './intent';
+import { parse, extractSlots } from './intent';
 import {
   EMPTY_SLOTS,
   alreadyBought,
   buildRoutine,
   cheaperThan,
+  effectiveTexture,
   giftPicks,
   mostMentioned,
   namedAvoid,
@@ -290,6 +291,9 @@ function memoryLine(slots: Slots, profile: BeautyProfile): string | null {
   const used: string[] = [];
   if (!slots.budgetMax && profile.budget) used.push(`бюджет ${profile.budget.toLowerCase()}`);
   if (!slots.avoid.length && profile.dislikes.length) used.push(`${profile.dislikes.join(' и ').toLowerCase()} — не твоё`);
+  if (!slots.texture && effectiveTexture(slots, profile)) {
+    used.push(effectiveTexture(slots, profile) === 'light' ? 'лёгкие текстуры — как ты любишь' : 'плотные текстуры — как ты любишь');
+  }
   if (!used.length) return null;
   return `Беру из твоего профиля: ${used.join(', ')}.`;
 }
@@ -308,12 +312,13 @@ function withSlots(conv: Conversation, patch: Partial<Slots>): Partial<Conversat
  */
 function plan(slots: Slots, profile: BeautyProfile): string[] {
   const specific = Boolean(slots.type || slots.need);
-  if (specific) return slots.texture ? [] : ['texture'];
+  const textureKnown = Boolean(effectiveTexture(slots, profile));
+  if (specific) return textureKnown ? [] : ['texture'];
 
   const steps: string[] = [];
   if (!slots.group) steps.push('group');
-  if (!slots.priority && !profile.priorities.length) steps.push('priority');
-  if (!slots.budgetMax && !profile.budgetMax) steps.push('budget');
+  if (!slots.priority && slots.priority !== 'неважно' && !profile.priorities.length) steps.push('priority');
+  if (!slots.budgetMax && slots.budgetLabel !== 'неважно' && !profile.budgetMax) steps.push('budget');
   // `'none'` in avoid means she already said there is nothing to skip.
   if (!slots.avoid.length && !profile.dislikes.length) steps.push('avoid');
   return steps;
@@ -443,8 +448,13 @@ export function openingLine(ctx: ChatContext): string | null {
   switch (ctx.from) {
     case 'pdp':
       return `Вижу, ты смотришь ${PRODUCTS[ctx.productId]?.name ?? 'этот продукт'}. Спроси — подойдёт ли он тебе, и я разберу состав, отзывы и цену.`;
-    case 'search':
+    case 'search': {
+      const known = extractSlots(ctx.query);
+      if (known.need || known.budgetMax) {
+        return `Ищешь «${ctx.query}»? Я уже вижу задачу — могу подобрать без лишних вопросов.`;
+      }
       return `Ищешь «${ctx.query}»? Расскажи, для чего он нужен — и сузим выбор.`;
+    }
     case 'content':
       return `Ты пришла из материала «${ctx.title}». Могу подобрать то, о чём там речь.`;
     default:
@@ -482,8 +492,9 @@ export function runAction(action: string, value: string | undefined, ctx: Ctx): 
     /* ------------------------------------------------ starting the funnel */
 
     case 'q': {
-      // A new request drops the old slots but keeps everything the profile learned.
-      const fresh = { ...EMPTY_SLOTS };
+      // A new request drops the old slots but keeps everything the profile learned,
+      // and keeps what the entry point already told us (search query, etc.).
+      const fresh = { ...EMPTY_SLOTS, ...slotsFromEntry(chatContext) };
       const turn = advance({ ...conv, slots: fresh }, profile);
       return {
         userText: 'Что мне купить?',
@@ -638,6 +649,7 @@ export function runAction(action: string, value: string | undefined, ctx: Ctx): 
     case 'compare': {
       const pair = conv.compareIds.length >= 2 ? conv.compareIds : conv.lastIds.slice(0, 2);
       if (pair.length < 2) {
+        if (!conv.slots.group && !conv.slots.type && !conv.lastIds.length) return needContext();
         const fallback = recommend(conv.slots, profile).ids.slice(0, 2);
         if (fallback.length < 2) return needContext();
         return compareTurn(fallback, conv, profile);
@@ -810,6 +822,7 @@ export function runAction(action: string, value: string | undefined, ctx: Ctx): 
       const patch: Partial<Slots> = {};
       let learned: string | null = null;
       let said = 'Просто хочу другое';
+      let dislikeLine: string | null = null;
 
       if (value === 'price' && rejected) {
         patch.budgetMax = Math.max(500, Math.floor(PRODUCTS[rejected].price * 0.8));
@@ -818,8 +831,10 @@ export function runAction(action: string, value: string | undefined, ctx: Ctx): 
         said = 'Дорого';
       }
       if (value === 'texture' && rejected) {
-        patch.texture = PRODUCTS[rejected].texture === 'rich' ? 'light' : 'rich';
-        learned = PRODUCTS[rejected].texture === 'rich' ? 'Не любит плотные текстуры' : 'Не любит слишком лёгкие текстуры';
+        const rich = PRODUCTS[rejected].texture === 'rich';
+        patch.texture = rich ? 'light' : 'rich';
+        dislikeLine = rich ? 'плотные текстуры' : 'лёгкие текстуры';
+        learned = rich ? 'Не любит плотные текстуры' : 'Не любит слишком лёгкие текстуры';
         said = 'Не нравится текстура';
       }
       if (value === 'brand') {
@@ -838,7 +853,15 @@ export function runAction(action: string, value: string | undefined, ctx: Ctx): 
         userText: said,
         ...turn,
         conversation: { ...turn.conversation, ...withSlots(conv, patch) },
-        profile: rejected ? { dislikedProducts: dedupe([...profile.dislikedProducts, rejected]) } : undefined,
+        profile: rejected
+          ? {
+              dislikedProducts: dedupe([...profile.dislikedProducts, rejected]),
+              ...(dislikeLine ? { dislikes: dedupe([...profile.dislikes, dislikeLine]) } : {}),
+              ...(value === 'price' && patch.budgetMax
+                ? { budgetMax: patch.budgetMax, budget: patch.budgetLabel ?? profile.budget }
+                : {}),
+            }
+          : undefined,
         learn: learned ? [learned] : undefined,
       };
     }
@@ -1092,13 +1115,25 @@ export function runAction(action: string, value: string | undefined, ctx: Ctx): 
     case 'fb-reason': {
       const pid = arg!;
       const reason = value ?? 'Другое';
-      const memory = REASON_MEMORY[reason] ?? 'Учту этот опыт';
+      const product = PRODUCTS[pid];
+      const textureDislike =
+        product?.texture === 'light' ? 'лёгкие текстуры' : 'плотные текстуры';
+      const memory =
+        reason === 'Текстура'
+          ? `Не любит ${textureDislike}`
+          : REASON_MEMORY[reason] ?? 'Учту этот опыт';
       const patch: Partial<Slots> =
         reason === 'Запах'
           ? { avoid: dedupe([...conv.slots.avoid, 'сильные отдушки']) }
           : reason === 'Текстура'
-            ? { avoid: dedupe([...conv.slots.avoid, 'плотные текстуры']) }
-            : {};
+            ? { avoid: dedupe([...conv.slots.avoid, textureDislike]) }
+            : reason === 'Цена' && product
+              ? {
+                  budgetMax: Math.max(500, Math.floor(product.price * 0.85)),
+                  budgetLabel: `до ${formatPrice(Math.max(500, Math.floor(product.price * 0.85)))}`,
+                }
+              : {};
+      const nextBudget = patch.budgetMax;
       return {
         userText: reason,
         messages: [
@@ -1108,7 +1143,15 @@ export function runAction(action: string, value: string | undefined, ctx: Ctx): 
         replies: [reply('посмотреть профиль', 'profile'), reply('посоветуй другое', 'q:buy'), reply('задать другой вопрос', 'new-question')],
         profile: {
           dislikedProducts: dedupe([...profile.dislikedProducts, pid]),
-          dislikes: reason === 'Запах' ? dedupe([...profile.dislikes, 'сильные отдушки']) : reason === 'Текстура' ? dedupe([...profile.dislikes, 'плотные текстуры']) : profile.dislikes,
+          dislikes:
+            reason === 'Запах'
+              ? dedupe([...profile.dislikes, 'сильные отдушки'])
+              : reason === 'Текстура'
+                ? dedupe([...profile.dislikes, textureDislike])
+                : profile.dislikes,
+          ...(reason === 'Цена' && nextBudget
+            ? { budgetMax: nextBudget, budget: patch.budgetLabel ?? profile.budget }
+            : {}),
         },
         learn: [memory],
         conversation: { state: 'LEARNING', focusId: pid, ...withSlots(conv, patch) },
@@ -1118,6 +1161,9 @@ export function runAction(action: string, value: string | undefined, ctx: Ctx): 
     /* ------------------------------------------------------------- misc */
 
     case 'skip':
+      if (conv.state === 'CLARIFYING' && conv.pending[0] && conv.pending[0] !== 'group') {
+        return skipCurrentQuestion(ctx);
+      }
       return {
         userText: 'Не хочу отвечать на вопросы',
         messages: [
@@ -1131,9 +1177,10 @@ export function runAction(action: string, value: string | undefined, ctx: Ctx): 
 
     case 'back-to-list': {
       if (!conv.lastIds.length) return runAction('q:buy', undefined, ctx);
+      const notes = recommend(conv.slots, profile).notes;
       return {
         userText: 'Вернуться к подборке',
-        messages: [t('Возвращаю подборку — всё, что мы обсуждали, на месте.'), cards(conv.lastIds, undefined, conv.lastIds[0])],
+        messages: [t('Возвращаю подборку — всё, что мы обсуждали, на месте.'), cards(conv.lastIds, notes, conv.lastIds[0])],
         replies: AFTER_RECOMMEND,
         conversation: { state: 'RECOMMENDING' },
       };
@@ -1150,7 +1197,7 @@ export function runAction(action: string, value: string | undefined, ctx: Ctx): 
           reply('что подарить подруге?', 'gift'),
           reply('позвать консультанта', 'human'),
         ],
-        conversation: { state: 'IDLE' },
+        conversation: { ...EMPTY_CONVERSATION, state: 'IDLE' },
       };
 
     case 'profile':
@@ -1188,14 +1235,33 @@ export function runFreeText(input: string, ctx: Ctx): AiTurn {
     };
   }
 
+  const escaping =
+    intent === 'trust' ||
+    intent === 'human' ||
+    intent === 'skip' ||
+    intent === 'reject' ||
+    intent === 'feedback';
+
+  // Out of scope always wins — even mid-gift — so we never invent an answer.
+  if (intent === 'unknown' && !clarifierValue(conv.pending[0], input, found) && !found.group && !found.type && !found.budgetMax && !found.need) {
+    return unknownTurn(input);
+  }
+
   // Gift flow from Figma: after budget, the next free-text answer is preferences.
-  if (conv.intent === 'gift' && conv.state === 'CLARIFYING') {
+  // Escapes (human / skip / I-don't-know) must still get out.
+  if (conv.intent === 'gift' && conv.state === 'CLARIFYING' && !escaping) {
     if (found.budgetMax && !conv.slots.budgetLabel) {
       return runAction('gift-budget', String(found.budgetMax), ctx);
     }
     if (conv.slots.budgetMax != null || conv.slots.budgetLabel) {
       return presentGifts({ ...conv.slots, ...found });
     }
+  }
+
+  // Answer the open clarifier in free text instead of forcing a chip.
+  if (conv.state === 'CLARIFYING' && conv.pending[0] && !escaping) {
+    const value = clarifierValue(conv.pending[0], input, found);
+    if (value) return runAction(`slot:${conv.pending[0]}`, value, ctx);
   }
 
   switch (intent) {
@@ -1259,6 +1325,12 @@ export function runFreeText(input: string, ctx: Ctx): AiTurn {
 
     /* Scenario 25 — understood roughly, narrow it down. */
     case 'choose':
+      if (conv.slots.group || conv.slots.type) {
+        const lead = [t('Поняла примерно. Тогда подберу по тому, что уже есть.')];
+        const rec = recap(conv.slots);
+        if (rec) lead.unshift(t(rec));
+        return advance(conv, profile, lead);
+      }
       return {
         messages: [t('Поняла примерно 😄 Давай сузим выбор.'), t('Что ищем?')],
         replies: GROUP_REPLIES,
@@ -1268,6 +1340,71 @@ export function runFreeText(input: string, ctx: Ctx): AiTurn {
     default:
       return unknownTurn(input);
   }
+}
+
+function skipCurrentQuestion(ctx: Ctx): AiTurn {
+  const { conv, profile } = ctx;
+  const step = conv.pending[0];
+  const patch: Partial<Slots> = {};
+  if (step === 'budget') {
+    patch.budgetMax = null;
+    patch.budgetLabel = 'неважно';
+  } else if (step === 'avoid') {
+    patch.avoid = ['none'];
+  } else if (step === 'texture') {
+    patch.texture = null;
+  } else if (step === 'priority') {
+    patch.priority = 'неважно';
+  }
+  const next: Conversation = { ...conv, slots: { ...conv.slots, ...patch }, pending: conv.pending.slice(1) };
+  const turn = advance(next, profile, [t('Хорошо, этот вопрос пропускаю.')]);
+  return { userText: 'Пропустить', ...turn, conversation: { ...turn.conversation, slots: next.slots } };
+}
+
+/** Map a typed answer onto the open clarifier chip value. */
+function clarifierValue(step: string | undefined, input: string, found: Partial<Slots>): string | null {
+  if (!step) return null;
+  const q = input.toLowerCase().trim();
+  if (step === 'group') {
+    if (found.group) return found.group;
+    if (/нов/i.test(q)) return 'new';
+    return null;
+  }
+  if (step === 'priority') {
+    const hit = PRIORITY_REPLIES.find((r) => q.includes(r.label) || q.includes((r.value ?? '').toLowerCase()));
+    return hit?.value ?? null;
+  }
+  if (step === 'budget') {
+    if (/неважн|любой|без разницы|не ограничен/i.test(q)) return 'any';
+    if (found.budgetMax) {
+      if (found.budgetMax <= 2000) return '2000';
+      if (found.budgetMax <= 5000) return '5000';
+      if (found.budgetMax <= 10000) return '10000';
+      return 'any';
+    }
+    return null;
+  }
+  if (step === 'avoid') {
+    if (/ничего|нет|нема|не важн/i.test(q)) return 'none';
+    if (found.avoid?.[0]) return found.avoid[0];
+    if (/отдушк|запах|аромат/i.test(q)) return 'сильные отдушки';
+    if (/плотн/i.test(q)) return 'плотные текстуры';
+    if (/ингредиент|состав/i.test(q)) return 'определённые ингредиенты';
+    return null;
+  }
+  if (step === 'texture') {
+    if (found.texture) return found.texture;
+    if (/неважн|любая|без разницы/i.test(q)) return 'any';
+    if (/лёгк|легк/i.test(q)) return 'light';
+    if (/плотн|насыщен/i.test(q)) return 'rich';
+    return null;
+  }
+  return null;
+}
+
+function slotsFromEntry(ctx: ChatContext): Partial<Slots> {
+  if (ctx.from === 'search') return extractSlots(ctx.query);
+  return {};
 }
 
 /* ------------------------------------------------------------- fragments */
@@ -1333,6 +1470,8 @@ function explainLead(productId: string, slots: Slots, profile: BeautyProfile): s
       : `Потому что ты сказала, что сильные отдушки — не твоё, а у него аромат ${p.fragranceLabel}.`;
   if (slots.texture && p.texture === slots.texture)
     return `Потому что ты сказала, что тебе важна ${slots.texture === 'light' ? 'лёгкая' : 'плотная'} текстура.`;
+  if (effectiveTexture(slots, profile) && p.texture === effectiveTexture(slots, profile))
+    return `Потому что ты сказала, что тебе важна ${effectiveTexture(slots, profile) === 'light' ? 'лёгкая' : 'плотная'} текстура.`;
   if (profile.likedProducts.some((id) => PRODUCTS[id]?.texture === p.texture))
     return 'Потому что ты уже хорошо относилась к продуктам с такой же текстурой.';
   if (profile.preferences.length) return `Потому что ты говорила про ${profile.preferences[0]}.`;

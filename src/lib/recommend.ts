@@ -1,5 +1,5 @@
 import { CATALOG, PRODUCTS, formatPrice } from '../data/products';
-import type { BeautyProfile, Product, Slots } from './types';
+import type { BeautyProfile, Product, Slots, TextureKey } from './types';
 
 export type Match = {
   /** ok — everything fits. relaxed — budget had to stretch. soft — nothing fits, showing closest. none — impossible. */
@@ -29,6 +29,14 @@ export function namedAvoid(slots: Slots, profile: BeautyProfile) {
   return [...slots.avoid, ...profile.dislikes].filter((a) => a && a !== 'none');
 }
 
+/** Texture the user already named — in this request or earlier in the profile. */
+export function effectiveTexture(slots: Slots, profile: BeautyProfile): TextureKey | null {
+  if (slots.texture) return slots.texture;
+  if (profile.preferences.some((p) => /лёгк|легк/i.test(p))) return 'light';
+  if (profile.preferences.some((p) => /плотн/i.test(p))) return 'rich';
+  return null;
+}
+
 /* ------------------------------------------------------------- filtering */
 
 /** Constraints the assistant refuses to break, because the user named them. */
@@ -38,9 +46,11 @@ function passesHardFilters(p: Product, slots: Slots, profile: BeautyProfile): bo
   const avoid = namedAvoid(slots, profile);
   const avoidsFragrance = avoid.some((a) => /отдушк|запах|аромат/i.test(a));
   const avoidsRich = avoid.some((a) => /плотн|густ|тяжёл|тяжел/i.test(a));
+  const avoidsLight = avoid.some((a) => /лёгк|легк/i.test(a));
 
   if (avoidsFragrance && p.fragrance === 'strong') return false;
   if (avoidsRich && p.texture === 'rich') return false;
+  if (avoidsLight && p.texture === 'light') return false;
   if (slots.group && p.group !== slots.group) return false;
   if (slots.type && p.type !== slots.type) return false;
   return true;
@@ -49,9 +59,10 @@ function passesHardFilters(p: Product, slots: Slots, profile: BeautyProfile): bo
 function score(p: Product, slots: Slots, profile: BeautyProfile): number {
   let s = p.rating * 1.2 + Math.log10(Math.max(p.reviews, 1)) * 1.4;
 
-  if (slots.texture && p.texture === slots.texture) s += 4;
-  else if (slots.texture === 'light' && p.texture === 'rich') s -= 3;
-  else if (slots.texture === 'rich' && p.texture === 'light') s -= 2;
+  const texture = effectiveTexture(slots, profile);
+  if (texture && p.texture === texture) s += 4;
+  else if (texture === 'light' && p.texture === 'rich') s -= 3;
+  else if (texture === 'rich' && p.texture === 'light') s -= 2;
 
   const skin = slots.need ?? profile.skinType;
   if (skin) {
@@ -87,6 +98,13 @@ function score(p: Product, slots: Slots, profile: BeautyProfile): number {
   if (profile.likedProducts.some((id) => PRODUCTS[id]?.texture === p.texture)) s += 1.5;
   if (profile.likedProducts.some((id) => PRODUCTS[id]?.brand === p.brand)) s += 1;
   if (profile.dislikedProducts.some((id) => PRODUCTS[id]?.brand === p.brand)) s -= 2;
+  if (profile.learned.some((l) => /чувствительна к цене/i.test(l))) s += Math.max(0, 3 - p.price / 2500);
+  for (const id of profile.dislikedProducts) {
+    const d = PRODUCTS[id];
+    if (!d || d.id === p.id) continue;
+    s -= p.effects.filter((e) => d.effects.includes(e)).length * 0.6;
+    s -= Math.min(2, p.ingredients.filter((i) => d.ingredients.includes(i)).length * 0.4);
+  }
   if (p.reviews < 20) s -= 1.5;
 
   return s;
@@ -97,7 +115,8 @@ function noteFor(p: Product, slots: Slots, profile: BeautyProfile, widenedFrom: 
   const budget = slots.budgetMax ?? profile.budgetMax;
   if (widenedFrom && p.type !== widenedFrom) return `${p.category.toLowerCase()} — соседняя категория`;
   if (budget && p.price > budget) return `дороже бюджета на ${formatPrice(p.price - budget)}`;
-  if (slots.texture && p.texture === slots.texture) return `${p.textureLabel} — как ты просила`;
+  if (effectiveTexture(slots, profile) && p.texture === effectiveTexture(slots, profile))
+    return `${p.textureLabel} — как ты просила`;
   if (slots.need && p.skinTypes.includes(slots.need)) return `подходит для «${slots.need}»`;
   if (p.fragrance === 'none') return p.fragranceLabel;
   if (p.reviews > 1000) return `${p.rating} из ${p.reviews.toLocaleString('ru-RU').replace(/,/g, ' ')} отзывов`;
@@ -261,7 +280,8 @@ export function suitability(productId: string, slots: Slots, profile: BeautyProf
 
   if (budget) items.push({ ok: p.price <= budget, text: p.price <= budget ? `в твой бюджет ${formatPrice(budget)}` : `дороже бюджета на ${formatPrice(p.price - budget)}` });
   if (skin) items.push({ ok: p.skinTypes.includes(skin) || p.skinTypes.includes('все типы'), text: p.skinTypes.includes(skin) || p.skinTypes.includes('все типы') ? `подходит для типа «${skin}»` : `не для типа «${skin}»` });
-  if (slots.texture) items.push({ ok: p.texture === slots.texture, text: p.texture === slots.texture ? `текстура та, что ты любишь — ${p.textureLabel}` : `текстура другая — ${p.textureLabel}` });
+  const texture = effectiveTexture(slots, profile);
+  if (texture) items.push({ ok: p.texture === texture, text: p.texture === texture ? `текстура та, что ты любишь — ${p.textureLabel}` : `текстура другая — ${p.textureLabel}` });
 
   const fragranceClash = avoid.some((a) => /отдушк|запах|аромат/i.test(a)) && p.fragrance === 'strong';
   const textureClash = avoid.some((a) => /плотн|густ/i.test(a)) && p.texture === 'rich';
