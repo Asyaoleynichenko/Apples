@@ -28,7 +28,7 @@ export function Badges({ discount, hit, best }: { discount?: number; hit?: boole
   return (
     <div className="badges">
       {best && <span className="badge badge--match">BEST MATCH</span>}
-      {!!discount && <span className="badge badge--sale">{discount}%</span>}
+      {!!discount && !best && <span className="badge badge--sale">{discount}%</span>}
       {hit && <span className="badge badge--hit">HIT</span>}
     </div>
   );

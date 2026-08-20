@@ -370,6 +370,8 @@
   left: 0;
   top: 0;
   display: flex;
+  max-width: calc(100% - var(--tap));
+  overflow: hidden;
 }
 .badge {
   height: 24px;
