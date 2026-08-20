@@ -160,27 +160,52 @@
 
 .bottom-container {
   flex: 0 0 auto;
+  min-width: 0;
+  width: 100%;
   background: var(--surface);
   padding: 16px 16px 16px;
   display: flex;
   flex-direction: column;
   gap: 12px;
   z-index: 3;
+  overflow: visible;
 }
 
 .quick {
   display: flex;
   flex-direction: column;
   gap: 12px;
+  min-width: 0;
+  width: 100%;
+  overflow: visible;
 }
 .quick__title {
   padding: 0;
+  flex: 0 0 auto;
 }
-.quick__row {
+.quick__row.hscroll {
   display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
   gap: 8px;
   margin: 0 -16px;
-  padding: 0 16px;
+  padding: 4px 16px 8px;
+  min-width: 0;
+  width: calc(100% + 32px);
+  max-width: none;
+  box-sizing: border-box;
+  flex: 0 0 auto;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+.quick__row .pill {
+  flex: 0 0 auto;
+}
+.quick__row::after {
+  content: '';
+  flex: 0 0 16px;
+  width: 16px;
+  height: 1px;
 }
 .pill {
   flex: 0 0 auto;

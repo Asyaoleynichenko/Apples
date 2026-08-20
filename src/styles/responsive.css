@@ -258,10 +258,17 @@ html[data-shell='live'] .row--ai .bubble-wrap {
   max-width: min(280px, calc(100% - 60px));
 }
 
-html[data-shell='live'] .row,
-html[data-shell='live'] .quick__row {
+html[data-shell='live'] .row {
   max-width: 100%;
   min-width: 0;
+}
+
+html[data-shell='live'] .quick__row {
+  min-width: 0;
+  max-width: none;
+  width: calc(100% + 32px);
+  overflow-x: auto;
+  overflow-y: hidden;
 }
 
 html[data-shell='live'] .welcome__texts {
