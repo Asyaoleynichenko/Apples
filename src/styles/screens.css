@@ -1569,34 +1569,65 @@
   padding-bottom: 8px;
 }
 
-.why {
-  padding: 16px;
-  margin-bottom: 16px;
+.why,
+.why__block {
+  padding: 0;
+  margin: 0;
   background: none;
-  border: 1px solid var(--black-15);
-  border-radius: 0;
+  border: none;
   text-align: left;
 }
-.why:last-child {
-  margin-bottom: 0;
+.why__block + .why,
+.why + .why__block,
+.why + .why {
+  margin-top: 24px;
+  padding-top: 24px;
+  border-top: 1px solid var(--black-15);
+}
+.why__kicker {
+  margin: 0 0 12px;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 20px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
 }
 .why__head {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 12px;
-  margin-bottom: 12px;
+  margin-bottom: 16px;
 }
 .why__head img {
   width: 56px;
   height: 56px;
   object-fit: cover;
   background: var(--tile);
+  flex: 0 0 56px;
+}
+.why__meta {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.why__brand {
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 16px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+.why__name {
+  color: var(--text);
 }
 .why__price {
-  margin-top: 4px;
-  font-size: 16px;
-  font-weight: 700;
-  line-height: 24px;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20px;
+  color: var(--text-secondary);
 }
 .why__list {
   list-style: none;
@@ -1611,9 +1642,18 @@
   gap: 12px;
   align-items: flex-start;
 }
-.why__list li > svg {
-  flex: 0 0 18px;
-  margin-top: 4px;
+.why__list li > svg,
+.why__icon {
+  flex: 0 0 24px;
+  width: 24px;
+  height: 24px;
+  margin-top: 0;
+  display: grid;
+  place-items: center;
+}
+.why__list li > svg,
+.why__icon svg {
+  display: block;
 }
 .why__tick {
   width: 16px;
@@ -1635,7 +1675,8 @@
   border-width: 0 1.6px 1.6px 0;
   transform: rotate(42deg);
 }
-.why__caveats {
+.why__caveats,
+.why__profile {
   margin-top: 16px;
   padding-top: 16px;
   border-top: 1px solid var(--black-15);
@@ -1645,21 +1686,14 @@
   padding-right: 0;
   padding-bottom: 0;
 }
-.why__caveats-title {
-  color: var(--text);
-  font-weight: 600;
-  text-transform: lowercase;
-  letter-spacing: 0;
-  margin-bottom: 8px;
+.why__caveat {
+  color: var(--text-secondary);
 }
 .why__caveat + .why__caveat {
   margin-top: 8px;
 }
-.why__profile {
-  padding-top: 16px;
-}
-.why__profile .why__caveats-title {
-  color: var(--text-muted);
+.why__profile .aicard__sign {
+  max-width: none;
 }
 
 .sources__lead {

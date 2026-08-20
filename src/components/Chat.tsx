@@ -4,6 +4,7 @@ import { SendArrow } from './Icons';
 import { LOADING_BEATS, LOADING_BEAT_MS } from '../lib/loading';
 import type { QuickReply } from '../lib/types';
 import { asset } from '../lib/asset';
+import { chatCopy } from '../lib/copy';
 
 export function Avatar({ size = 44 }: { size?: number }) {
   return (
@@ -35,7 +36,7 @@ export function UserBubble({ text }: { text: string }) {
   return (
     <motion.div className="row row--user" {...rise}>
       <div className="bubble-wrap">
-        <div className="bubble bubble--user t-bubble-15">{text}</div>
+        <div className="bubble bubble--user t-bubble-15">{chatCopy(text)}</div>
         <Tail side="right" fill="#8D01FF" />
       </div>
     </motion.div>
@@ -58,7 +59,11 @@ export function AiBubble({
       <Avatar />
       <div className="bubble-wrap">
         <div className="bubble bubble--ai t-bubble-15">
-          {text !== undefined ? withInlineLink(text, linkLabel, onLink) : children}
+          {text !== undefined
+            ? withInlineLink(chatCopy(text), linkLabel, onLink)
+            : typeof children === 'string'
+              ? chatCopy(children)
+              : children}
         </div>
         <Tail side="left" fill="#EDEDED" />
       </div>

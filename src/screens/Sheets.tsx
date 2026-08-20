@@ -8,7 +8,7 @@ import { Heart, CheckCircle, Bag, MinusBadge, PlusBadge, TickOk, TickWarn } from
 import { useStore } from '../lib/store';
 import { useAssistant } from '../lib/useAssistant';
 import { compareVerdict, handoffContext, preferenceChecks } from '../lib/ai';
-import { formatPrice, PRODUCTS, sourcesFor, EDITORIAL, flaconForProducts } from '../data/products';
+import { formatPrice, productLabel, PRODUCTS, sourcesFor, EDITORIAL, flaconForProducts } from '../data/products';
 import { asset } from '../lib/asset';
 
 export default function Sheets() {
@@ -182,12 +182,12 @@ function WhySheet() {
       }
     >
       {checks.length > 0 && (
-        <div className="sheet-card">
-          <div className="why__caveats-title t-caption-12">твои предпочтения</div>
+        <div className="why__block">
+          <div className="why__kicker">твои предпочтения</div>
           <ul className="why__list">
             {checks.map((c) => (
-              <li key={c.text} className="t-body-14">
-                <span className={`why__icon`}>{c.ok ? <TickOk /> : <TickWarn />}</span>
+              <li key={c.text} className="t-body-16">
+                <span className="why__icon">{c.ok ? <TickOk size={24} /> : <TickWarn size={24} />}</span>
                 {c.text}
               </li>
             ))}
@@ -197,28 +197,30 @@ function WhySheet() {
 
       {ids.map((id) => {
         const p = PRODUCTS[id];
+        const { brand, title } = productLabel(p);
         return (
           <div className="why" key={id}>
             <div className="why__head">
               <img src={p.image} alt="" />
-              <div>
-                <div className="t-card-15">{p.name}</div>
+              <div className="why__meta">
+                <div className="why__brand">{brand}</div>
+                <div className="why__name t-card-15">{title}</div>
                 <div className="why__price">{formatPrice(p.price)}</div>
               </div>
             </div>
             <ul className="why__list">
               {p.why.map((w) => (
-                <li key={w} className="t-body-14">
-                  <TickOk />
+                <li key={w} className="t-body-16">
+                  <TickOk size={24} />
                   {w}
                 </li>
               ))}
             </ul>
 
             <div className="why__profile">
-              <div className="why__caveats-title t-caption-12">покупатели чаще отмечают</div>
+              <div className="why__kicker">покупатели чаще отмечают</div>
               {p.pros.map((x) => (
-                <div key={x} className="aicard__sign t-body-14">
+                <div key={x} className="aicard__sign t-body-16">
                   <span className="aicard__icon">
                     <PlusBadge />
                   </span>
@@ -226,7 +228,7 @@ function WhySheet() {
                 </div>
               ))}
               {p.cons.map((x) => (
-                <div key={x} className="aicard__sign t-body-14">
+                <div key={x} className="aicard__sign t-body-16">
                   <span className="aicard__icon">
                     <MinusBadge />
                   </span>
@@ -237,9 +239,9 @@ function WhySheet() {
 
             {p.caveats.length > 0 && (
               <div className="why__caveats">
-                <div className="why__caveats-title t-caption-12">честно говорю</div>
+                <div className="why__kicker">честно говорю</div>
                 {p.caveats.map((c) => (
-                  <div key={c} className="t-body-14 why__caveat">
+                  <div key={c} className="t-body-16 why__caveat">
                     {c}
                   </div>
                 ))}
@@ -250,12 +252,12 @@ function WhySheet() {
       })}
 
       {profile.learned.length > 0 && (
-        <div className="sheet-card">
-          <div className="why__caveats-title t-caption-12">учитываю из твоего профиля</div>
+        <div className="why__block">
+          <div className="why__kicker">учитываю из твоего профиля</div>
           {profile.learned.map((l) => (
             <div key={l} className="memory">
               <span className="memory__dot" />
-              <span className="t-body-14">{l}</span>
+              <span className="t-body-16">{l}</span>
             </div>
           ))}
         </div>
