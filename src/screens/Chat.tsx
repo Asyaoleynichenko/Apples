@@ -25,7 +25,7 @@ import type { Conversation, QuickReply } from '../lib/types';
 const STARTERS = [
   ['выбери подарок', 'gift'],
   ['что популярно', 'popular'],
-  ['Что лучше', 'compare'],
+  ['что лучше', 'compare'],
   ['расскажи про новинки', 'popular'],
   ['посоветуй крем', 'cream'],
   ['подбери оттенок', 'shade-help'],

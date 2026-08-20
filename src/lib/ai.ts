@@ -164,12 +164,12 @@ const GROUP_REPLIES: QuickReply[] = [
 ];
 
 const PRIORITY_REPLIES: QuickReply[] = [
-  reply('эффект', 'slot:priority', 'Эффект'),
-  reply('цена', 'slot:priority', 'Цена'),
-  reply('состав', 'slot:priority', 'Состав'),
-  reply('текстура', 'slot:priority', 'Текстура'),
-  reply('отзывы', 'slot:priority', 'Отзывы'),
-  reply('новинка', 'slot:priority', 'Новинка'),
+  reply('эффект', 'slot:priority', 'эффект'),
+  reply('цена', 'slot:priority', 'цена'),
+  reply('состав', 'slot:priority', 'состав'),
+  reply('текстура', 'slot:priority', 'текстура'),
+  reply('отзывы', 'slot:priority', 'отзывы'),
+  reply('новинка', 'slot:priority', 'новинка'),
 ];
 
 const GIFT_BUDGET_REPLIES: QuickReply[] = [
@@ -1111,11 +1111,11 @@ export function runAction(action: string, value: string | undefined, ctx: Ctx): 
         userText: 'Не моё',
         messages: [t('Что не зашло?')],
         replies: [
-          reply('запах', `fb-reason:${pid}`, 'Запах'),
-          reply('текстура', `fb-reason:${pid}`, 'Текстура'),
-          reply('эффект', `fb-reason:${pid}`, 'Эффект'),
-          reply('цена', `fb-reason:${pid}`, 'Цена'),
-          reply('другое', `fb-reason:${pid}`, 'Другое'),
+          reply('запах', `fb-reason:${pid}`, 'запах'),
+          reply('текстура', `fb-reason:${pid}`, 'текстура'),
+          reply('эффект', `fb-reason:${pid}`, 'эффект'),
+          reply('цена', `fb-reason:${pid}`, 'цена'),
+          reply('другое', `fb-reason:${pid}`, 'другое'),
         ],
         conversation: { state: 'FEEDBACK', focusId: pid },
       };
@@ -1123,20 +1123,20 @@ export function runAction(action: string, value: string | undefined, ctx: Ctx): 
 
     case 'fb-reason': {
       const pid = arg!;
-      const reason = value ?? 'Другое';
+      const reason = (value ?? 'другое').toLowerCase();
       const product = PRODUCTS[pid];
       const textureDislike =
         product?.texture === 'light' ? 'лёгкие текстуры' : 'плотные текстуры';
       const memory =
-        reason === 'Текстура'
+        reason === 'текстура'
           ? `Не любит ${textureDislike}`
           : REASON_MEMORY[reason] ?? 'Учту этот опыт';
       const patch: Partial<Slots> =
-        reason === 'Запах'
+        reason === 'запах'
           ? { avoid: dedupe([...conv.slots.avoid, 'сильные отдушки']) }
-          : reason === 'Текстура'
+          : reason === 'текстура'
             ? { avoid: dedupe([...conv.slots.avoid, textureDislike]) }
-            : reason === 'Цена' && product
+            : reason === 'цена' && product
               ? {
                   budgetMax: Math.max(500, Math.floor(product.price * 0.85)),
                   budgetLabel: `до ${formatPrice(Math.max(500, Math.floor(product.price * 0.85)))}`,
@@ -1153,12 +1153,12 @@ export function runAction(action: string, value: string | undefined, ctx: Ctx): 
         profile: {
           dislikedProducts: dedupe([...profile.dislikedProducts, pid]),
           dislikes:
-            reason === 'Запах'
+            reason === 'запах'
               ? dedupe([...profile.dislikes, 'сильные отдушки'])
-              : reason === 'Текстура'
+              : reason === 'текстура'
                 ? dedupe([...profile.dislikes, textureDislike])
                 : profile.dislikes,
-          ...(reason === 'Цена' && nextBudget
+          ...(reason === 'цена' && nextBudget
             ? { budgetMax: nextBudget, budget: patch.budgetLabel ?? profile.budget }
             : {}),
         },
@@ -1554,11 +1554,11 @@ const BUDGET_LABELS: Record<string, string> = {
 };
 
 const REASON_MEMORY: Record<string, string> = {
-  Запах: 'Не любит сильные отдушки',
-  Текстура: 'Не любит плотные текстуры',
-  Эффект: 'Ждёт заметный эффект от ухода',
-  Цена: 'Чувствительна к цене',
-  Другое: 'Этот продукт не подошёл',
+  запах: 'Не любит сильные отдушки',
+  текстура: 'Не любит плотные текстуры',
+  эффект: 'Ждёт заметный эффект от ухода',
+  цена: 'Чувствительна к цене',
+  другое: 'Этот продукт не подошёл',
 };
 
 const BUDGET_TIERS = [2000, 5000, 10000, null];

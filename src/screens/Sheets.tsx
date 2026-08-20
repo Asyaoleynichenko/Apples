@@ -432,7 +432,7 @@ function CompareSheet() {
 
 /* ---------------------------------------------------------- feedback */
 
-const REASONS = ['Запах', 'Текстура', 'Эффект', 'Цена', 'Другое'];
+const REASONS = ['запах', 'текстура', 'эффект', 'цена', 'другое'];
 
 /**
  * Scenario 21. The sheet only collects the answer — the profile update and the

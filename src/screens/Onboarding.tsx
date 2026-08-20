@@ -13,14 +13,14 @@ import { noOrphan } from '../lib/copy';
 import type { ProductType } from '../lib/types';
 
 const PRIORITIES = [
-  '✨ Эффект',
-  '💸 Цена',
-  '🧴 Состав',
-  '🫧 Текстура',
-  '💄 Бренд',
-  '⭐ Отзывы',
-  '🔥 Новинки и тренды',
-  '🤷‍♀️ Не знаю',
+  '✨ эффект',
+  '💸 цена',
+  '🧴 состав',
+  '🫧 текстура',
+  '💄 бренд',
+  '⭐ отзывы',
+  '🔥 новинки и тренды',
+  '🤷‍♀️ не знаю',
 ];
 
 const BUDGETS = ['до 2 000 ₽', '2 000–5 000 ₽', '5 000–10 000 ₽', 'больше 10 000 ₽', 'зависит от продукта', 'любая сумма'];
@@ -127,7 +127,7 @@ export default function Onboarding() {
   };
 
   const finish = (onboarded: boolean) => {
-    const cleanPriorities = onboarded ? priorities.map(stripEmoji) : [];
+    const cleanPriorities = onboarded ? priorities.map((p) => stripEmoji(p).toLowerCase()) : [];
     const cleanDislikes = onboarded ? dislikes.map((d) => d.toLowerCase()) : [];
     const budgetMax = onboarded && budget ? (BUDGET_CEILING[budget] ?? null) : null;
 

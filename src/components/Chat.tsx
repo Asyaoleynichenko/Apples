@@ -130,7 +130,7 @@ export function Pill({
 }) {
   return (
     <button className={`pill t-label-14 press${selected ? ' pill--on' : ''}`} onClick={onClick}>
-      {label}
+      {label.toLocaleLowerCase('ru')}
     </button>
   );
 }

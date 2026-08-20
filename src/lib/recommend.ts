@@ -73,23 +73,24 @@ function score(p: Product, slots: Slots, profile: BeautyProfile): number {
   const budget = slots.budgetMax ?? profile.budgetMax;
   if (budget) s += p.price <= budget ? 2.5 : -Math.min(4, (p.price - budget) / budget * 4);
 
-  switch (slots.priority ?? profile.priorities[0]) {
-    case 'Цена':
+  switch ((slots.priority ?? profile.priorities[0] ?? '').toLowerCase()) {
+    case 'цена':
       s += Math.max(0, 4 - p.price / 2500);
       break;
-    case 'Отзывы':
+    case 'отзывы':
       s += Math.log10(Math.max(p.reviews, 1)) * 1.6;
       break;
-    case 'Эффект':
+    case 'эффект':
       s += p.effects.length * 0.8;
       break;
-    case 'Состав':
+    case 'состав':
       s += p.ingredients.length * 0.8;
       break;
-    case 'Текстура':
+    case 'текстура':
       s += p.texture === 'light' ? 1.5 : 0;
       break;
-    case 'Новинка':
+    case 'новинка':
+    case 'новинки и тренды':
       s += p.tags.includes('новинка') ? 3 : 0;
       break;
   }

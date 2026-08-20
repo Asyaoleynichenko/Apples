@@ -190,6 +190,7 @@
   padding: 8px 16px;
   white-space: nowrap;
   color: var(--text);
+  text-transform: lowercase;
 }
 .pill--on {
   background: #000;
