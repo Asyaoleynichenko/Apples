@@ -187,9 +187,7 @@ export function AiBanner({ variant = 'expert' }: { variant?: 'expert' | 'search'
           <span className="ai-banner__gloss" />
           <span className="ai-banner__copy">
             <b>не знаешь, что выбрать?</b>
-            <span>
-              расскажи, что хочется — я{'\n'}найду подходящие варианты
-            </span>
+            <span>расскажи, что хочется — я{'\n'}найду подходящие варианты</span>
           </span>
         </span>
         <img className="ai-banner__ill" src={asset('mascot-banner-pdp.png')} alt="" />

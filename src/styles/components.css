@@ -758,12 +758,14 @@
   width: 100%;
   max-width: none;
   min-width: 0;
-  height: 100%;
+  height: auto;
   font-size: 15px;
   font-weight: 400;
   line-height: 20px;
   color: #fff;
   text-align: left;
+}
+.ai-banner--pdp .ai-banner__copy > span {
   white-space: pre-line;
 }
 .ai-banner--pdp .ai-banner__gloss {
@@ -780,6 +782,7 @@
 .ai-banner--pdp .ai-banner__copy b {
   display: block;
   margin: 0;
+  padding: 0;
   font-size: 16px;
   font-weight: 500;
   line-height: 20px;
