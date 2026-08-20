@@ -410,8 +410,9 @@
 
 .handoff {
   margin: 0 16px;
-  background: var(--pill);
-  border-radius: 16px;
+  background: none;
+  border: 1px solid var(--black-15);
+  border-radius: 0;
   padding: 16px;
   display: flex;
   flex-direction: column;
@@ -419,7 +420,7 @@
 }
 .handoff--plain {
   margin: 0;
-  background: #f7f7f7;
+  background: none;
 }
 .handoff__head {
   display: flex;
@@ -1346,9 +1347,16 @@
   font-size: 12px;
 }
 .promo-card__apply {
-  writing-mode: vertical-rl;
+  flex: 0 0 auto;
   font-size: 12px;
-  letter-spacing: 0.1em;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text);
+  writing-mode: horizontal-tb;
+  transform: none;
+  white-space: nowrap;
+  padding: 8px 0 8px 16px;
 }
 .cart__footer {
   flex: 0 0 auto;
@@ -1442,6 +1450,19 @@
 
 /* ------------------------------------------------------------- sheets */
 
+.sheet-card {
+  padding: 16px;
+  background: none;
+  border: 1px solid var(--black-15);
+  border-radius: 0;
+  text-align: left;
+}
+.sheet-card + .sheet-card,
+.sheet-card + .cmp__verdict,
+.cmp__verdict + .sheet-card {
+  margin-top: 16px;
+}
+
 /* Intro overlay (240:26798): square plate. Drag up expands to full chat. */
 .device:has(.onb) .sheet.sheet--intro,
 .device:has(.onb) .sheet-backdrop--intro,
@@ -1514,7 +1535,11 @@
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 4px 0 20px;
+  padding: 16px;
+  margin-bottom: 16px;
+  background: none;
+  border: 1px solid var(--black-15);
+  text-align: left;
 }
 .share__row img {
   width: 76px;
@@ -1545,7 +1570,15 @@
 }
 
 .why {
-  padding-bottom: 20px;
+  padding: 16px;
+  margin-bottom: 16px;
+  background: none;
+  border: 1px solid var(--black-15);
+  border-radius: 0;
+  text-align: left;
+}
+.why:last-child {
+  margin-bottom: 0;
 }
 .why__head {
   display: flex;
@@ -1604,21 +1637,26 @@
 }
 .why__caveats {
   margin-top: 16px;
-  background: #fff8e8;
-  border-radius: 12px;
-  padding: 12px;
+  padding-top: 16px;
+  border-top: 1px solid var(--black-15);
+  background: none;
+  border-radius: 0;
+  padding-left: 0;
+  padding-right: 0;
+  padding-bottom: 0;
 }
 .why__caveats-title {
-  color: #9a7b25;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
+  color: var(--text);
+  font-weight: 600;
+  text-transform: lowercase;
+  letter-spacing: 0;
   margin-bottom: 8px;
 }
 .why__caveat + .why__caveat {
   margin-top: 8px;
 }
 .why__profile {
-  padding-bottom: 8px;
+  padding-top: 16px;
 }
 .why__profile .why__caveats-title {
   color: var(--text-muted);
@@ -1634,9 +1672,10 @@
 }
 .source {
   padding: 16px;
-  background: var(--black-3);
+  background: none;
+  border: 1px solid var(--black-15);
   border-radius: 0;
-  margin-bottom: 24px;
+  margin-bottom: 16px;
   text-align: left;
 }
 .source:last-child {
@@ -1792,7 +1831,7 @@
   padding-bottom: 12px;
 }
 .cmp__col {
-  text-align: center;
+  text-align: left;
 }
 .cmp__media {
   position: relative;
@@ -1822,6 +1861,9 @@
   border: 0;
   background: none;
   font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  text-align: left;
   cursor: pointer;
 }
 .cmp__rows {
@@ -1841,15 +1883,18 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 12px;
+  text-align: left;
 }
 .cmp__verdict {
   margin-top: 16px;
   display: flex;
   gap: 12px;
   align-items: flex-start;
-  background: var(--bubble-ai);
-  border-radius: 20px 20px 20px 0;
+  background: none;
+  border: 1px solid var(--black-15);
+  border-radius: 0;
   padding: 16px;
+  text-align: left;
 }
 .cmp__verdict img {
   width: 32px;
@@ -1874,7 +1919,11 @@
   display: flex;
   align-items: center;
   gap: 12px;
-  padding-bottom: 20px;
+  padding: 16px;
+  margin-bottom: 16px;
+  background: none;
+  border: 1px solid var(--black-15);
+  text-align: left;
 }
 .fb__product img {
   width: 64px;

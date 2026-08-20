@@ -292,7 +292,9 @@ export function Cart() {
             <div className="promo-card__title">скидка −25%</div>
             <div className="promo-card__note">только до 23 августа</div>
           </div>
-          <div className="promo-card__apply">ПРИМЕНИТЬ</div>
+          <button type="button" className="promo-card__apply press">
+            ПРИМЕНИТЬ
+          </button>
         </div>
         <div className="shop__pad" />
       </div>

@@ -908,10 +908,10 @@
 }
 
 /* ------------------------------------------------- assistant answer cards */
-/* Structured answers: square plate, outline instead of a grey fill. */
+/* Structured answers: outline only, no fill. */
 .aicard {
   margin: 0 16px;
-  background: var(--surface);
+  background: none;
   border: 1px solid var(--black-15);
   border-radius: 0;
   padding: 16px;

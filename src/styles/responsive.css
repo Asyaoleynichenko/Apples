@@ -335,37 +335,57 @@ html[data-shell='live'] .onb__chips {
   max-width: 100%;
 }
 
+html[data-shell='live'] .aicard,
+html[data-shell='live'] .handoff {
+  align-self: flex-start;
+  width: min(560px, calc(100% - 32px));
+  max-width: none;
+  margin-left: 16px;
+  margin-right: auto;
+  text-align: left;
+}
+
+html[data-shell='live'] .aicard--flush {
+  width: calc(100% - 32px);
+  margin-right: 16px;
+}
+
+html[data-shell='live'] .chat-header,
+html[data-shell='live'] .bottom-container,
+html[data-shell='live'] .pdp__topbar,
+html[data-shell='live'] .pdp__cta,
+html[data-shell='live'] .cart__footer,
+html[data-shell='live'] .tabbar {
+  width: 100%;
+  margin-inline: 0;
+}
+
+html[data-shell='live'] .pdp__media {
+  max-width: none;
+  margin-inline: 0;
+}
+
 @media (min-width: 720px) {
-  html[data-shell='live'] .chat {
-    width: 100%;
-    margin-inline: 0;
-  }
-
-  html[data-shell='live'] .chat-body > .aicard {
-    align-self: flex-start;
-    width: min(560px, calc(100% - 32px));
-    margin-right: auto;
-  }
-
-  html[data-shell='live'] .chat-body > .row,
-  html[data-shell='live'] .chat-body > .pcards,
-  html[data-shell='live'] .chat-body > .memory {
-    align-self: flex-start;
-    width: min(560px, 100%);
-  }
-
-  html[data-shell='live'] .bottom-container {
-    width: min(560px, 100%);
-    margin-inline: 0 auto;
-  }
-
-  html[data-shell='live'] .onb__body {
-    width: min(480px, 100%);
-    margin-inline: auto;
-  }
-
   html[data-shell='live'] .pdp__media {
     max-width: 480px;
-    margin-inline: auto;
+    width: calc(100% - 32px);
+    margin-left: 16px;
+    margin-right: auto;
   }
+}
+
+html[data-shell='live'] .onb__body {
+  width: 100%;
+  margin-inline: 0;
+}
+
+html[data-shell='live'] .aicard__rating,
+html[data-shell='live'] .pdp__rating,
+html[data-shell='live'] .pdp__reviews {
+  justify-content: flex-start;
+  text-align: left;
+}
+
+html[data-shell='live'] .screen {
+  overflow-x: hidden;
 }

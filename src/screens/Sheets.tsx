@@ -182,7 +182,7 @@ function WhySheet() {
       }
     >
       {checks.length > 0 && (
-        <div className="why__profile">
+        <div className="sheet-card">
           <div className="why__caveats-title t-caption-12">твои предпочтения</div>
           <ul className="why__list">
             {checks.map((c) => (
@@ -250,7 +250,7 @@ function WhySheet() {
       })}
 
       {profile.learned.length > 0 && (
-        <div className="why__profile">
+        <div className="sheet-card">
           <div className="why__caveats-title t-caption-12">учитываю из твоего профиля</div>
           {profile.learned.map((l) => (
             <div key={l} className="memory">
@@ -369,45 +369,47 @@ function CompareSheet() {
     >
       {a && b && (
         <>
-          <div className="cmp__head">
-            {[a, b].map((p) => (
-              <div className="cmp__col" key={p.id}>
-                <div className="cmp__media">
-                  <button type="button" className="cmp__photo press" onClick={() => openProduct(p.id)} aria-label={p.name}>
-                    <img src={p.image} alt="" />
-                  </button>
-                  <button
-                    type="button"
-                    className="pcard__bag press"
-                    onClick={() => buy(p.id)}
-                    aria-label={`В корзину ${p.brand}`}
-                  >
-                    <Bag color="#fff" size={16} />
+          <div className="sheet-card">
+            <div className="cmp__head">
+              {[a, b].map((p) => (
+                <div className="cmp__col" key={p.id}>
+                  <div className="cmp__media">
+                    <button type="button" className="cmp__photo press" onClick={() => openProduct(p.id)} aria-label={p.name}>
+                      <img src={p.image} alt="" />
+                    </button>
+                    <button
+                      type="button"
+                      className="pcard__bag press"
+                      onClick={() => buy(p.id)}
+                      aria-label={`В корзину ${p.brand}`}
+                    >
+                      <Bag color="#fff" size={16} />
+                    </button>
+                  </div>
+                  <button type="button" className="cmp__name press t-body-14" onClick={() => openProduct(p.id)}>
+                    {p.brand}
                   </button>
                 </div>
-                <button type="button" className="cmp__name press t-body-14" onClick={() => openProduct(p.id)}>
-                  {p.brand}
-                </button>
-              </div>
-            ))}
-          </div>
-          <div className="cmp__rows">
-            {rows.map(([label, va, vb]) => (
-              <div className="cmp__row" key={label}>
-                <div className="cmp__label t-caption-12">{label}</div>
-                <div className="cmp__vals">
-                  <span className="t-body-14">{va}</span>
-                  <span className="t-body-14">{vb}</span>
+              ))}
+            </div>
+            <div className="cmp__rows">
+              {rows.map(([label, va, vb]) => (
+                <div className="cmp__row" key={label}>
+                  <div className="cmp__label t-caption-12">{label}</div>
+                  <div className="cmp__vals">
+                    <span className="t-body-14">{va}</span>
+                    <span className="t-body-14">{vb}</span>
+                  </div>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
           <div className="cmp__verdict">
             <img src={asset('mascot-avatar.png')} alt="" />
             <div className="t-body-14">{text}</div>
           </div>
           {flacon.length > 0 && (
-            <div className="cmp__flacon">
+            <div className="sheet-card cmp__flacon">
               <div className="cmp__flacon-label t-caption-12">Flacon · медиа Золотого Яблока</div>
               {flacon.map((id) => {
                 const e = EDITORIAL[id];
