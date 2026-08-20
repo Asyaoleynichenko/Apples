@@ -26,6 +26,11 @@ a,
   touch-action: pan-x;
 }
 
+.hscroll {
+  min-width: 0;
+  max-width: 100%;
+}
+
 .device-slot {
   position: relative;
   z-index: 3;
@@ -141,8 +146,15 @@ html[data-shell='live'] .bottom-container {
 }
 
 html[data-shell='live'] .sheet {
+  left: 0;
+  right: 0;
+  width: auto;
   padding-bottom: calc(12px + env(safe-area-inset-bottom, 0px));
   max-height: min(88%, calc(var(--app-h, 100dvh) - env(safe-area-inset-top, 0px)));
+}
+
+html[data-shell='live'] .sheet.sheet--intro {
+  height: min(72%, calc(var(--app-h, 100dvh) - env(safe-area-inset-top, 0px)));
 }
 
 html[data-shell='live'] .sheet__footer {
@@ -175,7 +187,65 @@ html[data-shell='live'] .kb {
   display: none !important;
 }
 
-/* Fluid chat / banners: stretch with the real viewport, not the 375 canvas. */
+html[data-shell='live'] .toast {
+  top: calc(8px + env(safe-area-inset-top, 0px));
+}
+
+/* Narrow desktop window: the 1725 stage cannot fit the tickets. */
+@media (max-width: 1100px) {
+  html[data-shell='frame'] .stage-chip {
+    display: none;
+  }
+}
+
+/*
+ * Live internals: fill the real viewport. Keep Figma 16px gutters;
+ * never leave a 375px-wide column on a 430px phone or an iPad.
+ */
+html[data-shell='live'] .screen,
+html[data-shell='live'] .shop-stack,
+html[data-shell='live'] .route,
+html[data-shell='live'] .route-fade,
+html[data-shell='live'] .onb__body,
+html[data-shell='live'] .onb__stage,
+html[data-shell='live'] .chat-scroll,
+html[data-shell='live'] .chat-body,
+html[data-shell='live'] .shop__scroll,
+html[data-shell='live'] .pdp__scroll,
+html[data-shell='live'] .welcome,
+html[data-shell='live'] .welcome__section,
+html[data-shell='live'] .welcome__starters,
+html[data-shell='live'] .welcome__starter-row,
+html[data-shell='live'] .welcome__caps,
+html[data-shell='live'] .quick,
+html[data-shell='live'] .grid,
+html[data-shell='live'] .search-list,
+html[data-shell='live'] .search-field,
+html[data-shell='live'] .section,
+html[data-shell='live'] .sheet__body {
+  width: 100%;
+  min-width: 0;
+}
+
+html[data-shell='live'] .screen {
+  overflow-x: hidden;
+}
+
+html[data-shell='live'] .chat-header,
+html[data-shell='live'] .bottom-container,
+html[data-shell='live'] .pdp__topbar,
+html[data-shell='live'] .pdp__cta,
+html[data-shell='live'] .cart__footer,
+html[data-shell='live'] .tabbar,
+html[data-shell='live'] .shop__topbar,
+html[data-shell='live'] .onb__header,
+html[data-shell='live'] .onb__body {
+  width: 100%;
+  margin-inline: 0;
+}
+
+/* -------------------------------------------------------- live: chat */
+
 html[data-shell='live'] .bubble-wrap {
   max-width: min(280px, calc(100% - 8px));
 }
@@ -184,14 +254,117 @@ html[data-shell='live'] .row--ai .bubble-wrap {
   max-width: min(280px, calc(100% - 60px));
 }
 
+html[data-shell='live'] .row,
+html[data-shell='live'] .quick__row {
+  max-width: 100%;
+  min-width: 0;
+}
+
 html[data-shell='live'] .welcome__texts {
+  max-width: min(480px, 100%);
+}
+
+html[data-shell='live'] .welcome__starters {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  gap: 8px;
   max-width: 100%;
 }
 
-html[data-shell='live'] .ai-banner--search .ai-banner__copy,
-html[data-shell='live'] .ai-banner--advice .ai-banner__copy {
-  width: min(226px, calc(100% - 96px));
+html[data-shell='live'] .welcome__starter-row {
+  display: flex;
+  flex-wrap: nowrap;
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
 }
+
+html[data-shell='live'] .welcome__starter-row .pill {
+  flex: 0 0 auto;
+  max-width: none;
+}
+
+html[data-shell='live'] .pill {
+  flex: 0 0 auto;
+  text-transform: lowercase;
+}
+
+html[data-shell='live'] .welcome__caps {
+  max-width: 100%;
+}
+
+html[data-shell='live'] .cap {
+  flex: 0 0 clamp(128px, 30vw, 168px);
+  width: clamp(128px, 30vw, 168px);
+  height: clamp(120px, 28vw, 156px);
+  justify-content: space-between;
+  padding: 12px 12px 16px;
+}
+
+html[data-shell='live'] .cap__title {
+  width: auto;
+  max-width: 100%;
+  margin-top: auto;
+}
+
+html[data-shell='live'] .cap__tag {
+  left: auto;
+  right: 4px;
+}
+
+html[data-shell='live'] .aicard,
+html[data-shell='live'] .handoff {
+  align-self: flex-start;
+  width: min(560px, calc(100% - 32px));
+  max-width: none;
+  margin-left: 16px;
+  margin-right: auto;
+  text-align: left;
+}
+
+html[data-shell='live'] .aicard--flush {
+  width: calc(100% - 32px);
+  margin-right: 16px;
+}
+
+html[data-shell='live'] .aicard .t-body-14,
+html[data-shell='live'] .aicard .why__list li,
+html[data-shell='live'] .aicard__sign,
+html[data-shell='live'] .source__detail,
+html[data-shell='live'] .sources__lead {
+  max-width: min(42ch, 100%);
+}
+
+html[data-shell='live'] .aicard__icon {
+  width: 24px;
+  height: 24px;
+  flex-basis: 24px;
+}
+
+html[data-shell='live'] .aicard__rating,
+html[data-shell='live'] .pdp__rating,
+html[data-shell='live'] .pdp__reviews {
+  justify-content: flex-start;
+  text-align: left;
+}
+
+html[data-shell='live'] .pcards .pcard {
+  width: clamp(166px, 42vw, 220px) !important;
+}
+
+html[data-shell='live'] .input-wrap {
+  width: 100%;
+  max-width: 100%;
+}
+
+html[data-shell='live'] .input-wrap__field {
+  font-size: 16px;
+}
+
+/* -------------------------------------------------------- live: onboarding */
 
 html[data-shell='live'] .onb__art--head {
   min-height: 0;
@@ -204,28 +377,378 @@ html[data-shell='live'] .onb__banner {
   width: min(268px, 88%);
 }
 
-html[data-shell='live'] .input-wrap__field {
-  font-size: 16px;
+html[data-shell='live'] .onb__chips-block,
+html[data-shell='live'] .onb__chips,
+html[data-shell='live'] .onb__fields,
+html[data-shell='live'] .onb__texts {
+  max-width: 100%;
 }
 
-/* Catalog: more columns when the live viewport is actually wide. */
+html[data-shell='live'] .onb__chips-block .t-title-17 {
+  text-transform: lowercase;
+  text-align: left;
+  text-wrap: pretty;
+}
+
+html[data-shell='live'] .onb__title,
+html[data-shell='live'] .onb__texts .t-headline-24 {
+  text-wrap: pretty;
+}
+
+/* -------------------------------------------------------- live: shop */
+
+html[data-shell='live'] .filters,
+html[data-shell='live'] .chips-row,
+html[data-shell='live'] .tabs,
+html[data-shell='live'] .wishlist,
+html[data-shell='live'] .search-field,
+html[data-shell='live'] .cart-line,
+html[data-shell='live'] .profile__hero,
+html[data-shell='live'] .profile__row,
+html[data-shell='live'] .profile__ask {
+  max-width: 100%;
+  min-width: 0;
+}
+
+html[data-shell='live'] .shop__h1,
+html[data-shell='live'] .pcard,
+html[data-shell='live'] .pcard__name,
+html[data-shell='live'] .pcard__brand,
+html[data-shell='live'] .cart-line__name,
+html[data-shell='live'] .search-list__row,
+html[data-shell='live'] .wishlist__copy {
+  min-width: 0;
+  overflow-wrap: break-word;
+}
+
+html[data-shell='live'] .tabs {
+  gap: clamp(12px, 4vw, 24px);
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+html[data-shell='live'] .tabs::-webkit-scrollbar {
+  display: none;
+}
+
+html[data-shell='live'] .tabs__item {
+  flex: 0 0 auto;
+  white-space: nowrap;
+}
+
+html[data-shell='live'] .wishlist__copy {
+  flex: 1 1 auto;
+}
+
+html[data-shell='live'] .pcard .badges {
+  max-width: calc(100% - var(--tap));
+}
+
+html[data-shell='live'] .promo-bar {
+  width: 100%;
+}
+
+html[data-shell='live'] .search-field input {
+  font-size: clamp(22px, 8vw, 30px);
+  line-height: 1.2;
+}
+
+html[data-shell='live'] .cart-line {
+  grid-template-columns: minmax(72px, 88px) minmax(0, 1fr) auto;
+}
+
+html[data-shell='live'] .cart__footer {
+  width: 100%;
+  gap: 12px;
+}
+
+html[data-shell='live'] .cart__footer .btn {
+  flex: 1 1 auto;
+  min-width: 0;
+  max-width: 100%;
+}
+
+html[data-shell='live'] .cart__total {
+  flex: 0 1 auto;
+  min-width: 0;
+}
+
+html[data-shell='live'] .promo-card,
+html[data-shell='live'] .promo-input {
+  max-width: calc(100% - 24px);
+}
+
+html[data-shell='live'] .profile__hero-copy,
+html[data-shell='live'] .profile__row > div {
+  min-width: 0;
+}
+
+html[data-shell='live'] .btn {
+  max-width: 100%;
+}
+
+/* -------------------------------------------------------- live: pdp */
+
+html[data-shell='live'] .pdp__titleblock {
+  width: 100%;
+  min-width: 0;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+html[data-shell='live'] .pdp__copy {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+html[data-shell='live'] .pdp__cat,
+html[data-shell='live'] .pdp__title,
+html[data-shell='live'] .pdp__brand {
+  min-width: 0;
+  overflow-wrap: break-word;
+}
+
+html[data-shell='live'] .pdp__badges {
+  flex: 0 0 auto;
+  flex-shrink: 0;
+  min-width: max-content;
+}
+
+html[data-shell='live'] .pdp__badges .badges {
+  position: static;
+  left: auto;
+  top: auto;
+  max-width: none;
+  overflow: visible;
+}
+
+html[data-shell='live'] .pdp__badges .badge {
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+html[data-shell='live'] .pdp__cta,
+html[data-shell='live'] .pdp__add,
+html[data-shell='live'] .pdp__stepper {
+  min-width: 0;
+}
+
+html[data-shell='live'] .pdp__media {
+  max-width: none;
+  margin-inline: 0;
+}
+
+html[data-shell='live'] .pdp__media img {
+  width: 100%;
+  height: auto;
+}
+
+html[data-shell='live'] .pdp__price,
+html[data-shell='live'] .pdp__price-note,
+html[data-shell='live'] .pdp__installment,
+html[data-shell='live'] .pdp__volumes-row,
+html[data-shell='live'] .pdp__bonus {
+  max-width: 100%;
+  min-width: 0;
+  flex-wrap: wrap;
+}
+
+html[data-shell='live'] .pdp__ai,
+html[data-shell='live'] .pdp__desc {
+  width: 100%;
+  max-width: 100%;
+}
+
+html[data-shell='live'] .ai-banner--search,
+html[data-shell='live'] .ai-banner--pdp,
+html[data-shell='live'] .ai-banner--advice {
+  width: 100%;
+}
+
+html[data-shell='live'] .ai-banner--search .ai-banner__copy,
+html[data-shell='live'] .ai-banner--advice .ai-banner__copy {
+  width: min(226px, calc(100% - 96px));
+}
+
+html[data-shell='live'] .ai-banner--pdp .ai-banner__inner {
+  width: 100%;
+  padding: 20px clamp(56px, 24%, 78px) 16px 28px;
+}
+
+html[data-shell='live'] .ai-banner--pdp .ai-banner__copy b {
+  white-space: normal;
+}
+
+html[data-shell='live'] .ai-banner--pdp .ai-banner__gloss,
+html[data-shell='live'] .ai-banner--search .ai-banner__gloss,
+html[data-shell='live'] .ai-banner--advice .ai-banner__gloss {
+  inset: 6px;
+}
+
+/* -------------------------------------------------------- live: sheets */
+
+html[data-shell='live'] .why,
+html[data-shell='live'] .why__block,
+html[data-shell='live'] .sheet-card {
+  border: none;
+}
+
+html[data-shell='live'] .why__head,
+html[data-shell='live'] .share__row,
+html[data-shell='live'] .cmp__verdict,
+html[data-shell='live'] .cmp__pair,
+html[data-shell='live'] .cmp__vals {
+  min-width: 0;
+  max-width: 100%;
+}
+
+html[data-shell='live'] .cmp__label {
+  color: var(--text-secondary);
+}
+
+html[data-shell='live'] .cmp__val {
+  font-size: 16px;
+  line-height: 24px;
+  overflow-wrap: anywhere;
+}
+
+html[data-shell='live'] .sheet .cmp__pair::before {
+  left: 16px;
+  right: 16px;
+}
+
+html[data-shell='live'] .intro__texts,
+html[data-shell='live'] .intro__art {
+  max-width: 100%;
+}
+
+/* -------------------------------------------------------- ≤360 narrow phone */
+
+@media (max-width: 360px) {
+  html[data-shell='live'] .shop__h1 {
+    font-size: 28px;
+    line-height: 32px;
+  }
+
+  html[data-shell='live'] .search-field input {
+    font-size: 22px;
+    line-height: 28px;
+  }
+
+  html[data-shell='live'] .pdp__topbar {
+    gap: 8px;
+  }
+
+  html[data-shell='live'] .pdp__cta {
+    gap: 6px;
+    padding-inline: 12px;
+  }
+
+  html[data-shell='live'] .cart-line {
+    grid-template-columns: 72px minmax(0, 1fr) auto;
+    padding-inline: 12px;
+  }
+
+  html[data-shell='live'] .floating-ai {
+    transform: scale(0.9);
+    transform-origin: bottom right;
+  }
+
+  html[data-shell='live'] .cap {
+    flex-basis: 120px;
+    width: 120px;
+    height: 112px;
+  }
+}
+
+/* -------------------------------------------------------- ≥600 tablet portrait */
+
 @media (min-width: 600px) {
   html[data-shell='live'] .grid {
     grid-template-columns: repeat(3, 1fr);
   }
-}
-@media (min-width: 900px) {
-  html[data-shell='live'] .grid {
-    grid-template-columns: repeat(4, 1fr);
+
+  html[data-shell='live'] .welcome__texts {
+    max-width: min(560px, 100%);
+  }
+
+  html[data-shell='live'] .onb__chips-block,
+  html[data-shell='live'] .onb__fields,
+  html[data-shell='live'] .onb__texts {
+    max-width: min(560px, 100%);
+    margin-inline: auto;
+    width: 100%;
   }
 }
+
+/* -------------------------------------------------------- ≥720 large tablet */
 
 @media (min-width: 720px) {
   html[data-shell='live'] .bubble-wrap,
   html[data-shell='live'] .row--ai .bubble-wrap {
     max-width: min(420px, 72%);
   }
+
+  html[data-shell='live'] .aicard,
+  html[data-shell='live'] .handoff {
+    width: min(640px, calc(100% - 32px));
+  }
+
+  html[data-shell='live'] .pdp__media {
+    max-width: 480px;
+    width: calc(100% - 32px);
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  html[data-shell='live'] .ai-banner--search .ai-banner__copy,
+  html[data-shell='live'] .ai-banner--advice .ai-banner__copy {
+    width: min(320px, calc(100% - 120px));
+  }
+
+  html[data-shell='live'] .shop__h1 {
+    font-size: 36px;
+    line-height: 44px;
+  }
+
+  html[data-shell='live'] .search-field input {
+    font-size: 32px;
+    line-height: 40px;
+  }
+
+  html[data-shell='live'] .cart-line,
+  html[data-shell='live'] .profile__hero,
+  html[data-shell='live'] .section,
+  html[data-shell='live'] .promo-card,
+  html[data-shell='live'] .promo-input {
+    max-width: 720px;
+    margin-left: auto;
+    margin-right: auto;
+    width: calc(100% - 24px);
+  }
 }
+
+/* -------------------------------------------------------- ≥900 iPad landscape / large */
+
+@media (min-width: 900px) {
+  html[data-shell='live'] .grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  html[data-shell='live'] .pcards .pcard {
+    width: clamp(180px, 28vw, 240px) !important;
+  }
+
+  html[data-shell='live'] .cap {
+    flex-basis: 168px;
+    width: 168px;
+    height: 156px;
+  }
+}
+
+/* -------------------------------------------------------- short landscape */
 
 @media (max-height: 500px) {
   html[data-shell='live'] .onb__art {
@@ -252,210 +775,9 @@ html[data-shell='live'] .input-wrap__field {
     transform: scale(0.84);
     transform-origin: bottom right;
   }
-}
 
-/* Narrow desktop window: the 1725 stage cannot fit the tickets. */
-@media (max-width: 1100px) {
-  html[data-shell='frame'] .stage-chip {
-    display: none;
-  }
-}
-
-/*
- * Live internals: fill the real viewport. Keep Figma 16px gutters and 8px catalog
- * gap; never leave a 375px-wide column on a 430px phone or an iPad.
- */
-html[data-shell='live'] .screen,
-html[data-shell='live'] .shop-stack,
-html[data-shell='live'] .route,
-html[data-shell='live'] .onb__body,
-html[data-shell='live'] .chat-scroll,
-html[data-shell='live'] .shop__scroll,
-html[data-shell='live'] .pdp__scroll {
-  width: 100%;
-  min-width: 0;
-}
-
-html[data-shell='live'] .pdp__titleblock {
-  width: 100%;
-}
-html[data-shell='live'] .pdp__copy,
-html[data-shell='live'] .pdp__cat,
-html[data-shell='live'] .pdp__title,
-html[data-shell='live'] .pdp__brand,
-html[data-shell='live'] .cart-line,
-html[data-shell='live'] .cart-line__name,
-html[data-shell='live'] .pcard,
-html[data-shell='live'] .shop__h1 {
-  min-width: 0;
-  overflow-wrap: break-word;
-}
-
-html[data-shell='live'] .welcome__texts {
-  max-width: min(480px, 100%);
-}
-
-html[data-shell='live'] .pdp__cta {
-  width: 100%;
-}
-
-html[data-shell='live'] .pdp__add,
-html[data-shell='live'] .pdp__stepper {
-  min-width: 0;
-}
-
-html[data-shell='live'] .pdp__media img {
-  width: 100%;
-  height: auto;
-}
-
-html[data-shell='live'] .grid {
-  width: 100%;
-}
-
-html[data-shell='live'] .filters,
-html[data-shell='live'] .chips-row,
-html[data-shell='live'] .tabs {
-  max-width: 100%;
-}
-
-html[data-shell='live'] .ai-banner--search,
-html[data-shell='live'] .ai-banner--pdp,
-html[data-shell='live'] .ai-banner--advice {
-  width: 100%;
-}
-html[data-shell='live'] .ai-banner--pdp .ai-banner__inner {
-  width: 100%;
-  padding: 20px clamp(56px, 24%, 78px) 16px 28px;
-}
-html[data-shell='live'] .ai-banner--pdp .ai-banner__gloss,
-html[data-shell='live'] .ai-banner--search .ai-banner__gloss,
-html[data-shell='live'] .ai-banner--advice .ai-banner__gloss {
-  inset: 6px;
-  top: 6px;
-  right: 6px;
-  bottom: 6px;
-  left: 6px;
-}
-html[data-shell='live'] .why,
-html[data-shell='live'] .why__block,
-html[data-shell='live'] .sheet-card {
-  border: none;
-}
-html[data-shell='live'] .cmp__label {
-  color: var(--text-secondary);
-}
-html[data-shell='live'] .cmp__val {
-  font-size: 16px;
-  line-height: 24px;
-}
-html[data-shell='live'] .sheet .cmp__pair::before {
-  left: 16px;
-  right: 16px;
-}
-html[data-shell='live'] .aicard__icon {
-  width: 24px;
-  height: 24px;
-  flex-basis: 24px;
-}
-
-html[data-shell='live'] .sheet {
-  width: auto;
-}
-
-html[data-shell='live'] .btn {
-  max-width: 100%;
-}
-
-html[data-shell='live'] .onb__chips-block,
-html[data-shell='live'] .onb__chips {
-  max-width: 100%;
-}
-html[data-shell='live'] .onb__chips-block .t-title-17 {
-  text-transform: lowercase;
-  text-align: left;
-  text-wrap: pretty;
-}
-html[data-shell='live'] .pill {
-  text-transform: lowercase;
-}
-html[data-shell='live'] .welcome__caps {
-  max-width: 100%;
-}
-html[data-shell='live'] .cap {
-  flex: 0 0 clamp(128px, 30vw, 168px);
-  width: clamp(128px, 30vw, 168px);
-  height: clamp(120px, 28vw, 156px);
-  justify-content: space-between;
-  padding: 12px 12px 16px;
-}
-html[data-shell='live'] .cap__title {
-  width: auto;
-  max-width: 100%;
-  margin-top: auto;
-}
-html[data-shell='live'] .cap__tag {
-  left: auto;
-  right: 4px;
-}
-html[data-shell='live'] .pcard .badges {
-  max-width: calc(100% - var(--tap));
-}
-html[data-shell='live'] .pcards .pcard {
-  width: clamp(166px, 42vw, 220px) !important;
-}
-
-html[data-shell='live'] .aicard,
-html[data-shell='live'] .handoff {
-  align-self: flex-start;
-  width: min(560px, calc(100% - 32px));
-  max-width: none;
-  margin-left: 16px;
-  margin-right: auto;
-  text-align: left;
-}
-
-html[data-shell='live'] .aicard--flush {
-  width: calc(100% - 32px);
-  margin-right: 16px;
-}
-
-html[data-shell='live'] .chat-header,
-html[data-shell='live'] .bottom-container,
-html[data-shell='live'] .pdp__topbar,
-html[data-shell='live'] .pdp__cta,
-html[data-shell='live'] .cart__footer,
-html[data-shell='live'] .tabbar {
-  width: 100%;
-  margin-inline: 0;
-}
-
-html[data-shell='live'] .pdp__media {
-  max-width: none;
-  margin-inline: 0;
-}
-
-@media (min-width: 720px) {
   html[data-shell='live'] .pdp__media {
-    max-width: 480px;
-    width: calc(100% - 32px);
-    margin-left: 16px;
-    margin-right: auto;
+    max-width: min(280px, 46vh);
+    margin-inline: auto;
   }
-}
-
-html[data-shell='live'] .onb__body {
-  width: 100%;
-  margin-inline: 0;
-}
-
-html[data-shell='live'] .aicard__rating,
-html[data-shell='live'] .pdp__rating,
-html[data-shell='live'] .pdp__reviews {
-  justify-content: flex-start;
-  text-align: left;
-}
-
-html[data-shell='live'] .screen {
-  overflow-x: hidden;
 }

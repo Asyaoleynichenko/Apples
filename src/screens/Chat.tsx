@@ -61,7 +61,7 @@ export default function Chat() {
   const opening = openingLine(chatContext);
   const starters =
     chatContext.from === 'pdp'
-      ? PDP_STARTERS
+      ? [...PDP_STARTERS, ...STARTERS]
       : chatContext.from === 'search'
         ? ([['подбери по запросу', 'q:buy'], ...STARTERS.slice(1)] as const)
         : STARTERS;

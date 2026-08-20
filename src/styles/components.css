@@ -373,6 +373,7 @@
 }
 .pcard .badges {
   max-width: calc(100% - var(--tap));
+  flex-wrap: wrap;
   overflow: hidden;
 }
 .badge {
@@ -386,6 +387,7 @@
   line-height: 24px;
   text-transform: uppercase;
   letter-spacing: 0.08em;
+  white-space: nowrap;
 }
 .badge--sale {
   background: var(--lime);
