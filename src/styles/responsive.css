@@ -157,9 +157,14 @@ html[data-shell='live'] .screen.chat.chat--started .bottom-container {
   background: none;
 }
 html[data-shell='live'] .screen.chat.chat--started .bottom-container::before {
-  background: none;
-  -webkit-backdrop-filter: blur(6px);
-  backdrop-filter: blur(6px);
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.7) 50.32%,
+    #fff 100%
+  );
+  backdrop-filter: blur(0px);
+  -webkit-backdrop-filter: blur(0px);
 }
 
 html[data-shell='live'] .sheet {
