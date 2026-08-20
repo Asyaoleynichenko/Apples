@@ -126,7 +126,7 @@ export default function Chat() {
           <div className="welcome-dock">
             <div className="welcome__section">
               <div className="t-title-17 welcome__section-title">{noOrphan('С чего начнём?')}</div>
-              <div className="welcome__starter-row hscroll">
+              <div className="welcome__starter-row">
                 {starters.map(([label, action]) => (
                   <Pill key={label} label={label} onClick={() => start(action)} />
                 ))}

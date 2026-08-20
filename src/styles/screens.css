@@ -371,17 +371,16 @@
 }
 .welcome__starter-row {
   display: flex;
-  flex-wrap: nowrap;
+  flex-wrap: wrap;
   gap: 8px;
   width: 100%;
   min-width: 0;
   padding: 0 16px;
-  scroll-padding-inline: 16px;
+  overflow: visible;
 }
 .welcome__starter-row .pill {
   flex: 0 0 auto;
 }
-.welcome__starter-row::after,
 .welcome__caps::after {
   content: '';
   flex: 0 0 16px;
@@ -390,15 +389,19 @@
 }
 .welcome__caps {
   display: flex;
+  flex-wrap: nowrap;
   gap: 8px;
   padding: 0 16px;
   scroll-padding-inline: 16px;
   max-width: none;
+  /* Two full cards; the next one only peeks so titles are never sliced. */
+  --cap-peek: 32px;
 }
 .cap {
   position: relative;
-  flex: 0 0 128px;
-  width: 128px;
+  flex: 0 0 calc((100% - 8px - var(--cap-peek, 32px)) / 2);
+  width: calc((100% - 8px - var(--cap-peek, 32px)) / 2);
+  min-width: 0;
   height: 120px;
   background: var(--pill);
   border-radius: 16px;
@@ -424,7 +427,8 @@
   position: absolute;
   width: 52px;
   height: 36px;
-  left: 72px;
+  right: 4px;
+  left: auto;
   top: 4px;
   z-index: 2;
   pointer-events: none;
