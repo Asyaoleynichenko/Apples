@@ -196,11 +196,12 @@ html[data-shell='live'] .ai-banner--advice .ai-banner__copy {
 html[data-shell='live'] .onb__art--head {
   min-height: 0;
   flex: 0 1 auto;
-  max-height: min(200px, 28svh);
+  max-height: min(176px, 24svh);
+  margin-top: 8px;
 }
 
 html[data-shell='live'] .onb__banner {
-  width: min(303.28px, 100%);
+  width: min(268px, 88%);
 }
 
 html[data-shell='live'] .input-wrap__field {
@@ -231,9 +232,12 @@ html[data-shell='live'] .input-wrap__field {
 }
 
 @media (max-height: 500px) {
-  html[data-shell='live'] .onb__art,
-  html[data-shell='live'] .onb__art--head {
+  html[data-shell='live'] .onb__art {
     max-height: 28svh;
+    min-height: 0;
+  }
+  html[data-shell='live'] .onb__art--head {
+    max-height: min(132px, 22svh);
     min-height: 0;
   }
 
@@ -276,6 +280,11 @@ html[data-shell='live'] .pdp__scroll {
   min-width: 0;
 }
 
+html[data-shell='live'] .pdp__titleblock {
+  width: 100%;
+}
+html[data-shell='live'] .pdp__copy,
+html[data-shell='live'] .pdp__cat,
 html[data-shell='live'] .pdp__title,
 html[data-shell='live'] .pdp__brand,
 html[data-shell='live'] .cart-line,
@@ -318,6 +327,28 @@ html[data-shell='live'] .ai-banner--search,
 html[data-shell='live'] .ai-banner--pdp,
 html[data-shell='live'] .ai-banner--advice {
   width: 100%;
+}
+html[data-shell='live'] .ai-banner--pdp .ai-banner__inner {
+  width: 100%;
+  padding: 20px clamp(56px, 24%, 78px) 16px 28px;
+}
+html[data-shell='live'] .ai-banner--pdp .ai-banner__gloss,
+html[data-shell='live'] .ai-banner--search .ai-banner__gloss,
+html[data-shell='live'] .ai-banner--advice .ai-banner__gloss {
+  inset: 6px;
+  top: 6px;
+  right: 6px;
+  bottom: 6px;
+  left: 6px;
+}
+html[data-shell='live'] .why,
+html[data-shell='live'] .why__block {
+  border: none;
+}
+html[data-shell='live'] .aicard__icon {
+  width: 24px;
+  height: 24px;
+  flex-basis: 24px;
 }
 
 html[data-shell='live'] .sheet {

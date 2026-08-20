@@ -79,9 +79,11 @@ export default function Pdp({ productId }: { productId: string }) {
         <div className="promo-bar promo-bar--sand">Еще до −25% на уход от 4 000 ₽ и не только →</div>
 
         <div className="pdp__titleblock">
-          <div className="pdp__cat">{p.category}</div>
-          <div className="pdp__brand">{brand}</div>
-          <h1 className="pdp__title">{title}</h1>
+          <div className="pdp__copy">
+            <div className="pdp__cat">{p.category}</div>
+            <div className="pdp__brand">{brand}</div>
+            <h1 className="pdp__title">{title}</h1>
+          </div>
           <div className="pdp__badges">
             <Badges discount={p.discount} hit={p.hit} />
           </div>

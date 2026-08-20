@@ -18,6 +18,7 @@ import { useAssistant } from '../lib/useAssistant';
 import { openingLine } from '../lib/ai';
 import { PRODUCTS } from '../data/products';
 import { asset } from '../lib/asset';
+import { noOrphan } from '../lib/copy';
 import type { Conversation, QuickReply } from '../lib/types';
 
 /** Starter pills from Figma node 240:26779 — labels are source of truth. */
@@ -74,7 +75,7 @@ export default function Chat() {
               />
             </div>
             <div className="welcome__texts">
-              <div className="t-headline-24">привет, я{'\u00a0'}твой личный ассистент</div>
+              <div className="t-headline-24">{noOrphan('привет, я твой личный ассистент')}</div>
               <div className="t-body-16 welcome__sub">
                 помогу с{'\u00a0'}выбором, подскажу что{'\u00a0'}подходит именно тебе исходя из{'\u00a0'}прошлых покупок.
                 {'\n'}а{'\u00a0'}ещё{'\u00a0'}всегда отвечу на{'\u00a0'}вопросы 💚
@@ -91,7 +92,7 @@ export default function Chat() {
           {!started && (
             <>
               <div className="welcome__section">
-                <div className="t-title-17 welcome__section-title">с чего начнём?</div>
+                <div className="t-title-17 welcome__section-title">{noOrphan('с чего начнём?')}</div>
                 <div className="welcome__starters">
                   <div className="welcome__starter-row hscroll">
                     {STARTERS.slice(0, 3).map(([label, action]) => (

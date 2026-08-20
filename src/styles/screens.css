@@ -67,10 +67,12 @@
   width: 100%;
 }
 .onb__title {
-  padding: 0 16px;
+  padding: 0 16px 8px;
   text-align: center;
   white-space: pre-line;
   flex: 0 0 auto;
+  position: relative;
+  z-index: 1;
 }
 /* Middle well fills space between title and chips/fields. Figma chip art is 375×352. */
 .onb__art {
@@ -97,30 +99,30 @@
   min-height: 160px;
 }
 .onb__art--head {
-  flex: 0 1 228px;
+  flex: 0 1 196px;
   display: flex;
   justify-content: center;
-  overflow: visible;
+  overflow: hidden;
   min-height: 96px;
-  max-height: 228px;
+  max-height: 196px;
 }
 .onb__banner {
   position: relative;
-  width: min(303.28px, 100%);
+  width: min(268px, 88%);
   height: auto;
   aspect-ratio: 303.28 / 227.93;
   max-height: 100%;
   flex: none;
-  overflow: visible;
+  overflow: hidden;
   z-index: 0;
 }
 .onb__banner img {
   position: absolute;
-  width: 113%;
+  width: 96%;
   height: auto;
   aspect-ratio: 342.64 / 248.37;
   left: 50%;
-  top: 46%;
+  top: 52%;
   transform: translate(-50%, -50%);
   max-width: none;
   max-height: none;
@@ -491,6 +493,7 @@
   font-size: 32px;
   line-height: 40px;
   font-weight: 700;
+  text-wrap: balance;
 }
 .shop__h1--tight {
   margin: 0;
@@ -868,9 +871,16 @@
   min-height: 0;
 }
 .pdp__titleblock {
-  position: relative;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
   padding: 16px 16px 12px;
   background: var(--soft);
+}
+.pdp__copy {
+  min-width: 0;
+  flex: 1 1 auto;
 }
 .pdp__cat {
   font-size: 12px;
@@ -894,18 +904,16 @@
   line-height: 20px;
   font-weight: 400;
   letter-spacing: 0;
-  padding-right: 56px;
   color: #000;
   text-transform: lowercase;
 }
 .pdp__badges {
-  position: absolute;
-  right: 0;
-  top: 12px;
+  flex: 0 0 auto;
 }
 .pdp__badges .badges {
   position: static;
   flex-direction: column;
+  align-items: flex-end;
   gap: 4px;
 }
 .pdp__badges .badge {

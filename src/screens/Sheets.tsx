@@ -10,6 +10,7 @@ import { useAssistant } from '../lib/useAssistant';
 import { compareVerdict, handoffContext, preferenceChecks } from '../lib/ai';
 import { formatPrice, productLabel, PRODUCTS, sourcesFor, EDITORIAL, flaconForProducts } from '../data/products';
 import { asset } from '../lib/asset';
+import { noOrphan } from '../lib/copy';
 
 export default function Sheets() {
   const store = useStore();
@@ -103,7 +104,7 @@ function AiIntroSheet() {
               <img src={asset('mascot-phone.png')} alt="" />
             </div>
             <div className="intro__texts">
-              <div className="t-headline-24">привет, я твой личный ассистент</div>
+              <div className="t-headline-24">{noOrphan('привет, я твой личный ассистент')}</div>
               <div className="t-body-16 intro__sub">
                 помогу с выбором, подскажу что подходит именно тебе исходя из прошлых покупок.
                 {'\n'}а ещё всегда отвечу на вопросы 💚

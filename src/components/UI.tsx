@@ -4,6 +4,7 @@ import { AppleMark, Bag, Close, Heart, Person, SearchList } from './Icons';
 import { formatPrice, productLabel, PRODUCTS } from '../data/products';
 import { useStore } from '../lib/store';
 import { asset } from '../lib/asset';
+import { noOrphan } from '../lib/copy';
 
 export function Button({
   children,
@@ -158,7 +159,7 @@ export function BottomSheet({
             <button className="sheet__close press" onClick={onClose} aria-label="Закрыть">
               <Close />
             </button>
-            {title && <div className="sheet__title t-headline-24">{title}</div>}
+            {title && <div className="sheet__title t-headline-24">{noOrphan(title)}</div>}
             <div className="sheet__body scroll">{children}</div>
             {footer && <div className="sheet__footer">{footer}</div>}
           </motion.div>

@@ -9,6 +9,7 @@ import { CATALOG, PRODUCTS } from '../data/products';
 import { useStore } from '../lib/store';
 import { useLiveShell } from '../lib/shell';
 import { asset } from '../lib/asset';
+import { noOrphan } from '../lib/copy';
 import type { ProductType } from '../lib/types';
 
 const PRIORITIES = [
@@ -228,7 +229,7 @@ export default function Onboarding() {
                 <img src={asset('mascot-phone.png')} alt="" />
               </div>
               <div className="onb__texts">
-                <div className="t-headline-24">я твой личный ассистент{'\n'}давай познакомимся</div>
+                <div className="t-headline-24">{noOrphan('я твой личный ассистент\nдавай познакомимся')}</div>
                 <div className="t-body-16">
                   Расскажи немного о себе — и я буду подбирать косметику с учётом твоих предпочтений
                 </div>
@@ -270,7 +271,7 @@ export default function Onboarding() {
             <StepChips
               title="что точно не твоё"
               art={asset('mascot-arms-open.png')}
-              label={'А есть что тебе точно не нравится?\nМожно выбрать несколько'}
+              label={'А есть что тебе точно не\u00a0нравится?\nМожно выбрать несколько'}
               items={DISLIKES}
               selected={dislikes}
               onToggle={(i) => toggle(dislikes, setDislikes, i)}
@@ -280,7 +281,7 @@ export default function Onboarding() {
 
           {step === 'routine' && (
             <>
-              <div className="onb__title t-headline-24">продукты, которые используешь 24/7</div>
+              <div className="onb__title t-headline-24">{noOrphan('продукты, которые используешь 24/7')}</div>
               <div className="onb__art onb__art--head">
                 <div className="onb__banner">
                   <img src={asset('banner-onboarding.png')} alt="" />
@@ -291,7 +292,7 @@ export default function Onboarding() {
                   const filled = Boolean(routine[f.key]);
                   return (
                   <div key={f.key} className="onb__field">
-                    <div className="t-title-17">{f.label}</div>
+                    <div className="t-title-17">{noOrphan(f.label)}</div>
                     <button
                       className="onb__input press"
                       onClick={() =>
@@ -326,7 +327,7 @@ export default function Onboarding() {
           {step === 'done' && (
             <>
               <div className="onb__texts onb__texts--top">
-                <div className="t-headline-24">всё, познакомились 💚</div>
+                <div className="t-headline-24">{noOrphan('всё, познакомились 💚')}</div>
                 <div className="t-body-16">
                   Теперь я буду учитывать твой вкус, бюджет и то, что тебе не подходит. Не понравится рекомендация
                   — скажи. Я запомню
@@ -368,12 +369,12 @@ function StepChips({
 }) {
   return (
     <>
-      <div className="onb__title t-headline-24">{title}</div>
+      <div className="onb__title t-headline-24">{noOrphan(title)}</div>
       <div className={['onb__art', artClass].filter(Boolean).join(' ')}>
         <img src={art} alt="" />
       </div>
       <div className="onb__chips-block">
-        <div className="t-title-17">{label}</div>
+        <div className="t-title-17">{noOrphan(label)}</div>
         <div className="onb__chips">
           {items.map((i) => (
             <Pill key={i} label={i} selected={selected.includes(i)} onClick={() => onToggle(i)} />

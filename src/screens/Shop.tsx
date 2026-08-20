@@ -22,6 +22,7 @@ import { useLiveShell } from '../lib/shell';
 import { extractSlots } from '../lib/intent';
 import { formatPrice, productLabel, PRODUCTS } from '../data/products';
 import { asset } from '../lib/asset';
+import { noOrphan } from '../lib/copy';
 
 /* ------------------------------------------------------------ favorites */
 
@@ -405,7 +406,7 @@ export function Profile() {
 function Section({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <div className="section">
-      <div className="section__title t-title-17">{title}</div>
+      <div className="section__title t-title-17">{noOrphan(title)}</div>
       <div className="section__body">{children}</div>
     </div>
   );

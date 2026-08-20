@@ -661,13 +661,10 @@
 }
 .ai-banner--search .ai-banner__gloss {
   position: absolute;
-  height: 26px;
-  left: 0;
-  right: 0;
-  top: 3px;
+  inset: 6px;
   z-index: 1;
-  border-radius: 999px 999px 0 0;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.5) 0%, rgba(255, 255, 255, 0) 100%);
+  border-radius: inherit;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.5) 0%, rgba(255, 255, 255, 0) 58%);
   pointer-events: none;
 }
 .ai-banner--search .ai-banner__copy {
@@ -770,12 +767,9 @@
 }
 .ai-banner--pdp .ai-banner__gloss {
   position: absolute;
-  height: 64px;
-  left: 12px;
-  right: 4px;
-  top: 8px;
-  border-radius: 999px 999px 0 0;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.5) 0%, rgba(255, 255, 255, 0) 100%);
+  inset: 6px;
+  border-radius: inherit;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.5) 0%, rgba(255, 255, 255, 0) 58%);
   pointer-events: none;
   z-index: 1;
 }
@@ -818,12 +812,9 @@
 }
 .ai-banner--advice .ai-banner__gloss {
   position: absolute;
-  height: 26px;
-  left: 0;
-  right: 0;
-  top: 3px;
-  border-radius: 999px 999px 0 0;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.5) 0%, rgba(255, 255, 255, 0) 100%);
+  inset: 6px;
+  border-radius: inherit;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.5) 0%, rgba(255, 255, 255, 0) 58%);
   pointer-events: none;
   z-index: 1;
 }

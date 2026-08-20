@@ -1,4 +1,5 @@
 import { ChevronLeft, Close } from './Icons';
+import { noOrphan } from '../lib/copy';
 
 /** iPhone X status bar, 44px, exactly as drawn in the Figma component. */
 export function StatusBar({ dark = false }: { dark?: boolean }) {
@@ -53,7 +54,7 @@ export function ChatHeader({
       <button className="chat-header__back press" onClick={onBack} aria-label="Назад">
         {onBack && <ChevronLeft />}
       </button>
-      {title && <div className="chat-header__title t-title-17">{title}</div>}
+      {title && <div className="chat-header__title t-title-17">{noOrphan(title)}</div>}
       <button className="chat-header__close press" onClick={onClose} aria-label="Закрыть">
         {onClose && <Close color="#000" />}
       </button>

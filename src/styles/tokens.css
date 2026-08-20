@@ -99,11 +99,13 @@
   font-size: 24px;
   line-height: 32px;
   letter-spacing: 0;
+  text-wrap: balance;
 }
 .t-title-17 {
   font-weight: 600;
   font-size: 20px;
   line-height: 28px;
+  text-wrap: balance;
 }
 .t-body-16 {
   font-weight: 400;

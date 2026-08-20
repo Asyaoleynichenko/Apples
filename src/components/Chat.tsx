@@ -4,7 +4,7 @@ import { SendArrow } from './Icons';
 import { LOADING_BEATS, LOADING_BEAT_MS } from '../lib/loading';
 import type { QuickReply } from '../lib/types';
 import { asset } from '../lib/asset';
-import { chatCopy } from '../lib/copy';
+import { chatCopy, noOrphan } from '../lib/copy';
 
 export function Avatar({ size = 44 }: { size?: number }) {
   return (
@@ -153,7 +153,7 @@ export function QuickReplies({
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.24, ease: [0.22, 1, 0.36, 1] }}
     >
-      <div className="quick__title t-title-17">{title}</div>
+      <div className="quick__title t-title-17">{noOrphan(title)}</div>
       <div className="quick__row hscroll">
         {replies.map((r) => (
           <Pill key={r.label} label={r.label} onClick={() => onPick(r)} />
