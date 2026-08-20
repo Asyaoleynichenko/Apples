@@ -59,7 +59,7 @@ function CmpPair({
   );
 }
 
-/** Price / rating+reviews / facts — shared by the sheet and the in-chat table. */
+/** Price, ratings and facts — one divider per row. */
 export function CompareFacts({
   price,
   social,
@@ -71,19 +71,13 @@ export function CompareFacts({
 }) {
   return (
     <div className="cmp__rows">
-      <section className="cmp__section cmp__section--price">
-        <CmpPair label={price[0]} left={price[1]} right={price[2]} kind="price" />
-      </section>
-      <section className="cmp__section">
-        {social.map(([label, left, right]) => (
-          <CmpPair key={label} label={label} left={left} right={right} kind="num" />
-        ))}
-      </section>
-      <section className="cmp__section">
-        {rest.map(([label, left, right]) => (
-          <CmpPair key={label} label={label} left={left} right={right} />
-        ))}
-      </section>
+      <CmpPair label={price[0]} left={price[1]} right={price[2]} kind="price" />
+      {social.map(([label, left, right]) => (
+        <CmpPair key={label} label={label} left={left} right={right} kind="num" />
+      ))}
+      {rest.map(([label, left, right]) => (
+        <CmpPair key={label} label={label} left={left} right={right} />
+      ))}
     </div>
   );
 }

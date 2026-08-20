@@ -400,10 +400,12 @@ function CompareSheet() {
             </div>
             <CompareFacts price={facts.price} social={facts.social} rest={facts.rest} />
           </div>
-          <div className="cmp__verdict">
-            <img src={asset('mascot-avatar.png')} alt="" />
-            <div className="t-body-14">{text}</div>
-          </div>
+          {text && (
+            <div className="cmp__verdict">
+              <img src={asset('mascot-avatar.png')} alt="" />
+              <div className="t-body-16">{text}</div>
+            </div>
+          )}
           {flacon.length > 0 && (
             <div className="sheet-card cmp__flacon">
               <div className="cmp__flacon-label t-caption-12">Flacon · медиа Золотого Яблока</div>

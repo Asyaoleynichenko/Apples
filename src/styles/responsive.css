@@ -349,7 +349,7 @@ html[data-shell='live'] .cmp__val {
   font-size: 16px;
   line-height: 24px;
 }
-html[data-shell='live'] .sheet .cmp__section + .cmp__section::before {
+html[data-shell='live'] .sheet .cmp__pair::before {
   left: 16px;
   right: 16px;
 }

@@ -277,10 +277,10 @@ export const AiTag = ({
 
 export const TickOk = ({ size = 16 }: P) => (
   <svg width={size} height={size} viewBox="0 0 18 18" fill="none" aria-hidden>
-    <circle cx="9" cy="9" r="9" fill="var(--ai-green)" />
+    <circle cx="9" cy="9" r="9" fill="#C6B0A0" />
     <path
       d="M5.1 9.15 7.7 11.7 12.9 6.4"
-      stroke="#16350c"
+      stroke="#fff"
       strokeWidth="1.7"
       strokeLinecap="round"
       strokeLinejoin="round"
@@ -290,9 +290,9 @@ export const TickOk = ({ size = 16 }: P) => (
 
 export const TickWarn = ({ size = 16 }: P) => (
   <svg width={size} height={size} viewBox="0 0 18 18" fill="none" aria-hidden>
-    <circle cx="9" cy="9" r="9" fill="#ffcf4a" />
-    <path d="M9 5.1v5.4" stroke="#6b4c00" strokeWidth="1.7" strokeLinecap="round" />
-    <circle cx="9" cy="12.9" r="1.05" fill="#6b4c00" />
+    <circle cx="9" cy="9" r="9" fill="#B3B3B3" />
+    <path d="M9 5.1v5.4" stroke="#fff" strokeWidth="1.7" strokeLinecap="round" />
+    <circle cx="9" cy="12.9" r="1.05" fill="#fff" />
   </svg>
 );
 
@@ -310,14 +310,14 @@ export const StarRating = ({ size = 16, color = '#2a2a2a' }: P) => (
 
 export const PlusBadge = ({ size = 24 }: P) => (
   <svg width={size} height={size} viewBox="0 0 18 18" fill="none" aria-hidden>
-    <circle cx="9" cy="9" r="9" fill="var(--ai-green)" />
-    <path d="M9 5.1v7.8M5.1 9h7.8" stroke="var(--black)" strokeWidth="1.7" strokeLinecap="round" />
+    <circle cx="9" cy="9" r="9" fill="#C6B0A0" />
+    <path d="M9 5.1v7.8M5.1 9h7.8" stroke="#fff" strokeWidth="1.7" strokeLinecap="round" />
   </svg>
 );
 
 export const MinusBadge = ({ size = 24 }: P) => (
   <svg width={size} height={size} viewBox="0 0 18 18" fill="none" aria-hidden>
-    <circle cx="9" cy="9" r="9" fill="var(--lime)" />
-    <path d="M5.1 9h7.8" stroke="var(--black)" strokeWidth="1.7" strokeLinecap="round" />
+    <circle cx="9" cy="9" r="9" fill="#B3B3B3" />
+    <path d="M5.1 9h7.8" stroke="#fff" strokeWidth="1.7" strokeLinecap="round" />
   </svg>
 );
