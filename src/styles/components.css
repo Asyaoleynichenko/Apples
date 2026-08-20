@@ -847,8 +847,15 @@
   position: relative;
   display: grid;
   place-items: center;
-  width: 32px;
-  height: 28px;
+  width: 24px;
+  height: 24px;
+}
+.tabbar__icon svg,
+.tabbar__icon .apple-mark {
+  display: block;
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
 }
 .tabbar__badge {
   position: absolute;

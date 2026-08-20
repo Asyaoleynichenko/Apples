@@ -55,7 +55,7 @@ export function ChatHeader({
       </button>
       {title && <div className="chat-header__title t-title-17">{title}</div>}
       <button className="chat-header__close press" onClick={onClose} aria-label="Закрыть">
-        {onClose && <Close />}
+        {onClose && <Close color="#000" />}
       </button>
     </div>
   );

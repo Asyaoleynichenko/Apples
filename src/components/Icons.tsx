@@ -33,22 +33,22 @@ export const SendArrow = ({ size = 20, color = '#fff' }: P) => (
   </svg>
 );
 
-export const Heart = ({ size = 20, color = '#000', filled = false }: P & { filled?: boolean }) => (
-  <svg width={size} height={size} viewBox="0 0 20 20" fill="none">
+export const Heart = ({ size = 24, color = '#000', filled = false }: P & { filled?: boolean }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none">
     <path
-      d="M10 16.5s-6.2-3.7-6.2-8A3.6 3.6 0 0 1 10 6.2a3.6 3.6 0 0 1 6.2 2.3c0 4.3-6.2 8-6.2 8Z"
+      d="M12 20.2S4.6 15.5 4.6 9.7A4.4 4.4 0 0 1 12 6.1a4.4 4.4 0 0 1 7.4 3.6c0 5.8-7.4 10.5-7.4 10.5Z"
       stroke={color}
-      strokeWidth="1.4"
+      strokeWidth="1.6"
       fill={filled ? color : 'none'}
       strokeLinejoin="round"
     />
   </svg>
 );
 
-export const Bag = ({ size = 20, color = '#000' }: P) => (
-  <svg width={size} height={size} viewBox="0 0 20 20" fill="none">
-    <path d="M4.5 6.5h11l-.9 9.2a1 1 0 0 1-1 .9H6.4a1 1 0 0 1-1-.9L4.5 6.5Z" stroke={color} strokeWidth="1.4" />
-    <path d="M7.4 8V5.6a2.6 2.6 0 0 1 5.2 0V8" stroke={color} strokeWidth="1.4" strokeLinecap="round" />
+export const Bag = ({ size = 24, color = '#000' }: P) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+    <path d="M5.2 8.2h13.6l-1.1 11.2a1.3 1.3 0 0 1-1.3 1.15H7.6a1.3 1.3 0 0 1-1.3-1.15L5.2 8.2Z" stroke={color} strokeWidth="1.6" />
+    <path d="M8.6 9.8V6.6a3.4 3.4 0 0 1 6.8 0v3.2" stroke={color} strokeWidth="1.6" strokeLinecap="round" />
   </svg>
 );
 

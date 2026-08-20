@@ -444,7 +444,7 @@ export function openingLine(ctx: ChatContext): string | null {
     case 'pdp':
       return `Вижу, ты смотришь ${PRODUCTS[ctx.productId]?.name ?? 'этот продукт'}. Спроси — подойдёт ли он тебе, и я разберу состав, отзывы и цену.`;
     case 'search':
-      return `Ищешь «${ctx.query}»? Расскажи, для чего он нужен — и я сузлю выбор.`;
+      return `Ищешь «${ctx.query}»? Расскажи, для чего он нужен — и сузим выбор.`;
     case 'content':
       return `Ты пришла из материала «${ctx.title}». Могу подобрать то, о чём там речь.`;
     default:

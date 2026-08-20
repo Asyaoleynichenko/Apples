@@ -226,10 +226,10 @@ export function AiBanner({ variant = 'expert' }: { variant?: 'expert' | 'search'
 export function TabBar({ active }: { active: 'search' | 'favorites' | 'catalog' | 'profile' | 'cart' }) {
   const { resetTo, cartCount } = useStore();
   const items = [
-    { key: 'search', icon: <SearchList />, go: () => resetTo({ name: 'search' }) },
+    { key: 'search', icon: <SearchList size={24} />, go: () => resetTo({ name: 'search' }) },
     { key: 'favorites', icon: <Heart size={24} />, go: () => resetTo({ name: 'favorites' }) },
-    { key: 'catalog', icon: <AppleMark />, go: () => resetTo({ name: 'favorites' }) },
-    { key: 'profile', icon: <Person color="var(--accent)" />, go: () => resetTo({ name: 'profile' }) },
+    { key: 'catalog', icon: <AppleMark size={24} />, go: () => resetTo({ name: 'favorites' }) },
+    { key: 'profile', icon: <Person size={24} color="var(--accent)" />, go: () => resetTo({ name: 'profile' }) },
     { key: 'cart', icon: <Bag size={24} />, go: () => resetTo({ name: 'cart' }) },
   ] as const;
   return (

@@ -46,8 +46,8 @@
   --black-15: #d9d9d9;
   --black-3: #f9f9f9;
   --brand: #dcff00;
-  --accent: #c6b09f;
-  --accent-dark: #ac8c75;
+  --accent: #aa8c74;
+  --accent-dark: #aa8c74;
   --marketing: #8d01ff;
   --purple-from: #b459ff;
   --purple-to: #8d01ff;
@@ -55,7 +55,7 @@
   --purple-solid: #8d01ff;
   --ai-green: #2fee0b;
   --lime: #dcff00;
-  --link: #c6b09f;
+  --link: #aa8c74;
 
   /* Merch badges */
   --badge-sale: #dcff00;

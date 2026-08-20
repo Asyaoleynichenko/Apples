@@ -954,7 +954,7 @@
   line-height: 20px;
 }
 .pdp__price-note span:first-child {
-  color: #1aae0f;
+  color: var(--accent);
   flex: 0 0 auto;
   white-space: nowrap;
 }
@@ -1245,7 +1245,7 @@
   font-weight: 600;
   letter-spacing: 0.06em;
   text-transform: uppercase;
-  color: #1aae0f;
+  color: var(--accent);
 }
 .cart-line__prices s {
   font-size: 12px;
