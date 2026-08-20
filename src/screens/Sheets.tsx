@@ -1,7 +1,7 @@
 import { AnimatePresence, motion } from 'framer-motion';
 import { useRef, useState, useEffect } from 'react';
 import { flushSync } from 'react-dom';
-import { BottomSheet, Button, AiBanner } from '../components/UI';
+import { BottomSheet, Button, AiBanner, CompareFacts } from '../components/UI';
 import { ChatInput, Pill } from '../components/Chat';
 import { HomeIndicator } from '../components/Chrome';
 import { Heart, CheckCircle, Bag, MinusBadge, PlusBadge, TickOk, TickWarn } from '../components/Icons';
@@ -330,28 +330,32 @@ function CompareSheet() {
     push({ name: 'cart' });
   };
 
-  const rows: [string, string, string][] =
+  const facts =
     a && b
-      ? [
-          ['цена', formatPrice(a.price), formatPrice(b.price)],
-          ['рейтинг', `${a.rating}`, `${b.rating}`],
-          [
-            'отзывы',
-            a.reviews.toLocaleString('ru-RU').replace(/,/g, ' '),
-            b.reviews.toLocaleString('ru-RU').replace(/,/g, ' '),
-          ],
-          ['текстура', a.textureLabel, b.textureLabel],
-          ['эффект', a.effects.slice(0, 2).join(', '), b.effects.slice(0, 2).join(', ')],
-          ['отдушка', a.fragranceLabel, b.fragranceLabel],
-          budget
-            ? [
-                `в бюджет ${formatPrice(budget)}`,
-                a.price <= budget ? 'да' : 'нет',
-                b.price <= budget ? 'да' : 'нет',
-              ]
-            : ['подходящий бюджет', 'без ограничения', 'без ограничения'],
-        ]
-      : [];
+      ? {
+          price: ['цена', formatPrice(a.price), formatPrice(b.price)] as [string, string, string],
+          social: [
+            ['рейтинг', `${a.rating}`, `${b.rating}`],
+            [
+              'отзывы',
+              a.reviews.toLocaleString('ru-RU').replace(/,/g, ' '),
+              b.reviews.toLocaleString('ru-RU').replace(/,/g, ' '),
+            ],
+          ] as [string, string, string][],
+          rest: [
+            ['текстура', a.textureLabel, b.textureLabel],
+            ['эффект', a.effects.slice(0, 2).join(', '), b.effects.slice(0, 2).join(', ')],
+            ['отдушка', a.fragranceLabel, b.fragranceLabel],
+            budget
+              ? [
+                  `в бюджет ${formatPrice(budget)}`,
+                  a.price <= budget ? 'да' : 'нет',
+                  b.price <= budget ? 'да' : 'нет',
+                ]
+              : ['подходящий бюджет', 'без ограничения', 'без ограничения'],
+          ] as [string, string, string][],
+        }
+      : null;
 
   return (
     <BottomSheet
@@ -369,7 +373,7 @@ function CompareSheet() {
         ) : undefined
       }
     >
-      {a && b && (
+      {facts && a && b && (
         <>
           <div className="sheet-card">
             <div className="cmp__head">
@@ -388,23 +392,13 @@ function CompareSheet() {
                       <Bag color="#fff" size={16} />
                     </button>
                   </div>
-                  <button type="button" className="cmp__name press t-body-14" onClick={() => openProduct(p.id)}>
+                  <button type="button" className="cmp__name press" onClick={() => openProduct(p.id)}>
                     {p.brand}
                   </button>
                 </div>
               ))}
             </div>
-            <div className="cmp__rows">
-              {rows.map(([label, va, vb]) => (
-                <div className="cmp__row" key={label}>
-                  <div className="cmp__label t-caption-12">{label}</div>
-                  <div className="cmp__vals">
-                    <span className="t-body-14">{va}</span>
-                    <span className="t-body-14">{vb}</span>
-                  </div>
-                </div>
-              ))}
-            </div>
+            <CompareFacts price={facts.price} social={facts.social} rest={facts.rest} />
           </div>
           <div className="cmp__verdict">
             <img src={asset('mascot-avatar.png')} alt="" />

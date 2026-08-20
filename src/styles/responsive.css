@@ -342,6 +342,17 @@ html[data-shell='live'] .why__block,
 html[data-shell='live'] .sheet-card {
   border: none;
 }
+html[data-shell='live'] .cmp__label {
+  color: var(--text-secondary);
+}
+html[data-shell='live'] .cmp__val {
+  font-size: 16px;
+  line-height: 24px;
+}
+html[data-shell='live'] .sheet .cmp__section + .cmp__section::before {
+  left: 16px;
+  right: 16px;
+}
 html[data-shell='live'] .aicard__icon {
   width: 24px;
   height: 24px;

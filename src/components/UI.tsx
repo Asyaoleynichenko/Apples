@@ -34,6 +34,60 @@ export function Badges({ discount, hit, best }: { discount?: number; hit?: boole
   );
 }
 
+type CmpTriple = [string, string, string];
+
+function CmpPair({
+  label,
+  left,
+  right,
+  kind = 'text',
+}: {
+  label: string;
+  left: string;
+  right: string;
+  kind?: 'text' | 'num' | 'price';
+}) {
+  const valueClass = kind === 'price' ? 'cmp__price' : kind === 'num' ? 'cmp__num' : 'cmp__val';
+  return (
+    <div className="cmp__pair">
+      <div className="cmp__label">{label}</div>
+      <div className="cmp__vals">
+        <span className={valueClass}>{left}</span>
+        <span className={valueClass}>{right}</span>
+      </div>
+    </div>
+  );
+}
+
+/** Price / rating+reviews / facts — shared by the sheet and the in-chat table. */
+export function CompareFacts({
+  price,
+  social,
+  rest,
+}: {
+  price: CmpTriple;
+  social: CmpTriple[];
+  rest: CmpTriple[];
+}) {
+  return (
+    <div className="cmp__rows">
+      <section className="cmp__section cmp__section--price">
+        <CmpPair label={price[0]} left={price[1]} right={price[2]} kind="price" />
+      </section>
+      <section className="cmp__section">
+        {social.map(([label, left, right]) => (
+          <CmpPair key={label} label={label} left={left} right={right} kind="num" />
+        ))}
+      </section>
+      <section className="cmp__section">
+        {rest.map(([label, left, right]) => (
+          <CmpPair key={label} label={label} left={left} right={right} />
+        ))}
+      </section>
+    </div>
+  );
+}
+
 /** Product card as drawn in the recommendation carousel. */
 export function ProductCard({
   productId,

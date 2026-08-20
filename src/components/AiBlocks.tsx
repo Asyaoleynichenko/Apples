@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
 import type { ReactNode } from 'react';
+import { CompareFacts } from './UI';
 import { Bag, MinusBadge, PlusBadge, StarRating, TickOk, TickWarn } from './Icons';
 import { EDITORIAL, PRODUCTS, formatPrice, plural, sourcesFor } from '../data/products';
 import { useStore } from '../lib/store';
@@ -275,10 +276,12 @@ export function CompareBlock({ productIds }: { productIds: string[] }) {
   const [a, b] = productIds.map((id) => PRODUCTS[id]);
   if (!a || !b) return null;
 
-  const rows: [string, string, string][] = [
-    ['цена', formatPrice(a.price), formatPrice(b.price)],
+  const price: [string, string, string] = ['цена', formatPrice(a.price), formatPrice(b.price)];
+  const social: [string, string, string][] = [
     ['рейтинг', `${a.rating}`, `${b.rating}`],
     ['отзывы', a.reviews.toLocaleString('ru-RU').replace(/,/g, ' '), b.reviews.toLocaleString('ru-RU').replace(/,/g, ' ')],
+  ];
+  const rest: [string, string, string][] = [
     ['текстура', a.textureLabel, b.textureLabel],
     ['эффект', a.effects.slice(0, 2).join(', '), b.effects.slice(0, 2).join(', ')],
     ['отдушка', a.fragranceLabel, b.fragranceLabel],
@@ -310,23 +313,13 @@ export function CompareBlock({ productIds }: { productIds: string[] }) {
                 <Bag color="#fff" size={16} />
               </button>
             </div>
-            <button type="button" className="cmp__name press t-body-14" onClick={() => push({ name: 'pdp', productId: p.id })}>
+            <button type="button" className="cmp__name press" onClick={() => push({ name: 'pdp', productId: p.id })}>
               {p.brand}
             </button>
           </div>
         ))}
       </div>
-      <div className="cmp__rows">
-        {rows.map(([label, va, vb]) => (
-          <div className="cmp__row" key={label}>
-            <div className="cmp__label t-caption-12">{label}</div>
-            <div className="cmp__vals">
-              <span className="t-body-14">{va}</span>
-              <span className="t-body-14">{vb}</span>
-            </div>
-          </div>
-        ))}
-      </div>
+      <CompareFacts price={price} social={social} rest={rest} />
       <button className="source__open t-label-14 press aicard__more" onClick={() => openSheet({ name: 'compare', productIds })}>
         развернуть сравнение
       </button>

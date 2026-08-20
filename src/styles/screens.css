@@ -1872,11 +1872,12 @@
 .cmp__head {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 12px;
-  padding-bottom: 12px;
+  gap: 16px;
+  padding-bottom: 8px;
 }
 .cmp__col {
   text-align: left;
+  min-width: 0;
 }
 .cmp__media {
   position: relative;
@@ -1905,8 +1906,10 @@
   padding: 0;
   border: 0;
   background: none;
+  font-size: 16px;
   font-weight: 600;
-  letter-spacing: 0.04em;
+  line-height: 20px;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
   text-align: left;
   cursor: pointer;
@@ -1915,20 +1918,63 @@
   display: flex;
   flex-direction: column;
 }
-.cmp__row {
-  padding: 12px 0;
-  border-top: 1px solid var(--black-15);
+.cmp__section {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 16px 0;
+}
+.cmp__section + .cmp__section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: var(--hairline);
+}
+.sheet .cmp__section + .cmp__section::before {
+  left: 16px;
+  right: 16px;
+}
+.cmp__pair {
+  min-width: 0;
 }
 .cmp__label {
-  color: var(--black);
+  font-size: 12px;
   font-weight: 500;
-  margin-bottom: 4px;
+  line-height: 16px;
+  color: var(--text-secondary);
+  margin-bottom: 8px;
 }
 .cmp__vals {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 12px;
+  gap: 16px;
+  align-items: start;
   text-align: left;
+}
+.cmp__val,
+.cmp__num,
+.cmp__price {
+  min-width: 0;
+  color: var(--text);
+}
+.cmp__val {
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 24px;
+}
+.cmp__num {
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 24px;
+}
+.cmp__price {
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 24px;
 }
 .cmp__verdict {
   margin-top: 16px;
