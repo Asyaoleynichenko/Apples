@@ -18,6 +18,8 @@ import {
 import { AiBanner, Button, ProductCard, TabBar } from '../components/UI';
 import { IosKeyboard } from '../components/Keyboard';
 import { useStore } from '../lib/store';
+import { EMPTY_CONVERSATION } from '../lib/ai';
+import { EMPTY_SLOTS } from '../lib/recommend';
 import { useLiveShell } from '../lib/shell';
 import { extractSlots } from '../lib/intent';
 import { formatPrice, productLabel, PRODUCTS } from '../data/products';
@@ -27,11 +29,13 @@ import { noOrphan } from '../lib/copy';
 /* ------------------------------------------------------------ favorites */
 
 export function Favorites() {
-  const { push, openSheet, setChatContext, favorites } = useStore();
+  const { push, openSheet, setChatContext, setConversation, resetChat, favorites } = useStore();
   const ids = ['frangipani', 'clarins', 'procollagen'];
 
   const openAi = () => {
+    resetChat();
     setChatContext({ from: 'favorites' });
+    setConversation(EMPTY_CONVERSATION);
     openSheet({ name: 'ai-intro' });
   };
 
@@ -116,7 +120,7 @@ export function Favorites() {
 /* --------------------------------------------------------------- search */
 
 export function Search() {
-  const { push, openSheet, setChatContext, setConversation, conversation } = useStore();
+  const { push, openSheet, setChatContext, setConversation, resetChat } = useStore();
   const live = useLiveShell();
   const [q, setQ] = useState('крем');
   const [kb, setKb] = useState(true);
@@ -126,8 +130,13 @@ export function Search() {
 
   // The search query is a request in itself, so it pre-fills the slots.
   const openAi = () => {
+    resetChat();
     setChatContext({ from: 'search', query: q });
-    setConversation({ state: 'UNDERSTANDING_REQUEST', slots: { ...conversation.slots, ...extractSlots(q) } });
+    setConversation({
+      ...EMPTY_CONVERSATION,
+      state: 'UNDERSTANDING_REQUEST',
+      slots: { ...EMPTY_SLOTS, ...extractSlots(q) },
+    });
     openSheet({ name: 'ai-intro' });
   };
 
@@ -320,7 +329,7 @@ export function Cart() {
 
 /** Not present in the Figma file — built from the same tokens and copy voice. */
 export function Profile() {
-  const { profile, cart, push, openSheet, setChatContext, resetTo } = useStore();
+  const { profile, cart, push, openSheet, setChatContext, setConversation, resetChat, resetTo } = useStore();
   const bought = profile.purchases.length ? profile.purchases : cart.map((l) => l.productId);
 
   return (
@@ -387,7 +396,9 @@ export function Profile() {
           <button
             className="profile__ask press"
             onClick={() => {
+              resetChat();
               setChatContext({ from: 'home' });
+              setConversation(EMPTY_CONVERSATION);
               push({ name: 'chat' });
             }}
           >

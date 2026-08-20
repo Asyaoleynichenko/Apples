@@ -31,6 +31,13 @@ const STARTERS = [
   ['подбери оттенок', 'shade-help'],
 ] as const;
 
+const PDP_STARTERS = [
+  ['подойдёт мне?', 'suitability'],
+  ['есть дешевле?', 'cheaper'],
+  ['отзывы', 'reviews'],
+  ['что мне купить?', 'q:buy'],
+] as const;
+
 const CAPABILITIES = [
   { title: 'подбери\nполезное', icon: <Sparkle />, action: 'q:buy', tag: true },
   { title: 'нужен\nсовет', icon: <Bulb />, action: 'routine' },
@@ -39,7 +46,7 @@ const CAPABILITIES = [
 ] as const;
 
 export default function Chat() {
-  const { chat, quickReplies, chatContext, back, resetTo, addToCart, openSheet } = useStore();
+  const { chat, quickReplies, chatContext, back, addToCart, openSheet } = useStore();
   const { run, send, start } = useAssistant();
   const scrollRef = useRef<HTMLDivElement>(null);
 
@@ -52,6 +59,12 @@ export default function Chat() {
 
   const started = chat.length > 0;
   const opening = openingLine(chatContext);
+  const starters =
+    chatContext.from === 'pdp'
+      ? PDP_STARTERS
+      : chatContext.from === 'search'
+        ? ([['подбери по запросу', 'q:buy'], ...STARTERS.slice(1)] as const)
+        : STARTERS;
 
   return (
     <div className="screen chat">
@@ -59,7 +72,7 @@ export default function Chat() {
       <ChatHeader
         title={started ? 'ассистент' : undefined}
         onBack={back}
-        onClose={() => resetTo({ name: 'favorites' })}
+        onClose={back}
       />
 
       <div className="chat-scroll scroll" ref={scrollRef}>
@@ -95,12 +108,12 @@ export default function Chat() {
                 <div className="t-title-17 welcome__section-title">{noOrphan('с чего начнём?')}</div>
                 <div className="welcome__starters">
                   <div className="welcome__starter-row hscroll">
-                    {STARTERS.slice(0, 3).map(([label, action]) => (
+                    {starters.slice(0, 3).map(([label, action]) => (
                       <Pill key={label} label={label} onClick={() => start(action)} />
                     ))}
                   </div>
                   <div className="welcome__starter-row hscroll">
-                    {STARTERS.slice(3).map(([label, action]) => (
+                    {starters.slice(3).map(([label, action]) => (
                       <Pill key={label} label={label} onClick={() => start(action)} />
                     ))}
                   </div>

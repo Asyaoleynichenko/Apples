@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { StatusBar, HomeIndicator } from '../components/Chrome';
 import { AiTag, ChevronLeft, Heart, Share, Bag } from '../components/Icons';
 import { AiBanner, Badges, TabBar } from '../components/UI';
+import { EMPTY_CONVERSATION } from '../lib/ai';
 import { useStore } from '../lib/store';
 import { formatPrice, productLabel, PRODUCTS } from '../data/products';
 
@@ -22,6 +23,7 @@ export default function Pdp({ productId }: { productId: string }) {
     profile,
     favorites,
     toggleFavorite,
+    resetChat,
   } = useStore();
   const [vol, setVol] = useState(p.volumes.find((v) => v.available)?.label ?? p.volumes[0].label);
   const [toast, setToast] = useState(false);
@@ -41,8 +43,9 @@ export default function Pdp({ productId }: { productId: string }) {
   };
 
   const askAi = () => {
+    resetChat();
     setChatContext({ from: 'pdp', productId });
-    setConversation({ state: 'PRODUCT_DETAIL', focusId: productId });
+    setConversation({ ...EMPTY_CONVERSATION, state: 'PRODUCT_DETAIL', focusId: productId, lastIds: [productId] });
     openSheet({ name: 'ai-intro' });
   };
 

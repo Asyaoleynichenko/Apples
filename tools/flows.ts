@@ -160,12 +160,8 @@ class Sim {
 new Sim('FLOW 01 · крем для сухой кожи до 3000')
   .say('Мне нужен крем для сухой кожи до 3000 ₽')
   .expect('поняла: крем')
-  .expect('лёгкую текстуру или')
-  .tap('лёгкую')
-  .expect('до 3 000 ₽')
-  .tap('поднять бюджет')
-  .expect('расширяю бюджет')
   .expect('карточки')
+  .expectNot('лёгкую текстуру или')
   .print();
 
 // FLOW 02 — the guided funnel, then the whole main demo path.
@@ -313,7 +309,15 @@ new Sim('аудит · поиск не переспрашивает катего
   .from({ from: 'search', query: 'крем для сухой кожи' })
   .act('q:buy')
   .expectNot('что сейчас хочется подобрать')
-  .expect('лёгкую текстуру или')
+  .expectNot('лёгкую текстуру или')
+  .expect('карточки')
+  .print();
+
+new Sim('аудит · с PDP не спрашивает категорию')
+  .from({ from: 'pdp', productId: 'doublewear' })
+  .act('q:buy')
+  .expectNot('что сейчас хочется подобрать')
+  .expect('карточки')
   .print();
 
 new Sim('аудит · ответ на уточнение текстом')

@@ -310,15 +310,12 @@ function withSlots(conv: Conversation, patch: Partial<Slots>): Partial<Conversat
 }
 
 /**
- * Which questions are still worth asking. Priority is a ranking nudge from the
- * profile — asking it every time is extra. A request that already names a type
- * or a skin need only fills the texture gap; a vague one asks group, then
- * budget and avoid if the profile does not already know them.
+ * Which questions are still worth asking. A type or skin need is already a
+ * request — don't add a texture interrogation on top. Vague "что купить"
+ * only asks group, then budget/avoid if the profile does not already know them.
  */
 function plan(slots: Slots, profile: BeautyProfile): string[] {
-  const specific = Boolean(slots.type || slots.need);
-  const textureKnown = Boolean(effectiveTexture(slots, profile));
-  if (specific) return textureKnown ? [] : ['texture'];
+  if (slots.type || slots.need) return [];
 
   const steps: string[] = [];
   if (!slots.group) steps.push('group');
@@ -496,20 +493,27 @@ export function greeting(ctx: ChatContext): AiTurn {
 export function runAction(action: string, value: string | undefined, ctx: Ctx): AiTurn {
   const { profile, conv, chatContext } = ctx;
   const [head, arg] = action.split(':');
-  const focus = conv.focusId ?? (chatContext.from === 'pdp' ? chatContext.productId : conv.lastIds[0] ?? null);
+  const focus =
+    conv.focusId ??
+    (chatContext.from === 'pdp' ? chatContext.productId : null) ??
+    conv.lastIds[0] ??
+    profile.viewed[profile.viewed.length - 1] ??
+    null;
 
   switch (head) {
     /* ------------------------------------------------ starting the funnel */
 
     case 'q': {
       // A new request drops the old slots but keeps everything the profile learned,
-      // and keeps what the entry point already told us (search query, etc.).
+      // and keeps what the entry point already told us (search query, PDP, article).
       const fresh = { ...EMPTY_SLOTS, ...slotsFromEntry(chatContext) };
       const turn = advance({ ...conv, slots: fresh }, profile);
+      const focusKeep =
+        chatContext.from === 'pdp' ? chatContext.productId : conv.focusId;
       return {
         userText: 'Что мне купить?',
         ...turn,
-        conversation: { ...turn.conversation, slots: fresh, intent: 'buy' },
+        conversation: { ...turn.conversation, slots: fresh, intent: 'buy', focusId: turn.conversation?.focusId ?? focusKeep ?? null },
       };
     }
 
@@ -1273,7 +1277,12 @@ export function runAction(action: string, value: string | undefined, ctx: Ctx): 
 export function runFreeText(input: string, ctx: Ctx): AiTurn {
   const { profile, conv, chatContext } = ctx;
   const { intent, slots: found, isCorrection } = parse(input);
-  const focus = conv.focusId ?? (chatContext.from === 'pdp' ? chatContext.productId : conv.lastIds[0] ?? null);
+  const focus =
+    conv.focusId ??
+    (chatContext.from === 'pdp' ? chatContext.productId : null) ??
+    conv.lastIds[0] ??
+    profile.viewed[profile.viewed.length - 1] ??
+    null;
   const slotUpdate = Boolean(
     found.group || found.type || found.need || found.budgetMax || found.texture || found.avoid?.length,
   );
@@ -1503,6 +1512,12 @@ function clarifierValue(step: string | undefined, input: string, found: Partial<
 
 function slotsFromEntry(ctx: ChatContext): Partial<Slots> {
   if (ctx.from === 'search') return extractSlots(ctx.query);
+  if (ctx.from === 'content') return extractSlots(ctx.title);
+  if (ctx.from === 'pdp') {
+    const p = PRODUCTS[ctx.productId];
+    if (!p) return {};
+    return { group: p.group, type: p.type };
+  }
   return {};
 }
 

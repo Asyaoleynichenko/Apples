@@ -7,7 +7,7 @@ import { HomeIndicator } from '../components/Chrome';
 import { Heart, CheckCircle, Bag, MinusBadge, PlusBadge, TickOk, TickWarn } from '../components/Icons';
 import { useStore } from '../lib/store';
 import { useAssistant } from '../lib/useAssistant';
-import { compareVerdict, handoffContext, preferenceChecks } from '../lib/ai';
+import { compareVerdict, handoffContext, preferenceChecks, EMPTY_CONVERSATION } from '../lib/ai';
 import { formatPrice, productLabel, PRODUCTS, sourcesFor, EDITORIAL, flaconForProducts } from '../data/products';
 import { asset } from '../lib/asset';
 import { noOrphan } from '../lib/copy';
@@ -122,7 +122,7 @@ function AiIntroSheet() {
 /* ------------------------------------------------------------- share */
 
 function ShareSheet() {
-  const { sheet, closeSheet, openSheet, favorites, toggleFavorite, setChatContext } = useStore();
+  const { sheet, closeSheet, openSheet, favorites, toggleFavorite, setChatContext, setConversation, resetChat } = useStore();
   const open = sheet?.name === 'share';
   const pid = sheet?.name === 'share' ? sheet.productId : 'procollagen';
   const p = PRODUCTS[pid];
@@ -143,7 +143,9 @@ function ShareSheet() {
         <button
           className="press"
           onClick={() => {
+            resetChat();
             setChatContext({ from: 'pdp', productId: pid });
+            setConversation({ ...EMPTY_CONVERSATION, state: 'PRODUCT_DETAIL', focusId: pid, lastIds: [pid] });
             openSheet({ name: 'ai-intro' });
           }}
         >

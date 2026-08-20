@@ -370,6 +370,8 @@
   left: 0;
   top: 0;
   display: flex;
+}
+.pcard .badges {
   max-width: calc(100% - var(--tap));
   overflow: hidden;
 }

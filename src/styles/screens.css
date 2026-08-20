@@ -912,12 +912,16 @@
 }
 .pdp__badges {
   flex: 0 0 auto;
+  min-width: 32px;
 }
 .pdp__badges .badges {
   position: static;
+  display: flex;
   flex-direction: column;
   align-items: flex-end;
   gap: 4px;
+  max-width: none;
+  overflow: visible;
 }
 .pdp__badges .badge {
   height: 24px;
