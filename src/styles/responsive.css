@@ -144,8 +144,27 @@ html[data-shell='live'] .tabbar {
   padding-bottom: env(safe-area-inset-bottom, 0px);
 }
 
-html[data-shell='live'] .bottom-container {
-  padding-bottom: max(14px, env(safe-area-inset-bottom, 14px));
+html[data-shell='live'] .screen.chat .bottom-container {
+  padding-bottom: max(8px, env(safe-area-inset-bottom, 8px));
+  background: #fff;
+}
+html[data-shell='live'] .screen.chat.chat--started .bottom-container {
+  height: auto;
+  min-height: 0;
+  margin-top: 0;
+  padding-bottom: max(16px, env(safe-area-inset-bottom, 16px));
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+html[data-shell='live'] .screen.chat.chat--started .bottom-container::before {
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.8) 50.32%,
+    #fff 100%
+  );
+  -webkit-backdrop-filter: blur(15px);
+  backdrop-filter: blur(15px);
 }
 
 html[data-shell='live'] .sheet {
@@ -248,6 +267,34 @@ html[data-shell='live'] .onb__body {
   margin-inline: 0;
 }
 
+html[data-shell='live'] .screen.chat {
+  --chat-header-top: env(safe-area-inset-top, 0px);
+}
+
+html[data-shell='live'] .screen.chat .chat-header,
+html[data-shell='live'] .chat-header {
+  background: none;
+  background-color: transparent;
+  border: none;
+  box-shadow: none;
+  overflow: visible;
+}
+
+html[data-shell='live'] .screen.chat.chat--started .chat-header {
+  background: none;
+}
+
+html[data-shell='live'] .screen.chat.chat--started .chat-header::before {
+  background: linear-gradient(
+    0deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.7) 50.32%,
+    #fff 100%
+  );
+  backdrop-filter: blur(0px);
+  -webkit-backdrop-filter: blur(0px);
+}
+
 /* -------------------------------------------------------- live: chat */
 
 html[data-shell='live'] .bubble-wrap {
@@ -255,7 +302,7 @@ html[data-shell='live'] .bubble-wrap {
 }
 
 html[data-shell='live'] .row--ai .bubble-wrap {
-  max-width: min(280px, calc(100% - 60px));
+  max-width: min(280px, calc(100% - 8px));
 }
 
 html[data-shell='live'] .row {
@@ -273,6 +320,11 @@ html[data-shell='live'] .quick__row {
 
 html[data-shell='live'] .welcome__texts {
   max-width: min(480px, 100%);
+}
+
+html[data-shell='live'] .welcome-dock {
+  width: 100%;
+  min-width: 0;
 }
 
 html[data-shell='live'] .welcome__starters {

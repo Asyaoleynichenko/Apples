@@ -259,7 +259,7 @@ export default function Onboarding() {
             <StepChips
               title="твой бюджет"
               art={asset('mascot-waving.png')}
-              label="На какую сумму в месяц обычно рассчитываешь?"
+              label="На какую сумму в месяц рассчитываешь?"
               items={BUDGETS}
               selected={budget ? [budget] : []}
               onToggle={(i) => setBudget(i === budget ? null : i)}

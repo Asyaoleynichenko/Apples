@@ -3,16 +3,7 @@ import { useEffect, useState, type ReactNode } from 'react';
 import { SendArrow } from './Icons';
 import { LOADING_BEATS, LOADING_BEAT_MS } from '../lib/loading';
 import type { QuickReply } from '../lib/types';
-import { asset } from '../lib/asset';
 import { chatCopy, noOrphan } from '../lib/copy';
-
-export function Avatar({ size = 44 }: { size?: number }) {
-  return (
-    <div className="avatar" style={{ width: size, height: size }}>
-      <img src={asset('mascot-avatar.png')} alt="" />
-    </div>
-  );
-}
 
 /** Tail hanging under the bubble's square corner, 37×10 as in the design. */
 function Tail({ side, fill }: { side: 'left' | 'right'; fill: string }) {
@@ -56,7 +47,6 @@ export function AiBubble({
 }) {
   return (
     <motion.div className="row row--ai" {...rise}>
-      <Avatar />
       <div className="bubble-wrap">
         <div className="bubble bubble--ai t-bubble-15">
           {text !== undefined
@@ -97,7 +87,6 @@ export function TypingBubble() {
 
   return (
     <motion.div className="row row--ai" {...rise}>
-      <Avatar />
       <div className="bubble-wrap">
         <div className="bubble bubble--ai bubble--loading t-bubble-15">
           <AnimatePresence initial={false}>
@@ -137,7 +126,7 @@ export function Pill({
 
 /** "быстрые ответы" — title plus a horizontally scrolling pill carousel. */
 export function QuickReplies({
-  title = 'быстрые ответы',
+  title = 'Быстрые ответы',
   replies,
   onPick,
 }: {
@@ -176,7 +165,7 @@ export function SendButton({ onClick, disabled }: { onClick?: () => void; disabl
 export function ChatInput({
   onSend,
   onActivate,
-  placeholder = 'спроси что‑нибудь',
+  placeholder = 'Задать свой вопрос',
 }: {
   onSend: (text: string) => void;
   /** Used by the entry-point sheet, where any tap should open the assistant. */

@@ -38,20 +38,18 @@ export function HomeIndicator() {
   return <div className="home-indicator" aria-hidden />;
 }
 
-/** Chat header: 56px, optional centred mascot or title, close at the right. */
+/** Chat header: 56px overlay, optional centred mascot or title, close at the right. */
 export function ChatHeader({
   title,
   center,
   onClose,
-  transparent = false,
 }: {
   title?: string;
   center?: ReactNode;
   onClose?: () => void;
-  transparent?: boolean;
 }) {
   return (
-    <div className="chat-header" style={transparent ? { background: 'transparent' } : undefined}>
+    <div className="chat-header">
       {center}
       {!center && title && <div className="chat-header__title t-title-17">{noOrphan(title)}</div>}
       <button className="chat-header__close press" onClick={onClose} aria-label="Закрыть">

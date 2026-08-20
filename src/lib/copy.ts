@@ -3,10 +3,17 @@ export function chatCopy(text: string) {
   return text.replace(/(?<!\.)\.\s*$/u, '');
 }
 
-/** Keep the last two words of each line together so a heading doesn't leave a hanging word. */
+/** Keep short prepositions with the next word, and the last two words of a line together. */
+const HANGING =
+  /(^|\s)(в|во|на|с|со|к|ко|у|о|об|обо|и|а|но|по|от|до|из|за|для|не|ни|или)\s+/giu;
+
 export function noOrphan(text: string) {
   return text
     .split('\n')
-    .map((line) => line.replace(/(\S+)\s+(\S+)\s*$/u, '$1\u00a0$2'))
+    .map((line) =>
+      line
+        .replace(HANGING, '$1$2\u00a0')
+        .replace(/(\S+)\s+(\S+)\s*$/u, '$1\u00a0$2'),
+    )
     .join('\n');
 }

@@ -41,7 +41,7 @@ const PDP_STARTERS = [
 const CAPABILITIES = [
   { title: 'подбери\nполезное', icon: <Sparkle />, action: 'q:buy', tag: true },
   { title: 'нужен\nсовет', icon: <Bulb />, action: 'routine' },
-  { title: 'применение', icon: <Doc />, action: 'content' },
+  { title: 'как\nпользоваться', icon: <Doc />, action: 'content' },
   { title: 'создай\nподборку', icon: <Layers />, action: 'popular' },
 ] as const;
 
@@ -58,6 +58,7 @@ function ChatMascot({
     <motion.div
       className={compact ? 'welcome__mascot welcome__mascot--header' : 'welcome__mascot'}
       layoutId={MASCOT}
+      style={{ overflow: 'visible' }}
       transition={{ duration: 0.42, ease: [0.22, 1, 0.36, 1] }}
     >
       <img src={asset('banner-expert.png')} alt="" />
@@ -96,7 +97,7 @@ export default function Chat() {
 
   return (
     <LayoutGroup>
-    <div className="screen chat">
+    <div className={started ? 'screen chat chat--started' : 'screen chat'}>
       <StatusBar />
       <ChatHeader
         center={started ? <ChatMascot compact /> : undefined}
@@ -109,54 +110,43 @@ export default function Chat() {
           <div className="welcome__hero">
             <ChatMascot onExpert={() => openSheet({ name: 'consultant' })} />
             <div className="welcome__texts">
-              <div className="t-headline-24">{noOrphan('привет, я твой личный ассистент')}</div>
+              <div className="t-headline-24">{noOrphan('Привет!\nЯ твой AI-ассистент')}</div>
               <div className="t-body-16 welcome__sub">
-                помогу с{'\u00a0'}выбором, подскажу что{'\u00a0'}подходит именно тебе исходя из{'\u00a0'}прошлых покупок.
-                {'\n'}а{'\u00a0'}ещё{'\u00a0'}всегда отвечу на{'\u00a0'}вопросы 💚
+                Помогу выбрать косметику под{'\u00a0'}твой вкус, бюджет и{'\u00a0'}задачи 💚
               </div>
             </div>
           </div>
 
-          {!started && opening && (
+          {opening && (
             <div className="welcome__context">
               <AiBubble>{opening}</AiBubble>
             </div>
           )}
 
-          {!started && (
-            <>
-              <div className="welcome__section">
-                <div className="t-title-17 welcome__section-title">{noOrphan('с чего начнём?')}</div>
-                <div className="welcome__starters">
-                  <div className="welcome__starter-row hscroll">
-                    {starters.slice(0, 3).map(([label, action]) => (
-                      <Pill key={label} label={label} onClick={() => start(action)} />
-                    ))}
-                  </div>
-                  <div className="welcome__starter-row hscroll">
-                    {starters.slice(3).map(([label, action]) => (
-                      <Pill key={label} label={label} onClick={() => start(action)} />
-                    ))}
-                  </div>
-                </div>
+          <div className="welcome-dock">
+            <div className="welcome__section">
+              <div className="t-title-17 welcome__section-title">{noOrphan('С чего начнём?')}</div>
+              <div className="welcome__starter-row hscroll">
+                {starters.map(([label, action]) => (
+                  <Pill key={label} label={label} onClick={() => start(action)} />
+                ))}
               </div>
-
-              <div className="welcome__section">
-                <div className="t-title-17 welcome__section-title">что умею</div>
-                <div className="welcome__caps hscroll">
-                  {CAPABILITIES.map((c) => (
-                    <button key={c.title} className="cap press" onClick={() => start(c.action)}>
-                      <span className="cap__icon">{c.icon}</span>
-                      {'tag' in c && c.tag && (
-                        <img className="cap__tag" src={asset('cap-tag-new.svg')} alt="" />
-                      )}
-                      <span className="cap__title t-card-15">{c.title}</span>
-                    </button>
-                  ))}
-                </div>
+            </div>
+            <div className="welcome__section">
+              <div className="t-title-17 welcome__section-title">Что умею</div>
+              <div className="welcome__caps hscroll">
+                {CAPABILITIES.map((c) => (
+                  <button key={c.title} className="cap press" onClick={() => start(c.action)}>
+                    <span className="cap__icon">{c.icon}</span>
+                    {'tag' in c && c.tag && (
+                      <img className="cap__tag" src={asset('cap-tag-new.svg')} alt="" />
+                    )}
+                    <span className="cap__title t-card-15">{c.title}</span>
+                  </button>
+                ))}
               </div>
-            </>
-          )}
+            </div>
+          </div>
         </div>
         )}
 
@@ -241,7 +231,9 @@ export default function Chat() {
       </div>
 
       <div className="bottom-container">
-        {started && <QuickReplies replies={quickReplies} onPick={onQuickReply} />}
+        {started && (
+          <QuickReplies title="Быстрые ответы" replies={quickReplies} onPick={onQuickReply} />
+        )}
         <ChatInput onSend={send} />
       </div>
     </div>

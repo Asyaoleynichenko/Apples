@@ -104,10 +104,10 @@ function AiIntroSheet() {
               <img src={asset('mascot-phone.png')} alt="" />
             </div>
             <div className="intro__texts">
-              <div className="t-headline-24">{noOrphan('привет, я твой личный ассистент')}</div>
+              <div className="t-headline-24">{noOrphan('Привет, я твой личный ассистент')}</div>
               <div className="t-body-16 intro__sub">
-                помогу с выбором, подскажу что подходит именно тебе исходя из прошлых покупок.
-                {'\n'}а ещё всегда отвечу на вопросы 💚
+                Помогу с выбором, подскажу что подходит именно тебе исходя из прошлых покупок.
+                {'\n'}А ещё всегда отвечу на вопросы 💚
               </div>
             </div>
             <div className="bottom-container" onPointerDown={(e) => e.stopPropagation()}>

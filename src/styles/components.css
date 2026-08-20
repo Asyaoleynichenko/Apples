@@ -40,10 +40,60 @@
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  background: var(--surface);
+  background: transparent;
+  border: none;
+  box-shadow: none;
   position: relative;
   z-index: 3;
   overflow: visible;
+}
+.screen.chat {
+  --chat-header-top: 44px;
+}
+.screen.chat .statusbar {
+  background: none;
+  background-color: transparent;
+  box-shadow: none;
+}
+.screen.chat .chat-header {
+  position: absolute;
+  top: var(--chat-header-top);
+  left: 0;
+  right: 0;
+  flex: none;
+  width: 100%;
+  background: none;
+  background-color: transparent;
+  pointer-events: none;
+  overflow: visible;
+  z-index: 6;
+}
+.screen.chat .chat-header__close {
+  position: relative;
+  z-index: 3;
+  pointer-events: auto;
+}
+.screen.chat.chat--started .chat-header::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: calc(-1 * var(--chat-header-top));
+  height: calc(72px + var(--chat-header-top));
+  background: linear-gradient(
+    0deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.7) 50.32%,
+    #fff 100%
+  );
+  backdrop-filter: blur(0px);
+  -webkit-backdrop-filter: blur(0px);
+  pointer-events: none;
+  z-index: -1;
+}
+.screen.chat.chat--started .chat-scroll {
+  padding-top: 56px;
+  padding-bottom: 24px;
 }
 .chat-header__close {
   width: var(--tap);
@@ -69,7 +119,7 @@
   display: flex;
   flex-direction: column;
   gap: 24px;
-  padding: 0 0 8px;
+  padding: 0 0 16px;
   background: var(--surface);
   position: relative;
   z-index: 0;
@@ -85,7 +135,6 @@
   justify-content: flex-end;
 }
 .row--ai {
-  gap: 16px;
   align-items: flex-end;
 }
 
@@ -136,41 +185,84 @@
 .bubble--loading .bubble__beat {
   grid-area: 1 / 1;
 }
-.avatar {
-  flex: 0 0 44px;
-  width: 44px;
-  height: 44px;
-  border-radius: 50%;
-  overflow: hidden;
-  box-shadow:
-    inset 0 0 4px #fff,
-    0 1.5px 9px rgba(219, 255, 1, 0.2);
-}
-.avatar img {
-  width: 100%;
-  height: 100%;
-  display: block;
-}
 
 /* --------------------------------------------------------- bottom block */
 
 .bottom-container {
+  position: relative;
   flex: 0 0 auto;
   min-width: 0;
   width: 100%;
-  background: var(--surface);
-  padding: 16px 16px 16px;
+  padding: 8px 16px;
   display: flex;
   flex-direction: column;
+  justify-content: flex-end;
+  align-items: flex-start;
   gap: 12px;
   z-index: 3;
   overflow: visible;
+  background: none;
+}
+.bottom-container > * {
+  width: 100%;
+  min-width: 0;
+}
+.screen.chat .bottom-container {
+  background: #fff;
+}
+.screen.chat.chat--started .bottom-container {
+  background: #fff;
+  padding-bottom: 16px;
+  overflow: visible;
+}
+.screen.chat.chat--started .bottom-container::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: -72px;
+  height: 72px;
+  z-index: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.8) 50.32%,
+    #fff 100%
+  );
+  -webkit-backdrop-filter: blur(15px);
+  backdrop-filter: blur(15px);
+  -webkit-mask-image: linear-gradient(180deg, transparent 0%, #000 55%, #000 100%);
+  mask-image: linear-gradient(180deg, transparent 0%, #000 55%, #000 100%);
+}
+.screen.chat.chat--started .bottom-container > * {
+  position: relative;
+  z-index: 1;
+}
+
+.welcome-dock {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  min-width: 0;
+  width: 100%;
+  flex: 0 0 auto;
+}
+.welcome-dock .welcome__section {
+  gap: 16px;
+}
+.welcome-dock .welcome__section-title {
+  padding: 0 16px;
+}
+.welcome-dock .welcome__starter-row,
+.welcome-dock .welcome__caps {
+  max-width: none;
 }
 
 .quick {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 16px;
   min-width: 0;
   width: 100%;
   overflow: visible;
@@ -219,10 +311,11 @@
 }
 
 .input-wrap {
-  height: 56px;
+  width: 100%;
+  height: 58px;
   background: var(--input-bg);
-  border-radius: 28px;
-  padding: 0 8px 0 16px;
+  border-radius: 27px;
+  padding: 8px 8px 8px 16px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -233,13 +326,13 @@
   min-width: 0;
 }
 .input-wrap__field::placeholder {
-  color: var(--text-placeholder);
+  color: #b3b3b3;
 }
 
 .send {
-  flex: 0 0 var(--tap);
-  width: var(--tap);
-  height: var(--tap);
+  flex: none;
+  width: 42px;
+  height: 42px;
   border-radius: 50%;
   display: grid;
   place-items: center;

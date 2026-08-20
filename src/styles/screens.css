@@ -264,12 +264,12 @@
   display: flex;
   flex-direction: column;
   gap: 24px;
-  padding-bottom: 0;
+  padding: 8px 0 8px;
   flex: 1 1 auto;
   min-height: 100%;
   min-width: 0;
   width: 100%;
-  justify-content: space-between;
+  justify-content: flex-end;
 }
 .welcome:has(+ .chat-body) {
   flex: 0 0 auto;
@@ -308,7 +308,8 @@
   top: 50%;
   margin-left: -36px;
   margin-top: -27px;
-  z-index: 1;
+  z-index: 3;
+  overflow: visible;
   pointer-events: none;
 }
 .welcome__mascot--header img {
@@ -338,6 +339,10 @@
   flex: 0 0 auto;
   position: relative;
   z-index: 1;
+}
+.welcome__texts .t-headline-24 {
+  white-space: pre-line;
+  text-wrap: pretty;
 }
 .welcome__sub {
   color: #7a7d85;
@@ -385,8 +390,9 @@
 .welcome__caps {
   display: flex;
   gap: 8px;
-  padding: 0 16px 12px;
+  padding: 0 16px;
   scroll-padding-inline: 16px;
+  max-width: none;
 }
 .cap {
   position: relative;
@@ -395,7 +401,7 @@
   height: 120px;
   background: var(--pill);
   border-radius: 16px;
-  padding: 12px 12px 16px;
+  padding: 12px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
