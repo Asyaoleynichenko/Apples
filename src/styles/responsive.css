@@ -167,7 +167,7 @@ html[data-shell='live'] .floating-ai {
 
 html[data-shell='live'] .search-banner {
   bottom: 0;
-  height: calc(90px + env(safe-area-inset-bottom, 0px));
+  height: calc(88px + env(safe-area-inset-bottom, 0px));
   padding-bottom: env(safe-area-inset-bottom, 0px);
 }
 
@@ -189,9 +189,11 @@ html[data-shell='live'] .welcome__texts {
 }
 
 html[data-shell='live'] .ai-banner--search .ai-banner__copy,
-html[data-shell='live'] .ai-banner--pdp .ai-banner__copy,
 html[data-shell='live'] .ai-banner--advice .ai-banner__copy {
   width: min(226px, calc(100% - 96px));
+}
+html[data-shell='live'] .ai-banner--pdp .ai-banner__copy {
+  max-width: min(226px, calc(100% - 152px));
 }
 
 html[data-shell='live'] .onb__art--head {

@@ -4,32 +4,32 @@ type P = { size?: number; color?: string; className?: string };
 
 export const ChevronLeft = ({ size = 20, color = '#000' }: P) => (
   <svg width={size} height={size} viewBox="0 0 20 20" fill="none">
-    <path d="M12.5 4.5 7 10l5.5 5.5" stroke={color} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+    <path d="M12.5 4.5 7 10l5.5 5.5" stroke={color} strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
   </svg>
 );
 
 export const ChevronRight = ({ size = 20, color = '#000' }: P) => (
   <svg width={size} height={size} viewBox="0 0 20 20" fill="none">
-    <path d="M7.5 4.5 13 10l-5.5 5.5" stroke={color} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+    <path d="M7.5 4.5 13 10l-5.5 5.5" stroke={color} strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
   </svg>
 );
 
 export const ChevronDown = ({ size = 20, color = '#000' }: P) => (
   <svg width={size} height={size} viewBox="0 0 20 20" fill="none">
-    <path d="M5 7.5 10 13l5-5.5" stroke={color} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+    <path d="M5 7.5 10 13l5-5.5" stroke={color} strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
   </svg>
 );
 
-export const Close = ({ size = 16, color = 'rgba(39,43,55,0.3)' }: P) => (
+export const Close = ({ size = 16, color = '#5c5c5c' }: P) => (
   <svg width={size} height={size} viewBox="0 0 16 16" fill="none">
-    <path d="M3 3l10 10M13 3L3 13" stroke={color} strokeWidth="1.8" strokeLinecap="round" />
+    <path d="M3 3l10 10M13 3L3 13" stroke={color} strokeWidth="1.6" strokeLinecap="round" />
   </svg>
 );
 
 export const SendArrow = ({ size = 20, color = '#fff' }: P) => (
   <svg width={size} height={size} viewBox="0 0 20 20" fill="none">
-    <path d="M10 16V5" stroke={color} strokeWidth="1.8" strokeLinecap="round" />
-    <path d="M5.5 9.5 10 4.8l4.5 4.7" stroke={color} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+    <path d="M10 16V5" stroke={color} strokeWidth="1.6" strokeLinecap="round" />
+    <path d="M5.5 9.5 10 4.8l4.5 4.7" stroke={color} strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
   </svg>
 );
 
@@ -45,24 +45,29 @@ export const Heart = ({ size = 24, color = '#000', filled = false }: P & { fille
   </svg>
 );
 
-export const Bag = ({ size = 24, color = '#000' }: P) => (
+export const Bag = ({ size = 24, color = '#000', filled = false }: P & { filled?: boolean }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill="none">
-    <path d="M5.2 8.2h13.6l-1.1 11.2a1.3 1.3 0 0 1-1.3 1.15H7.6a1.3 1.3 0 0 1-1.3-1.15L5.2 8.2Z" stroke={color} strokeWidth="1.6" />
+    <path
+      d="M5.2 8.2h13.6l-1.1 11.2a1.3 1.3 0 0 1-1.3 1.15H7.6a1.3 1.3 0 0 1-1.3-1.15L5.2 8.2Z"
+      stroke={color}
+      strokeWidth="1.6"
+      fill={filled ? color : 'none'}
+    />
     <path d="M8.6 9.8V6.6a3.4 3.4 0 0 1 6.8 0v3.2" stroke={color} strokeWidth="1.6" strokeLinecap="round" />
   </svg>
 );
 
 export const Search = ({ size = 24, color = '#000' }: P) => (
   <svg width={size} height={size} viewBox="0 0 22 22" fill="none">
-    <circle cx="9.8" cy="9.8" r="6.3" stroke={color} strokeWidth="1.5" />
-    <path d="M14.6 14.6 19 19" stroke={color} strokeWidth="1.5" strokeLinecap="round" />
+    <circle cx="9.8" cy="9.8" r="6.3" stroke={color} strokeWidth="1.6" />
+    <path d="M14.6 14.6 19 19" stroke={color} strokeWidth="1.6" strokeLinecap="round" />
   </svg>
 );
 
 /** Catalog tab: magnifying glass + list lines, as on the ЗЯ tab bar. */
-export const SearchList = ({ size = 24, color = '#000' }: P) => (
+export const SearchList = ({ size = 24, color = '#000', filled = false }: P & { filled?: boolean }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill="none">
-    <circle cx="9" cy="11" r="5.4" stroke={color} strokeWidth="1.6" />
+    <circle cx="9" cy="11" r="5.4" stroke={color} strokeWidth="1.6" fill={filled ? color : 'none'} />
     <path d="M13 15.1 16.4 18.5" stroke={color} strokeWidth="1.6" strokeLinecap="round" />
     <path d="M16.6 8.2h6.2M16.6 11.4h6.2M16.6 14.6h4.4" stroke={color} strokeWidth="1.6" strokeLinecap="round" />
   </svg>
@@ -97,19 +102,24 @@ export const AppleMark = ({ size = 24, color = '#000' }: P) => (
   />
 );
 
-export const Person = ({ size = 24, color = '#000' }: P) => (
+export const Person = ({ size = 24, color = '#000', filled = false }: P & { filled?: boolean }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill="none">
-    <circle cx="12" cy="12" r="9.2" stroke={color} strokeWidth="1.6" />
-    <circle cx="12" cy="10" r="3.1" stroke={color} strokeWidth="1.6" />
-    <path d="M6.4 18.6c1.5-2.6 3.4-3.8 5.6-3.8s4.1 1.2 5.6 3.8" stroke={color} strokeWidth="1.6" strokeLinecap="round" />
+    <circle cx="12" cy="12" r="9.2" stroke={color} strokeWidth="1.6" fill={filled ? color : 'none'} />
+    <circle cx="12" cy="10" r="3.1" stroke={filled ? '#fff' : color} strokeWidth="1.6" fill={filled ? '#fff' : 'none'} />
+    <path
+      d="M6.4 18.6c1.5-2.6 3.4-3.8 5.6-3.8s4.1 1.2 5.6 3.8"
+      stroke={filled ? '#fff' : color}
+      strokeWidth="1.6"
+      strokeLinecap="round"
+    />
   </svg>
 );
 
 export const Share = ({ size = 20, color = '#000' }: P) => (
   <svg width={size} height={size} viewBox="0 0 20 20" fill="none">
-    <path d="M10 13.5V3.2" stroke={color} strokeWidth="1.5" strokeLinecap="round" />
-    <path d="M6.3 6.6 10 2.9l3.7 3.7" stroke={color} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-    <path d="M4.5 11.6v4.2a1.2 1.2 0 0 0 1.2 1.2h8.6a1.2 1.2 0 0 0 1.2-1.2v-4.2" stroke={color} strokeWidth="1.5" strokeLinecap="round" />
+    <path d="M10 13.5V3.2" stroke={color} strokeWidth="1.6" strokeLinecap="round" />
+    <path d="M6.3 6.6 10 2.9l3.7 3.7" stroke={color} strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+    <path d="M4.5 11.6v4.2a1.2 1.2 0 0 0 1.2 1.2h8.6a1.2 1.2 0 0 0 1.2-1.2v-4.2" stroke={color} strokeWidth="1.6" strokeLinecap="round" />
   </svg>
 );
 
@@ -130,34 +140,34 @@ export const Sparkle = ({ size = 24, color = '#000' }: P) => (
 
 export const Bulb = ({ size = 24, color = '#000' }: P) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill="none">
-    <path d="M9.2 17.2a6 6 0 1 1 5.6 0v1.6a1.4 1.4 0 0 1-1.4 1.4h-2.8a1.4 1.4 0 0 1-1.4-1.4v-1.6Z" stroke={color} strokeWidth="1.5" strokeLinejoin="round" />
-    <path d="M10 21.5h4" stroke={color} strokeWidth="1.5" strokeLinecap="round" />
+    <path d="M9.2 17.2a6 6 0 1 1 5.6 0v1.6a1.4 1.4 0 0 1-1.4 1.4h-2.8a1.4 1.4 0 0 1-1.4-1.4v-1.6Z" stroke={color} strokeWidth="1.6" strokeLinejoin="round" />
+    <path d="M10 21.5h4" stroke={color} strokeWidth="1.6" strokeLinecap="round" />
   </svg>
 );
 
 export const Doc = ({ size = 24, color = '#000' }: P) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill="none">
-    <path d="M6.5 3.5h7.2L18 7.8v12.7a1 1 0 0 1-1 1H6.5a1 1 0 0 1-1-1v-16a1 1 0 0 1 1-1Z" stroke={color} strokeWidth="1.5" strokeLinejoin="round" />
-    <path d="M13.4 3.6v4.4H18" stroke={color} strokeWidth="1.5" strokeLinejoin="round" />
+    <path d="M6.5 3.5h7.2L18 7.8v12.7a1 1 0 0 1-1 1H6.5a1 1 0 0 1-1-1v-16a1 1 0 0 1 1-1Z" stroke={color} strokeWidth="1.6" strokeLinejoin="round" />
+    <path d="M13.4 3.6v4.4H18" stroke={color} strokeWidth="1.6" strokeLinejoin="round" />
   </svg>
 );
 
 export const Layers = ({ size = 24, color = '#000' }: P) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill="none">
-    <path d="M12 3.5 21 8.2l-9 4.7-9-4.7 9-4.7Z" stroke={color} strokeWidth="1.5" strokeLinejoin="round" />
-    <path d="M3.6 12.5 12 16.9l8.4-4.4M3.6 16.6 12 21l8.4-4.4" stroke={color} strokeWidth="1.5" strokeLinejoin="round" />
+    <path d="M12 3.5 21 8.2l-9 4.7-9-4.7 9-4.7Z" stroke={color} strokeWidth="1.6" strokeLinejoin="round" />
+    <path d="M3.6 12.5 12 16.9l8.4-4.4M3.6 16.6 12 21l8.4-4.4" stroke={color} strokeWidth="1.6" strokeLinejoin="round" />
   </svg>
 );
 
 export const Plus = ({ size = 16, color = '#000' }: P) => (
   <svg width={size} height={size} viewBox="0 0 18 18" fill="none">
-    <path d="M9 3.5v11M3.5 9h11" stroke={color} strokeWidth="1.5" strokeLinecap="round" />
+    <path d="M9 3.5v11M3.5 9h11" stroke={color} strokeWidth="1.6" strokeLinecap="round" />
   </svg>
 );
 
 export const Minus = ({ size = 16, color = '#000' }: P) => (
   <svg width={size} height={size} viewBox="0 0 18 18" fill="none">
-    <path d="M3.5 9h11" stroke={color} strokeWidth="1.5" strokeLinecap="round" />
+    <path d="M3.5 9h11" stroke={color} strokeWidth="1.6" strokeLinecap="round" />
   </svg>
 );
 
@@ -170,23 +180,23 @@ export const CheckCircle = ({ size = 24, color = '#000' }: P) => (
 
 export const Trash = ({ size = 24, color = '#000' }: P) => (
   <svg width={size} height={size} viewBox="0 0 22 22" fill="none">
-    <path d="M4.5 6h13M9 6V4.4A1 1 0 0 1 10 3.4h2a1 1 0 0 1 1 1V6" stroke={color} strokeWidth="1.5" strokeLinecap="round" />
-    <path d="M6.4 6l.8 11.4a1 1 0 0 0 1 .9h5.6a1 1 0 0 0 1-.9L15.6 6" stroke={color} strokeWidth="1.5" />
+    <path d="M4.5 6h13M9 6V4.4A1 1 0 0 1 10 3.4h2a1 1 0 0 1 1 1V6" stroke={color} strokeWidth="1.6" strokeLinecap="round" />
+    <path d="M6.4 6l.8 11.4a1 1 0 0 0 1 .9h5.6a1 1 0 0 0 1-.9L15.6 6" stroke={color} strokeWidth="1.6" />
   </svg>
 );
 
 export const Sliders = ({ size = 24, color = '#000' }: P) => (
   <svg width={size} height={size} viewBox="0 0 22 22" fill="none">
-    <path d="M3 7h16M3 15h16" stroke={color} strokeWidth="1.5" strokeLinecap="round" />
-    <circle cx="8" cy="7" r="2.4" fill="#fff" stroke={color} strokeWidth="1.5" />
-    <circle cx="14" cy="15" r="2.4" fill="#fff" stroke={color} strokeWidth="1.5" />
+    <path d="M3 7h16M3 15h16" stroke={color} strokeWidth="1.6" strokeLinecap="round" />
+    <circle cx="8" cy="7" r="2.4" fill="#fff" stroke={color} strokeWidth="1.6" />
+    <circle cx="14" cy="15" r="2.4" fill="#fff" stroke={color} strokeWidth="1.6" />
   </svg>
 );
 
 export const Sort = ({ size = 24, color = '#000' }: P) => (
   <svg width={size} height={size} viewBox="0 0 22 22" fill="none">
-    <path d="M7 4.5v13M7 4.5 4.5 7M7 4.5 9.5 7" stroke={color} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-    <path d="M15 17.5V4.5M15 17.5 12.5 15M15 17.5 17.5 15" stroke={color} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+    <path d="M7 4.5v13M7 4.5 4.5 7M7 4.5 9.5 7" stroke={color} strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+    <path d="M15 17.5V4.5M15 17.5 12.5 15M15 17.5 17.5 15" stroke={color} strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
   </svg>
 );
 

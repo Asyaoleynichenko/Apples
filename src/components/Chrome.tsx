@@ -36,7 +36,7 @@ export function HomeIndicator() {
   return <div className="home-indicator" aria-hidden />;
 }
 
-/** Chat header: 52px, back at the left, centred title, close at the right. */
+/** Chat header: 56px, back at the left, centred title, close at the right. */
 export function ChatHeader({
   title,
   onBack,

@@ -36,7 +36,7 @@ export const PRODUCTS: Record<string, Product> = {
     routineTime: ['am', 'pm'],
     pros: ['увлажнение', 'текстура — не липнет', 'экономичный расход'],
     cons: ['насыщенный аромат нравится не всем'],
-    contentIds: ['flacon-monoi', 'video-body', 'smm-frangipani'],
+    contentIds: ['flacon-scented-body', 'flacon-cream-lotion', 'video-body', 'smm-frangipani'],
     giftReady: true,
     mentions: 14,
     saves: 3120,
@@ -88,7 +88,7 @@ export const PRODUCTS: Record<string, Product> = {
     routineTime: ['pm'],
     pros: ['упругость', 'почти без запаха', 'заметный результат'],
     cons: ['цена', 'впитывается дольше'],
-    contentIds: ['flacon-firming', 'video-body'],
+    contentIds: ['flacon-unscented', 'flacon-cream-lotion', 'video-body'],
     giftReady: true,
     mentions: 9,
     saves: 4870,
@@ -186,7 +186,7 @@ export const PRODUCTS: Record<string, Product> = {
     routineTime: ['am', 'pm'],
     pros: ['не сушит', 'без запаха', 'цена'],
     cons: ['небольшой объём'],
-    contentIds: ['flacon-cleansing'],
+    contentIds: ['flacon-cleansing', 'flacon-foam'],
     giftReady: false,
     mentions: 7,
     saves: 2240,
@@ -278,7 +278,7 @@ export const PRODUCTS: Record<string, Product> = {
     tags: ['для сухой кожи'],
     pros: ['сияние', 'не сушит', 'естественное покрытие'],
     cons: ['слабое перекрытие для проблемной кожи'],
-    contentIds: ['flacon-foundation', 'video-foundation'],
+    contentIds: ['flacon-foundation-skin', 'flacon-foundation-guide', 'video-foundation'],
     giftReady: false,
     mentions: 11,
     saves: 5300,
@@ -324,7 +324,7 @@ export const PRODUCTS: Record<string, Product> = {
     tags: ['культовый'],
     pros: ['стойкость 24 часа', 'плотное перекрытие'],
     cons: ['подчёркивает сухость', 'плотная текстура', 'сложно растушевать'],
-    contentIds: ['flacon-foundation', 'smm-doublewear'],
+    contentIds: ['flacon-foundation-guide', 'flacon-foundation-skin', 'smm-doublewear'],
     giftReady: false,
     mentions: 18,
     saves: 12400,
@@ -369,7 +369,7 @@ export const PRODUCTS: Record<string, Product> = {
     tags: ['бюджетно', 'новинка'],
     pros: ['цена', 'не утяжеляет'],
     cons: ['всего 4 отзыва'],
-    contentIds: ['smm-curly'],
+    contentIds: ['flacon-curly', 'smm-curly'],
     giftReady: false,
     mentions: 5,
     saves: 890,
@@ -392,70 +392,145 @@ export const CATALOG = Object.values(PRODUCTS);
 const FLACON = 'https://flacon-magazine.com';
 
 export const EDITORIAL: Record<string, Editorial> = {
-  'flacon-monoi': {
-    id: 'flacon-monoi',
+  'flacon-cream-lotion': {
+    id: 'flacon-cream-lotion',
     kind: 'flacon',
-    title: 'Нестыдный вопрос: чем масло монои мягче классических баттеров',
+    title: 'В чем разница между кремом и лосьоном',
     source: 'Flacon',
-    detail: 'Разбор текстуры: кому тает на коже, а кому лучше плотный крем.',
+    detail: 'Плотная vs лёгкая текстура: что впитывается быстрее и кому какой формат.',
     category: 'Уход',
     section: 'Тело',
     minutes: 3,
     cover: asset('product-elemis-frangipani.png'),
-    href: `${FLACON}/ukhod/telo`,
-    topic: 'review',
+    href: `${FLACON}/ukhod/antieydzh/9358762-v-cem-raznica-mezdu-kremom-i-los-onom`,
+    topic: 'guide',
+    tags: ['care', 'cream', 'texture', 'compare'],
   },
-  'flacon-firming': {
-    id: 'flacon-firming',
+  'flacon-unscented': {
+    id: 'flacon-unscented',
     kind: 'flacon',
-    title: 'Кремы для упругости: что реально работает',
+    title: 'Крем-масло для тела без отдушки Zielinski & Rozen: отзыв редактора',
     source: 'Flacon',
-    detail: 'Что стоит за заявлениями брендов — и какие данные за ними есть.',
+    detail: 'Плотная тающая текстура и почти незаметный запах — разбор для тех, кто не любит отдушки.',
     category: 'Уход',
     section: 'Тело',
     minutes: 4,
     cover: asset('product-clarins-body-firming.png'),
-    href: `${FLACON}/ukhod/telo`,
+    href: `${FLACON}/ukhod/telo/9106328-krem-maslo-dlya-tela-bez-otdushki-zielinski--rozen-otzyv-redaktora-skeptika`,
     topic: 'review',
+    tags: ['care', 'cream', 'fragrance'],
+  },
+  'flacon-scented-body': {
+    id: 'flacon-scented-body',
+    kind: 'flacon',
+    title: 'Парфюмированный крем для тела LIA LAB: отзыв редактора',
+    source: 'Flacon',
+    detail: 'Лёгкая муссовая текстура и заметная отдушка — кому такой уход заходит, а кому нет.',
+    category: 'Уход',
+    section: 'Тело',
+    minutes: 3,
+    cover: asset('product-elemis-frangipani.png'),
+    href: `${FLACON}/ukhod/telo/2190835-krem-dlya-tela-lia-craft-cosmetics-otzyv-redaktora-kotory-lyubit-vkusnyye-otdushki`,
+    topic: 'review',
+    tags: ['care', 'cream', 'fragrance'],
   },
   'flacon-cleansing': {
     id: 'flacon-cleansing',
     kind: 'flacon',
-    title: 'Почему после умывания не должно стягивать',
+    title: 'Все, что нужно знать об умывании: 8 популярных вопросов',
     source: 'Flacon',
-    detail: 'Короткий разбор pH очищения — без маркетинговых обещаний.',
+    detail: 'Температура воды, «скрип» после пенки и зачем не пересушивать барьер.',
     category: 'Уход',
     section: 'Лицо',
-    minutes: 2,
+    minutes: 5,
     cover: asset('product-celimax-foam.png'),
-    href: `${FLACON}/ukhod`,
-    topic: 'review',
+    href: `${FLACON}/zdorovye/organizm/843275-likbez-po-umyvaniu-8-nestydnyh-voprosov`,
+    topic: 'guide',
+    tags: ['care', 'cleanser'],
   },
-  'flacon-foundation': {
-    id: 'flacon-foundation',
+  'flacon-foam': {
+    id: 'flacon-foam',
     kind: 'flacon',
-    title: 'Тональные для сухой кожи: сияние vs плотность',
+    title: 'Без вины виноватая: пенка для лица',
     source: 'Flacon',
-    detail: 'Свотчи и носка: Futurist и Double Wear на сухой коже.',
+    detail: 'Кому пенка подходит, какие ПАВ лучше не брать и чем она отличается от геля.',
+    category: 'Уход',
+    section: 'Лицо',
+    minutes: 4,
+    cover: asset('product-celimax-foam.png'),
+    href: `${FLACON}/lyudi/intervyu/9258706-bez-viny-vinovataa-penka-dla-lica`,
+    topic: 'review',
+    tags: ['care', 'cleanser'],
+  },
+  'flacon-foundation-skin': {
+    id: 'flacon-foundation-skin',
+    kind: 'flacon',
+    title: 'Да-да, нет-нет: как выбрать тональную основу по типу кожи',
+    source: 'Flacon',
+    detail: 'Сухая, жирная, чувствительная: какие текстуры тона не сушат и не скатываются.',
     category: 'Макияж',
     section: 'Тон',
-    minutes: 5,
+    minutes: 6,
     cover: asset('product-el-futurist.png'),
-    href: `${FLACON}/makiyazh/ton/6872415-koroleva-vecherinki-5-trendovykh-makiyazhey-na-novy-god`,
-    topic: 'swatch',
+    href: `${FLACON}/makiyazh/trendy/7598406-da-da-net-net-kak-vybrat-tonal-nuu-osnovu-po-tipu-koz`,
+    topic: 'guide',
+    tags: ['makeup', 'foundation', 'compare'],
+  },
+  'flacon-foundation-guide': {
+    id: 'flacon-foundation-guide',
+    kind: 'flacon',
+    title: 'Шарики, кушон и «умывание»: гайд по тональным средствам и пудре',
+    source: 'Flacon',
+    detail: 'Чем флюид отличается от крема и когда плотность покрытия — это уже минус.',
+    category: 'Макияж',
+    section: 'Тон',
+    minutes: 7,
+    cover: asset('product-el-doublewear.png'),
+    href: `${FLACON}/makiyazh/ton/382759-tonalnik-ili-pudra-kak-vybrat-to-chto-nuzhno-imenno-vam-gid-leny-yasenkovoy`,
+    topic: 'guide',
+    tags: ['makeup', 'foundation', 'compare'],
   },
   'flacon-lipstick': {
     id: 'flacon-lipstick',
     kind: 'flacon',
-    title: 'Как выбрать ту самую матовую помаду (и не пересушить губы)',
+    title: 'Как выбрать ту самую красную помаду (и выглядеть отлично)',
     source: 'Flacon',
-    detail: 'Свотчи MAC macximal: как ложится пигмент и где формула честнее обещаний.',
+    detail: 'Как подобрать формулу и оттенок, чтобы матовый пигмент не сушил губы.',
     category: 'Макияж',
     section: 'Губы',
     minutes: 2,
     cover: asset('product-mac-macximal.png'),
     href: `${FLACON}/makiyazh/guby/9638172-kak-vybrat-tu-samuyu-krasnuyu-pomadu-i-vyglyadet-otlichno`,
     topic: 'swatch',
+    tags: ['makeup', 'lipstick', 'compare'],
+  },
+  'flacon-spf': {
+    id: 'flacon-spf',
+    kind: 'flacon',
+    title: 'Нестыдный вопрос: нужно ли наносить SPF каждый день',
+    source: 'Flacon',
+    detail: 'Разбор экспертных споров: когда санскрин обязателен, а когда можно смотреть на УФ-индекс.',
+    category: 'Уход',
+    section: 'Защита',
+    minutes: 4,
+    cover: asset('product-elemis-frangipani.png'),
+    href: `${FLACON}/ukhod/telo/3409126-nestydny-vopros-nuzhno-li-nanosit-spf-kazhdy-den`,
+    topic: 'guide',
+    tags: ['spf', 'care'],
+  },
+  'flacon-curly': {
+    id: 'flacon-curly',
+    kind: 'flacon',
+    title: 'Кудрявый метод: что такое curly girl method и правила ухода',
+    source: 'Flacon',
+    detail: 'Как ухаживать за завитком без сульфатов и силиконов — гайд редакции, не выдумка.',
+    category: 'Волосы',
+    section: 'Уход',
+    minutes: 6,
+    cover: asset('product-curly-mist.png'),
+    href: `${FLACON}/volosy/pricheski/862317-volosy-curly-girl-method`,
+    topic: 'guide',
+    tags: ['hair', 'compare'],
   },
   'video-body': {
     id: 'video-body',
@@ -467,7 +542,7 @@ export const EDITORIAL: Record<string, Editorial> = {
     section: 'Тело',
     minutes: 1,
     cover: asset('product-elemis-frangipani.png'),
-    href: FLACON,
+    href: `${FLACON}/ukhod/antieydzh/9358762-v-cem-raznica-mezdu-kremom-i-los-onom`,
     topic: 'swatch',
   },
   'video-procollagen': {
@@ -480,7 +555,7 @@ export const EDITORIAL: Record<string, Editorial> = {
     section: 'Тело',
     minutes: 1,
     cover: asset('product-elemis-procollagen.png'),
-    href: FLACON,
+    href: `${FLACON}/ukhod/antieydzh/9358762-v-cem-raznica-mezdu-kremom-i-los-onom`,
     topic: 'guide',
   },
   'video-mac': {
@@ -493,7 +568,7 @@ export const EDITORIAL: Record<string, Editorial> = {
     section: 'Губы',
     minutes: 3,
     cover: asset('product-mac-macximal.png'),
-    href: FLACON,
+    href: `${FLACON}/makiyazh/guby/9638172-kak-vybrat-tu-samuyu-krasnuyu-pomadu-i-vyglyadet-otlichno`,
     topic: 'swatch',
   },
   'video-foundation': {
@@ -506,7 +581,7 @@ export const EDITORIAL: Record<string, Editorial> = {
     section: 'Тон',
     minutes: 4,
     cover: asset('product-el-futurist.png'),
-    href: FLACON,
+    href: `${FLACON}/makiyazh/trendy/7598406-da-da-net-net-kak-vybrat-tonal-nuu-osnovu-po-tipu-koz`,
     topic: 'swatch',
   },
   'smm-frangipani': {
@@ -519,7 +594,7 @@ export const EDITORIAL: Record<string, Editorial> = {
     section: 'Тело',
     minutes: 1,
     cover: asset('product-elemis-frangipani.png'),
-    href: FLACON,
+    href: `${FLACON}/ukhod/telo/2190835-krem-dlya-tela-lia-craft-cosmetics-otzyv-redaktora-kotory-lyubit-vkusnyye-otdushki`,
     topic: 'guide',
   },
   'smm-mac': {
@@ -532,7 +607,7 @@ export const EDITORIAL: Record<string, Editorial> = {
     section: 'Губы',
     minutes: 1,
     cover: asset('product-mac-macximal.png'),
-    href: FLACON,
+    href: `${FLACON}/makiyazh/guby/9638172-kak-vybrat-tu-samuyu-krasnuyu-pomadu-i-vyglyadet-otlichno`,
     topic: 'guide',
   },
   'smm-doublewear': {
@@ -545,7 +620,7 @@ export const EDITORIAL: Record<string, Editorial> = {
     section: 'Тон',
     minutes: 1,
     cover: asset('product-el-doublewear.png'),
-    href: FLACON,
+    href: `${FLACON}/makiyazh/trendy/7598406-da-da-net-net-kak-vybrat-tonal-nuu-osnovu-po-tipu-koz`,
     topic: 'review',
   },
   'smm-curly': {
@@ -558,7 +633,7 @@ export const EDITORIAL: Record<string, Editorial> = {
     section: 'Уход',
     minutes: 2,
     cover: asset('product-curly-mist.png'),
-    href: FLACON,
+    href: `${FLACON}/volosy/pricheski/862317-volosy-curly-girl-method`,
     topic: 'guide',
   },
 };
@@ -652,6 +727,46 @@ export const plural = (n: number, one: string, few: string, many: string) => {
   if (mod10 >= 2 && mod10 <= 4 && (mod100 < 10 || mod100 >= 20)) return few;
   return many;
 };
+
+/** Flacon pieces that actually speak to these products — used in compare and content. */
+export function flaconForProducts(productIds: string[], limit = 2): string[] {
+  const keys = new Set<string>();
+  for (const id of productIds) {
+    const p = PRODUCTS[id];
+    if (!p) continue;
+    keys.add(p.group);
+    keys.add(p.type);
+    if (p.fragrance === 'strong' || p.fragrance === 'none') keys.add('fragrance');
+    if (p.texture === 'light' || p.texture === 'rich') keys.add('texture');
+  }
+  keys.add('compare');
+  return Object.values(EDITORIAL)
+    .filter((e) => e.kind === 'flacon' && e.tags?.some((tag) => keys.has(tag)))
+    .sort((a, b) => {
+      const score = (e: Editorial) => (e.tags?.includes('compare') ? 2 : 0) + (e.tags?.filter((t) => keys.has(t)).length ?? 0);
+      return score(b) - score(a);
+    })
+    .slice(0, limit)
+    .map((e) => e.id);
+}
+
+/** If Flacon has a piece on this question, return it instead of inventing an answer. */
+export function flaconForQuery(query: string, limit = 2): string[] {
+  const q = query.toLowerCase();
+  const hit: string[] = [];
+  if (/(нужно ли|каждый день|зачем).{0,20}(spf|санскрин)|spf.{0,12}каждый день|санскрин каждый/i.test(q)) hit.push('spf');
+  if (/лосьон|крем и лосьон|разница между кремом/i.test(q)) hit.push('texture', 'cream', 'compare');
+  if (/умыван|пенк|очищен|демакияж/i.test(q)) hit.push('cleanser');
+  if (/тональ|тональник|кушон|флюид/i.test(q)) hit.push('foundation');
+  if (/помад|губ/i.test(q)) hit.push('lipstick');
+  if (/отдушк|без аромат|парфюмированн/i.test(q)) hit.push('fragrance');
+  if (/кудр|локон|curly|волнист/i.test(q)) hit.push('hair');
+  if (!hit.length) return [];
+  return Object.values(EDITORIAL)
+    .filter((e) => e.kind === 'flacon' && e.tags?.some((tag) => hit.includes(tag)))
+    .slice(0, limit)
+    .map((e) => e.id);
+}
 
 export const formatPrice = (value: number) => `${value.toLocaleString('ru-RU').replace(/,/g, ' ')} ₽`;
 

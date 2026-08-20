@@ -187,7 +187,7 @@ export function AiBanner({ variant = 'expert' }: { variant?: 'expert' | 'search'
           <span className="ai-banner__gloss" />
           <span className="ai-banner__copy">
             <b>не знаешь, что выбрать?</b>
-            {'\n'}расскажи, что хочется — я найду подходящие варианты
+            <span>расскажи, что хочется — я найду подходящие варианты</span>
           </span>
         </span>
         <img className="ai-banner__ill" src={asset('mascot-banner-pdp.png')} alt="" />
@@ -223,26 +223,39 @@ export function AiBanner({ variant = 'expert' }: { variant?: 'expert' | 'search'
   );
 }
 
-export function TabBar({ active }: { active: 'search' | 'favorites' | 'catalog' | 'profile' | 'cart' }) {
+export function TabBar({ active }: { active?: 'search' | 'favorites' | 'catalog' | 'profile' | 'cart' }) {
   const { resetTo, cartCount } = useStore();
   const items = [
-    { key: 'search', icon: <SearchList size={24} />, go: () => resetTo({ name: 'search' }) },
-    { key: 'favorites', icon: <Heart size={24} />, go: () => resetTo({ name: 'favorites' }) },
-    { key: 'catalog', icon: <AppleMark size={24} />, go: () => resetTo({ name: 'favorites' }) },
-    { key: 'profile', icon: <Person size={24} color="var(--accent)" />, go: () => resetTo({ name: 'profile' }) },
-    { key: 'cart', icon: <Bag size={24} />, go: () => resetTo({ name: 'cart' }) },
-  ] as const;
+    { key: 'search' as const, go: () => resetTo({ name: 'search' }) },
+    { key: 'favorites' as const, go: () => resetTo({ name: 'favorites' }) },
+    { key: 'catalog' as const, go: () => resetTo({ name: 'favorites' }) },
+    { key: 'profile' as const, go: () => resetTo({ name: 'profile' }) },
+    { key: 'cart' as const, go: () => resetTo({ name: 'cart' }) },
+  ];
+
   return (
     <div className="tabbar">
-      {items.map((it) => (
-        <button key={it.key} className="tabbar__item press" onClick={it.go} aria-label={it.key}>
-          <span className="tabbar__icon" style={{ opacity: active === it.key ? 1 : 0.92 }}>
-            {it.icon}
-            {it.key === 'cart' && cartCount > 0 && <span className="tabbar__badge">{cartCount}</span>}
-            {it.key === 'profile' && <span className="tabbar__dot" />}
-          </span>
-        </button>
-      ))}
+      {items.map((it) => {
+        const on = active === it.key;
+        return (
+          <button
+            key={it.key}
+            className={`tabbar__item press${on ? ' tabbar__item--on' : ''}`}
+            onClick={it.go}
+            aria-label={it.key}
+            aria-current={on ? 'page' : undefined}
+          >
+            <span className="tabbar__icon">
+              {it.key === 'search' && <SearchList size={24} color="currentColor" />}
+              {it.key === 'favorites' && <Heart size={24} color="currentColor" />}
+              {it.key === 'catalog' && <AppleMark size={24} color="currentColor" />}
+              {it.key === 'profile' && <Person size={24} color="currentColor" />}
+              {it.key === 'cart' && <Bag size={24} color="currentColor" />}
+              {it.key === 'cart' && cartCount > 0 && <span className="tabbar__badge">{cartCount}</span>}
+            </span>
+          </button>
+        );
+      })}
     </div>
   );
 }

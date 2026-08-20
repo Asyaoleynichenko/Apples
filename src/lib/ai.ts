@@ -1,4 +1,4 @@
-import { EDITORIAL, PRODUCTS, formatPrice, plural } from '../data/products';
+import { EDITORIAL, PRODUCTS, flaconForProducts, flaconForQuery, formatPrice, plural } from '../data/products';
 import { parse, extractSlots } from './intent';
 import {
   EMPTY_SLOTS,
@@ -649,6 +649,8 @@ export function runAction(action: string, value: string | undefined, ctx: Ctx): 
     case 'compare': {
       const pair = conv.compareIds.length >= 2 ? conv.compareIds : conv.lastIds.slice(0, 2);
       if (pair.length < 2) {
+        const fromFlacon = flaconForQuery(value ?? '');
+        if (fromFlacon.length && !conv.lastIds.length) return flaconCiteTurn(value ?? 'Сравнить', fromFlacon);
         if (!conv.slots.group && !conv.slots.type && !conv.lastIds.length) return needContext();
         const fallback = recommend(conv.slots, profile).ids.slice(0, 2);
         if (fallback.length < 2) return needContext();
@@ -736,9 +738,16 @@ export function runAction(action: string, value: string | undefined, ctx: Ctx): 
     }
 
     case 'content': {
-      if (!focus) return needContext();
+      if (!focus) {
+        const fromQuery = flaconForQuery(value ?? '');
+        if (fromQuery.length) return flaconCiteTurn(value ?? 'Есть обзоры?', fromQuery);
+        return needContext();
+      }
       const p = PRODUCTS[focus];
-      if (!p.contentIds.length)
+      const fromProduct = p.contentIds.filter((id) => EDITORIAL[id]);
+      const extras = flaconForProducts([focus]).filter((id) => !fromProduct.includes(id));
+      const ids = [...fromProduct.filter((id) => EDITORIAL[id]?.kind === 'flacon'), ...fromProduct.filter((id) => EDITORIAL[id]?.kind !== 'flacon'), ...extras];
+      if (!ids.length)
         return {
           userText: 'Есть обзоры?',
           messages: [t(`Материалов именно по ${p.brand} у меня нет. Не хочу выдумывать — могу показать отзывы покупательниц.`)],
@@ -746,17 +755,17 @@ export function runAction(action: string, value: string | undefined, ctx: Ctx): 
           conversation: { state: 'UNKNOWN', focusId: focus },
         };
       const wantSwatch = /свотч|на коже|оттенк|как смотр/.test((value ?? '').toLowerCase());
-      const ids = [...p.contentIds].sort((a, b) => rankContent(a, wantSwatch) - rankContent(b, wantSwatch));
-      const hasFlacon = ids.some((id) => EDITORIAL[id]?.kind === 'flacon');
+      const ranked = [...ids].sort((a, b) => rankContent(a, wantSwatch) - rankContent(b, wantSwatch));
+      const hasFlacon = ranked.some((id) => EDITORIAL[id]?.kind === 'flacon');
       return {
         userText: wantSwatch ? 'Покажи свотчи' : 'Есть обзоры?',
         messages: [
           t(
             hasFlacon
-              ? 'Беру из Flacon — это медиа Золотого Яблока. Обзоры и свотчи оттуда, ничего не додумываю.'
+              ? 'Беру из Flacon — это медиа Золотого Яблока. Обзоры и гайды оттуда, ничего не додумываю.'
               : 'В Flacon по этому средству пока пусто. Показываю видео Золотого Яблока — там как раз свотчи и носка.',
           ),
-          { id: uid('ed'), role: 'ai', kind: 'content', contentIds: ids },
+          { id: uid('ed'), role: 'ai', kind: 'content', contentIds: ranked.slice(0, 3) },
         ],
         replies: [reply('отзывы', 'reviews'), reply('посмотреть источники', 'sources'), reply('сравнить', 'compare'), reply('вернуться к подборке', 'back-to-list')],
         conversation: { state: 'SHOWING_EVIDENCE', focusId: focus },
@@ -1243,7 +1252,10 @@ export function runFreeText(input: string, ctx: Ctx): AiTurn {
     intent === 'feedback';
 
   // Out of scope always wins — even mid-gift — so we never invent an answer.
+  // If Flacon has a piece on the topic, cite it instead of a blank refusal.
   if (intent === 'unknown' && !clarifierValue(conv.pending[0], input, found) && !found.group && !found.type && !found.budgetMax && !found.need) {
+    const fromFlacon = flaconForQuery(input);
+    if (fromFlacon.length) return flaconCiteTurn(input, fromFlacon);
     return unknownTurn(input);
   }
 
@@ -1276,7 +1288,7 @@ export function runFreeText(input: string, ctx: Ctx): AiTurn {
     case 'content':
       return runAction('content', input, ctx);
     case 'compare':
-      return runAction('compare', undefined, ctx);
+      return runAction('compare', input, ctx);
     case 'cheaper':
       return runAction('cheaper', undefined, ctx);
     case 'similar':
@@ -1414,21 +1426,43 @@ function compareTurn(pair: string[], conv: Conversation, profile: BeautyProfile)
   const winner = pickWinner(a.id, b.id, conv.slots, profile);
   const w = PRODUCTS[winner];
   const l = PRODUCTS[winner === a.id ? b.id : a.id];
+  const articles = flaconForProducts([a.id, b.id], 2);
+  const messages: ChatMessage[] = [
+    t('Давай.'),
+    { id: uid('cm'), role: 'ai', kind: 'compare', productIds: [a.id, b.id] },
+    t(`Если выбирать именно для тебя, я бы взяла ${w.brand}. ${compareReason(w.id, l.id, conv.slots, profile)}`),
+  ];
+  if (articles.length) {
+    messages.push(
+      t('Чтобы не гадать, вот статьи Flacon по этой категории — медиа Золотого Яблока. Я опираюсь на них, а не додумываю.'),
+      { id: uid('ed'), role: 'ai', kind: 'content', contentIds: articles },
+    );
+  }
 
   return {
     userText: 'Сравни эти два',
-    messages: [
-      t('Давай.'),
-      { id: uid('cm'), role: 'ai', kind: 'compare', productIds: [a.id, b.id] },
-      t(`Если выбирать именно для тебя, я бы взяла ${w.brand}. ${compareReason(w.id, l.id, conv.slots, profile)}`),
-    ],
+    messages,
     replies: [
       reply(`выбрать ${w.brand}`, `open:${w.id}`),
       reply(`посмотреть ${l.brand}`, `open:${l.id}`),
       reply('почему?', 'why'),
+      reply('статьи Flacon', 'content'),
       reply('откуда данные', 'sources'),
     ],
     conversation: { state: 'COMPARING', compareIds: [a.id, b.id], focusId: w.id },
+  };
+}
+
+function flaconCiteTurn(userText: string, contentIds: string[]): AiTurn {
+  const first = EDITORIAL[contentIds[0]];
+  return {
+    userText,
+    messages: [
+      t(`Не буду выдумывать то, чего нет в карточке товара. Во Flacon есть разбор: «${first?.title ?? 'статья'}».`),
+      { id: uid('ed'), role: 'ai', kind: 'content', contentIds },
+    ],
+    replies: [reply('сравнить', 'compare'), reply('позвать консультанта', 'human'), reply('задать другой вопрос', 'new-question')],
+    conversation: { state: 'SHOWING_EVIDENCE' },
   };
 }
 

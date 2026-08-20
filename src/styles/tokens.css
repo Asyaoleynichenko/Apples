@@ -1,6 +1,7 @@
 /*
- * Every value here is read straight out of the Figma file
- * "11.08.26 🍏" → page "Прототип". Do not tweak these by eye.
+ * Color and device chrome come from Figma "11.08.26 🍏".
+ * Spacing, type, radius, and tap targets follow an 8px / WCAG scale —
+ * not every Figma fraction (15px type, 51px bars, 1.5 vs 1.8 strokes).
  */
 
 :root {
@@ -28,13 +29,31 @@
   --onb-grad-to: #dcdbe0;
   --onb-back-arrow: #000;
 
-  /* Text */
+  /* 8px spacing scale — padding, gaps, and offsets snap here. */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 40px;
+  --space-8: 48px;
+  /* WCAG 2.2 AA minimum for icon buttons and text controls. */
+  --tap: 44px;
+  /* Nested radius: inner = outer − padding. Outer cards 16, inner controls 8. */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 20px;
+  --radius-pill: 999px;
+
+  /* Text — #5c5c5c is ~6.6:1 on white and ~5.5:1 on #ededed (AA for body). */
   --text: #000000;
-  --text-secondary: #7f7f7f;
-  --text-muted: #7f7f7f;
-  --text-placeholder: #7f7f7f;
-  --text-caption: #7f7f7f;
-  --icon-close: rgba(39, 43, 55, 0.3);
+  --text-secondary: #5c5c5c;
+  --text-muted: #5c5c5c;
+  --text-placeholder: #5c5c5c;
+  --text-caption: #5c5c5c;
+  --icon-close: #5c5c5c;
 
   /* Surfaces for zoning without borders */
   --soft: #f5f5f5;
@@ -42,7 +61,7 @@
 
   /* Brand */
   --black: #000000;
-  --black-30: #7f7f7f;
+  --black-30: #5c5c5c;
   --black-15: #d9d9d9;
   --black-3: #f9f9f9;
   --brand: #dcff00;
@@ -71,42 +90,45 @@
   --ease: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-/* Text styles, named after the Figma layers that use them. */
+/*
+ * Type scale: 12 / 14 / 16 / 20 / 24.
+ * Body is 16/24 Regular. Titles are heavier AND a step up, so they don't melt into copy.
+ */
 .t-headline-24 {
-  font-weight: 500;
+  font-weight: 600;
   font-size: 24px;
-  line-height: 28px;
+  line-height: 32px;
   letter-spacing: 0;
 }
 .t-title-17 {
-  font-weight: 500;
-  font-size: 17px;
-  line-height: 22px;
+  font-weight: 600;
+  font-size: 20px;
+  line-height: 28px;
 }
 .t-body-16 {
   font-weight: 400;
   font-size: 16px;
-  line-height: 20px;
+  line-height: 24px;
 }
 .t-bubble-15 {
   font-weight: 400;
-  font-size: 15px;
-  line-height: 20px;
+  font-size: 16px;
+  line-height: 24px;
 }
 .t-card-15 {
-  font-weight: 500;
-  font-size: 15px;
-  line-height: 20px;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 24px;
 }
 .t-label-14 {
-  font-weight: 500;
+  font-weight: 600;
   font-size: 14px;
-  line-height: 18px;
+  line-height: 20px;
 }
 .t-body-14 {
   font-weight: 400;
   font-size: 14px;
-  line-height: 18px;
+  line-height: 20px;
 }
 .t-caption-12 {
   font-weight: 400;
@@ -114,7 +136,7 @@
   line-height: 16px;
 }
 .t-tag-12 {
-  font-weight: 500;
+  font-weight: 600;
   font-size: 12px;
   line-height: 16px;
 }

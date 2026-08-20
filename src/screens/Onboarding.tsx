@@ -27,10 +27,10 @@ const BUDGETS = ['до 2 000 ₽', '2 000–5 000 ₽', '5 000–10 000 ₽', '�
 const DISLIKES = ['Сильные отдушки', 'бренды', 'Плотные текстуры', 'высокая цена', 'Определённые ингредиенты'];
 
 const ROUTINE_FIELDS = [
-  { key: 'foundation', label: 'тональная основа', value: 'Estee lauder' },
-  { key: 'shampoo', label: 'шампунь', value: 'Davines' },
-  { key: 'cream', label: 'крем', value: 'LA ROCHE-POSAY' },
-  { key: 'care', label: 'уход', value: 'Celimax' },
+  { key: 'foundation', label: 'тональная основа', placeholder: 'выбери бренд и оттенок' },
+  { key: 'shampoo', label: 'шампунь', placeholder: 'который идеально подходит' },
+  { key: 'cream', label: 'крем', placeholder: 'можно выбрать несколько' },
+  { key: 'care', label: 'уход', placeholder: 'что всегда с тобой' },
 ] as const;
 
 type RoutineKey = (typeof ROUTINE_FIELDS)[number]['key'];
@@ -107,7 +107,7 @@ export default function Onboarding() {
   const [budget, setBudget] = useState<string | null>(null);
   const [dislikes, setDislikes] = useState<string[]>([]);
   const [routine, setRoutine] = useState<Record<string, string>>(
-    Object.fromEntries(ROUTINE_FIELDS.map((f) => [f.key, f.value])),
+    Object.fromEntries(ROUTINE_FIELDS.map((f) => [f.key, ''])),
   );
   const [pickedIds, setPickedIds] = useState<Partial<Record<RoutineKey, string>>>({});
   const [picker, setPicker] = useState<Picker | null>(null);
@@ -287,27 +287,34 @@ export default function Onboarding() {
                 </div>
               </div>
               <div className="onb__fields">
-                {ROUTINE_FIELDS.map((f) => (
+                {ROUTINE_FIELDS.map((f) => {
+                  const filled = Boolean(routine[f.key]);
+                  return (
                   <div key={f.key} className="onb__field">
                     <div className="t-title-17">{f.label}</div>
                     <button
                       className="onb__input press"
                       onClick={() =>
-                        setPicker({ field: f.key, phase: 'search', query: routine[f.key] || f.value })
+                        setPicker({ field: f.key, phase: 'search', query: routine[f.key] })
                       }
                     >
-                      <span className="t-body-16">{routine[f.key] || 'выбрать'}</span>
-                      <span
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          setRoutine({ ...routine, [f.key]: '' });
-                        }}
-                      >
-                        <Close size={16} color="#9b9b9b" />
+                      <span className={`t-body-16${filled ? '' : ' onb__input-placeholder'}`}>
+                        {filled ? routine[f.key] : f.placeholder}
                       </span>
+                      {filled && (
+                        <span
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setRoutine({ ...routine, [f.key]: '' });
+                          }}
+                        >
+                          <Close size={16} color="#5c5c5c" />
+                        </span>
+                      )}
                     </button>
                   </div>
-                ))}
+                  );
+                })}
                 {shade && <div className="onb__shade-note t-body-14">оттенок: {shade}</div>}
               </div>
               <div className="button-group">

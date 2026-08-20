@@ -8,7 +8,7 @@ import { Heart, CheckCircle, Bag, MinusBadge, PlusBadge, TickOk, TickWarn } from
 import { useStore } from '../lib/store';
 import { useAssistant } from '../lib/useAssistant';
 import { compareVerdict, handoffContext, preferenceChecks } from '../lib/ai';
-import { formatPrice, PRODUCTS, sourcesFor } from '../data/products';
+import { formatPrice, PRODUCTS, sourcesFor, EDITORIAL, flaconForProducts } from '../data/products';
 import { asset } from '../lib/asset';
 
 export default function Sheets() {
@@ -320,6 +320,7 @@ function CompareSheet() {
   const budget = conversation.slots.budgetMax ?? profile.budgetMax;
   const { winnerId, text } = compareVerdict(ids, conversation, profile);
   const winner = winnerId ? PRODUCTS[winnerId] : a;
+  const flacon = flaconForProducts(ids, 2);
 
   const openProduct = (id: string) => push({ name: 'pdp', productId: id });
   const buy = (id: string) => {
@@ -405,6 +406,20 @@ function CompareSheet() {
             <img src={asset('mascot-avatar.png')} alt="" />
             <div className="t-body-14">{text}</div>
           </div>
+          {flacon.length > 0 && (
+            <div className="cmp__flacon">
+              <div className="cmp__flacon-label t-caption-12">Flacon · медиа Золотого Яблока</div>
+              {flacon.map((id) => {
+                const e = EDITORIAL[id];
+                if (!e) return null;
+                return (
+                  <a key={id} className="cmp__flacon-link t-body-14" href={e.href} target="_blank" rel="noopener noreferrer">
+                    {e.title}
+                  </a>
+                );
+              })}
+            </div>
+          )}
         </>
       )}
     </BottomSheet>

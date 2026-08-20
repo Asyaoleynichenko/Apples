@@ -184,18 +184,16 @@ export function SourcesBlock({ productId }: { productId: string }) {
 function FlaconMark() {
   return (
     <svg width="16" height="18" viewBox="0 0 16 18" fill="none" aria-hidden>
-      <path d="M7.6025 12.364L0.75 16.6468V0.75H15.25V16.6468L8.3975 12.364L8 12.1156L7.6025 12.364Z" stroke="currentColor" strokeWidth="1.5" />
+      <path d="M7.6025 12.364L0.75 16.6468V0.75H15.25V16.6468L8.3975 12.364L8 12.1156L7.6025 12.364Z" stroke="currentColor" strokeWidth="1.6" />
     </svg>
   );
 }
 
 /** Scenario 15 — Flacon tiles: rubric → cover → minutes → title → Читать. */
 export function ContentBlock({ contentIds }: { contentIds: string[] }) {
-  const { openSheet, conversation } = useStore();
-  const focus = conversation.focusId;
   const hasFlacon = contentIds.some((id) => EDITORIAL[id]?.kind === 'flacon');
-  const open = () => {
-    if (focus) openSheet({ name: 'sources', productIds: [focus] });
+  const open = (href: string) => {
+    window.open(href, '_blank', 'noopener,noreferrer');
   };
 
   return (
@@ -213,7 +211,7 @@ export function ContentBlock({ contentIds }: { contentIds: string[] }) {
               <span>{e.category}</span>
               <span>{e.section}</span>
             </div>
-            <button type="button" className="flacon-card__cover press" onClick={open} aria-label={e.title}>
+            <button type="button" className="flacon-card__cover press" onClick={() => open(e.href)} aria-label={e.title}>
               <img src={e.cover} alt="" />
             </button>
             <div className="flacon-card__meta">
@@ -223,7 +221,7 @@ export function ContentBlock({ contentIds }: { contentIds: string[] }) {
               </span>
             </div>
             <div className="flacon-card__title">{e.title}</div>
-            <button type="button" className="flacon-card__read press" onClick={open}>
+            <button type="button" className="flacon-card__read press" onClick={() => open(e.href)}>
               Читать
             </button>
           </article>

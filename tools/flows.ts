@@ -188,11 +188,12 @@ const main = new Sim('FLOW 02 · что мне купить (главный пу
   .expect('источники')
   .tap('сравнить')
   .expect('таблица сравнения')
+  .expect('статьи Flacon')
   .print();
 main.act('open:clarins').act(`feedback:clarins`).tap('не моё').tap('текстура').expectLearned('плотные текстуры').print();
 
 // FLOW 03 — compare on request.
-new Sim('FLOW 03 · сравни эти два').act('popular').say('Сравни эти два').expect('таблица сравнения').expect('я бы взяла').print();
+new Sim('FLOW 03 · сравни эти два').act('popular').say('Сравни эти два').expect('таблица сравнения').expect('я бы взяла').expect('статьи Flacon').print();
 
 // FLOW 04 — cheaper.
 new Sim('FLOW 04 · есть дешевле').act('popular').say('Есть что-нибудь дешевле?').expect('нашла').expect('карточки').print();
@@ -345,6 +346,18 @@ new Sim('аудит · пропуск вопроса в воронке')
 new Sim('аудит · сравнение без контекста не гадает')
   .act('compare')
   .expect('что ищем')
+  .print();
+
+new Sim('аудит · Flacon вместо выдумки про SPF')
+  .say('Нужно ли наносить SPF каждый день?')
+  .expect('flacon')
+  .expect('нестыдный вопрос')
+  .print();
+
+new Sim('аудит · сравнение без товаров цитирует Flacon')
+  .say('В чём разница между кремом и лосьоном?')
+  .expect('flacon')
+  .expect('кремом и лосьоном')
   .print();
 
 /* ------------------------------------------------------------- verdict */

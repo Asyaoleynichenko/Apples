@@ -53,15 +53,17 @@ export default function Pdp({ productId }: { productId: string }) {
       <StatusBar />
 
       <div className="pdp__topbar">
-        <button className="press" onClick={back} aria-label="Назад">
-          <ChevronLeft />
-        </button>
-        <div className="pdp__rating">
-          <span className="pdp__stars">
-            {'★★★★★'.slice(0, stars)}
-            <span className="pdp__stars-off">{'★★★★★'.slice(stars)}</span>
-          </span>
-          <span className="pdp__reviews">· {p.reviews} отзыва</span>
+        <div className="pdp__topbar-left">
+          <button className="press" onClick={back} aria-label="Назад">
+            <ChevronLeft />
+          </button>
+          <div className="pdp__rating">
+            <span className="pdp__stars">
+              {'★★★★★'.slice(0, stars)}
+              <span className="pdp__stars-off">{'★★★★★'.slice(stars)}</span>
+            </span>
+            <span className="pdp__reviews">· {p.reviews} отзыва</span>
+          </div>
         </div>
         <div className="pdp__topbar-right">
           <button className="press" onClick={askAi} aria-label="AI">
@@ -164,7 +166,7 @@ export default function Pdp({ productId }: { productId: string }) {
         </button>
       </div>
 
-      <TabBar active="cart" />
+      <TabBar active="catalog" />
       <HomeIndicator />
 
       <AnimatePresence>

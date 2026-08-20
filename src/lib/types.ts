@@ -78,6 +78,8 @@ export type Editorial = {
   cover: string;
   href: string;
   topic: 'review' | 'swatch' | 'guide';
+  /** What a request/product can match to pull this piece from the Flacon base. */
+  tags?: string[];
 };
 
 /* --------------------------------------------------------------- profile */
