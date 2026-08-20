@@ -106,8 +106,9 @@ function AiIntroSheet() {
             <div className="intro__texts">
               <div className="t-headline-24">{noOrphan('Привет, я твой личный ассистент')}</div>
               <div className="t-body-16 intro__sub">
-                Помогу с выбором, подскажу что подходит именно тебе исходя из прошлых покупок.
-                {'\n'}А ещё всегда отвечу на вопросы 💚
+                {noOrphan(
+                  'Помогу с выбором, подскажу что подходит именно тебе исходя из прошлых покупок.\nА ещё всегда отвечу на вопросы 💚',
+                )}
               </div>
             </div>
             <div className="bottom-container" onPointerDown={(e) => e.stopPropagation()}>

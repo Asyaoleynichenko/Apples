@@ -231,7 +231,7 @@ export default function Onboarding() {
               <div className="onb__texts">
                 <div className="t-headline-24">{noOrphan('я твой личный ассистент\nдавай познакомимся')}</div>
                 <div className="t-body-16">
-                  Расскажи немного о себе — и я буду подбирать косметику с учётом твоих предпочтений
+                  {noOrphan('Расскажи немного о себе — и я буду подбирать косметику с учётом твоих предпочтений')}
                 </div>
               </div>
               <div className="button-group">
@@ -329,8 +329,9 @@ export default function Onboarding() {
               <div className="onb__texts onb__texts--top">
                 <div className="t-headline-24">{noOrphan('всё, познакомились 💚')}</div>
                 <div className="t-body-16">
-                  Теперь я буду учитывать твой вкус, бюджет и то, что тебе не подходит. Не понравится рекомендация
-                  — скажи. Я запомню
+                  {noOrphan(
+                    'Теперь я буду учитывать твой вкус, бюджет и то, что тебе не подходит. Не понравится рекомендация — скажи. Я запомню',
+                  )}
                 </div>
               </div>
               <div className="onb__art onb__art--tall">

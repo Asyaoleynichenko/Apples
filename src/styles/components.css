@@ -5,7 +5,7 @@
   flex: 0 0 44px;
   height: 44px;
   background: transparent;
-  z-index: 5;
+  z-index: 8;
 }
 .statusbar__time {
   position: absolute;
@@ -78,8 +78,8 @@
   position: absolute;
   left: 0;
   right: 0;
-  top: calc(-1 * var(--chat-header-top));
-  height: calc(72px + var(--chat-header-top));
+  top: 0;
+  height: 72px;
   background: linear-gradient(
     0deg,
     rgba(255, 255, 255, 0) 0%,
@@ -92,8 +92,8 @@
   z-index: -1;
 }
 .screen.chat.chat--started .chat-scroll {
-  padding-top: 56px;
-  padding-bottom: 24px;
+  padding-top: 64px;
+  padding-bottom: 8px;
 }
 .chat-header__close {
   width: var(--tap);
@@ -152,7 +152,6 @@
   background: linear-gradient(90deg, var(--purple-from) 0%, var(--purple-to) 100%);
   border-radius: var(--radius-xl) var(--radius-xl) 0 var(--radius-xl);
   color: #fff;
-  box-shadow: inset 3px 4px 4.2px rgba(244, 230, 255, 0.5);
 }
 .bubble--ai {
   background: var(--bubble-ai);
@@ -220,20 +219,18 @@
   position: absolute;
   left: 0;
   right: 0;
-  top: -72px;
-  height: 72px;
+  top: -64px;
+  height: 64px;
   z-index: 0;
   pointer-events: none;
   background: linear-gradient(
     180deg,
     rgba(255, 255, 255, 0) 0%,
-    rgba(255, 255, 255, 0.8) 50.32%,
+    rgba(255, 255, 255, 0) 40%,
+    rgba(255, 255, 255, 0.12) 72%,
+    rgba(255, 255, 255, 0.5) 90%,
     #fff 100%
   );
-  -webkit-backdrop-filter: blur(15px);
-  backdrop-filter: blur(15px);
-  -webkit-mask-image: linear-gradient(180deg, transparent 0%, #000 55%, #000 100%);
-  mask-image: linear-gradient(180deg, transparent 0%, #000 55%, #000 100%);
 }
 .screen.chat.chat--started .bottom-container > * {
   position: relative;
@@ -326,7 +323,7 @@
   min-width: 0;
 }
 .input-wrap__field::placeholder {
-  color: #b3b3b3;
+  color: #6a6a6a;
 }
 
 .send {
@@ -782,7 +779,7 @@
 }
 .ai-banner--search .ai-banner__gloss {
   position: absolute;
-  inset: 6px;
+  inset: 8px;
   z-index: 1;
   border-radius: inherit;
   background: linear-gradient(180deg, rgba(255, 255, 255, 0.5) 0%, rgba(255, 255, 255, 0) 58%);
@@ -855,13 +852,13 @@
 }
 .ai-banner--pdp .ai-banner__inner {
   position: absolute;
-  inset: 14px 0 auto;
+  inset: 16px 0 auto;
   width: 100%;
   height: 112px;
   display: flex;
   align-items: center;
   box-sizing: border-box;
-  padding: 20px 78px 16px 32px;
+  padding: 20px 80px 16px 32px;
   overflow: hidden;
   border-radius: 999px;
 }
@@ -871,7 +868,7 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  gap: 2px;
+  gap: 4px;
   margin: 0;
   width: 100%;
   max-width: none;
@@ -888,7 +885,7 @@
 }
 .ai-banner--pdp .ai-banner__gloss {
   position: absolute;
-  inset: 6px;
+  inset: 8px;
   border-radius: inherit;
   background: linear-gradient(180deg, rgba(255, 255, 255, 0.5) 0%, rgba(255, 255, 255, 0) 58%);
   pointer-events: none;
@@ -933,7 +930,7 @@
 }
 .ai-banner--advice .ai-banner__gloss {
   position: absolute;
-  inset: 6px;
+  inset: 8px;
   border-radius: inherit;
   background: linear-gradient(180deg, rgba(255, 255, 255, 0.5) 0%, rgba(255, 255, 255, 0) 58%);
   pointer-events: none;

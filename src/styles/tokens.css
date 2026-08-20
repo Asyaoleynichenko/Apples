@@ -1,6 +1,6 @@
 /*
  * Color and device chrome come from Figma "11.08.26 🍏".
- * Spacing, type, radius, and tap targets follow an 8px / WCAG scale —
+ * Spacing, type, radius, and tap targets follow a 4px / WCAG scale —
  * not every Figma fraction (15px type, 51px bars, 1.5 vs 1.8 strokes).
  */
 
@@ -11,8 +11,8 @@
   --screen-radius: 56px;
   /* Outer iPhone chrome: 0 0 0 15px on .device (2px black + 14px white). */
   --bezel: 15px;
-  /* Home-indicator offset in Figma chat (pill at y=798 on 812). Shop tab bar uses the same inset. */
-  --screen-pad-bottom: 22px;
+  /* Home-indicator offset. Chat and shop bars use the same 4px-grid inset. */
+  --screen-pad-bottom: 20px;
 
   /* Surfaces */
   --app-bg: #eaebed;
@@ -29,7 +29,7 @@
   --onb-grad-to: #dcdbe0;
   --onb-back-arrow: #000;
 
-  /* 8px spacing scale — padding, gaps, and offsets snap here. */
+  /* 4px spacing scale — padding, gaps, and offsets snap here. */
   --space-1: 4px;
   --space-2: 8px;
   --space-3: 12px;

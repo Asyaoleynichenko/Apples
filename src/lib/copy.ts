@@ -3,9 +3,9 @@ export function chatCopy(text: string) {
   return text.replace(/(?<!\.)\.\s*$/u, '');
 }
 
-/** Keep short prepositions with the next word, and the last two words of a line together. */
+/** Glue short Russian function words to the next word so they cannot end a line. */
 const HANGING =
-  /(^|\s)(в|во|на|с|со|к|ко|у|о|об|обо|и|а|но|по|от|до|из|за|для|не|ни|или)\s+/giu;
+  /(^|\s)(из-за|из-под|чтобы|между|перед|через|около|либо|или|без|для|под|при|про|над|обо|об|от|до|из|за|со|во|ко|по|на|не|ни|но|да|бы|же|ли|и|а|в|с|к|у|о|я)\s+/giu;
 
 export function noOrphan(text: string) {
   return text

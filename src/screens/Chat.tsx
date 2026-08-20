@@ -112,7 +112,7 @@ export default function Chat() {
             <div className="welcome__texts">
               <div className="t-headline-24">{noOrphan('Привет!\nЯ твой AI-ассистент')}</div>
               <div className="t-body-16 welcome__sub">
-                Помогу выбрать косметику под{'\u00a0'}твой вкус, бюджет и{'\u00a0'}задачи 💚
+                {noOrphan('Помогу выбрать косметику под твой вкус, бюджет и задачи 💚')}
               </div>
             </div>
           </div>
