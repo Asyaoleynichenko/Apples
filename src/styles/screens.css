@@ -300,6 +300,23 @@
   height: 125.72px;
   max-width: none;
 }
+.welcome__mascot--header {
+  width: 72px;
+  height: 54px;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  margin-left: -36px;
+  margin-top: -27px;
+  z-index: 1;
+  pointer-events: none;
+}
+.welcome__mascot--header img {
+  left: -5px;
+  top: -5px;
+  width: 81px;
+  height: 59px;
+}
 .welcome__expert {
   position: absolute;
   left: 23px;
@@ -1190,7 +1207,7 @@
   top: 44px;
   background: #1c1c1c;
   color: #fff;
-  border-radius: var(--radius-md);
+  border-radius: 0;
   padding: 12px;
   display: flex;
   align-items: center;

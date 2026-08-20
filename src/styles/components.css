@@ -39,12 +39,12 @@
   padding: 4px 16px;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-end;
   background: var(--surface);
   position: relative;
   z-index: 3;
+  overflow: visible;
 }
-.chat-header__back,
 .chat-header__close {
   width: var(--tap);
   height: var(--tap);
@@ -52,10 +52,6 @@
   place-items: center;
   border-radius: var(--radius-md);
   flex: 0 0 var(--tap);
-}
-.chat-header__back {
-  justify-content: flex-start;
-  padding-left: 0;
 }
 .chat-header__title {
   position: absolute;

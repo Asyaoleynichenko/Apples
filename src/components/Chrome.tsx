@@ -1,5 +1,6 @@
-import { ChevronLeft, Close } from './Icons';
+import { Close } from './Icons';
 import { noOrphan } from '../lib/copy';
+import type { ReactNode } from 'react';
 
 /** iPhone X status bar, 44px, exactly as drawn in the Figma component. */
 export function StatusBar({ dark = false }: { dark?: boolean }) {
@@ -37,24 +38,22 @@ export function HomeIndicator() {
   return <div className="home-indicator" aria-hidden />;
 }
 
-/** Chat header: 56px, back at the left, centred title, close at the right. */
+/** Chat header: 56px, optional centred mascot or title, close at the right. */
 export function ChatHeader({
   title,
-  onBack,
+  center,
   onClose,
   transparent = false,
 }: {
   title?: string;
-  onBack?: () => void;
+  center?: ReactNode;
   onClose?: () => void;
   transparent?: boolean;
 }) {
   return (
     <div className="chat-header" style={transparent ? { background: 'transparent' } : undefined}>
-      <button className="chat-header__back press" onClick={onBack} aria-label="Назад">
-        {onBack && <ChevronLeft />}
-      </button>
-      {title && <div className="chat-header__title t-title-17">{noOrphan(title)}</div>}
+      {center}
+      {!center && title && <div className="chat-header__title t-title-17">{noOrphan(title)}</div>}
       <button className="chat-header__close press" onClick={onClose} aria-label="Закрыть">
         {onClose && <Close color="#000" />}
       </button>

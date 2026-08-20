@@ -1,4 +1,4 @@
-import { AnimatePresence, motion } from 'framer-motion';
+import { AnimatePresence, LayoutGroup, motion } from 'framer-motion';
 import { useEffect, useRef } from 'react';
 import { StatusBar, ChatHeader } from '../components/Chrome';
 import { AiBubble, ChatInput, QuickReplies, TypingBubble, UserBubble, Pill } from '../components/Chat';
@@ -45,6 +45,34 @@ const CAPABILITIES = [
   { title: 'создай\nподборку', icon: <Layers />, action: 'popular' },
 ] as const;
 
+const MASCOT = 'chat-mascot';
+
+function ChatMascot({
+  compact = false,
+  onExpert,
+}: {
+  compact?: boolean;
+  onExpert?: () => void;
+}) {
+  return (
+    <motion.div
+      className={compact ? 'welcome__mascot welcome__mascot--header' : 'welcome__mascot'}
+      layoutId={MASCOT}
+      transition={{ duration: 0.42, ease: [0.22, 1, 0.36, 1] }}
+    >
+      <img src={asset('banner-expert.png')} alt="" />
+      {!compact && onExpert && (
+        <button
+          type="button"
+          className="welcome__expert press"
+          onClick={onExpert}
+          aria-label="спросить эксперта"
+        />
+      )}
+    </motion.div>
+  );
+}
+
 export default function Chat() {
   const { chat, quickReplies, chatContext, back, addToCart, openSheet } = useStore();
   const { run, send, start } = useAssistant();
@@ -67,26 +95,19 @@ export default function Chat() {
         : STARTERS;
 
   return (
+    <LayoutGroup>
     <div className="screen chat">
       <StatusBar />
       <ChatHeader
-        title={started ? 'ассистент' : undefined}
-        onBack={back}
+        center={started ? <ChatMascot compact /> : undefined}
         onClose={back}
       />
 
       <div className="chat-scroll scroll" ref={scrollRef}>
+        {!started && (
         <div className="welcome">
           <div className="welcome__hero">
-            <div className="welcome__mascot">
-              <img src={asset('banner-expert.png')} alt="" />
-              <button
-                type="button"
-                className="welcome__expert press"
-                onClick={() => openSheet({ name: 'consultant' })}
-                aria-label="спросить эксперта"
-              />
-            </div>
+            <ChatMascot onExpert={() => openSheet({ name: 'consultant' })} />
             <div className="welcome__texts">
               <div className="t-headline-24">{noOrphan('привет, я твой личный ассистент')}</div>
               <div className="t-body-16 welcome__sub">
@@ -137,6 +158,7 @@ export default function Chat() {
             </>
           )}
         </div>
+        )}
 
         {started && (
           <div className="chat-body">
@@ -223,6 +245,7 @@ export default function Chat() {
         <ChatInput onSend={send} />
       </div>
     </div>
+    </LayoutGroup>
   );
 }
 
