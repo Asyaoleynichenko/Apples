@@ -132,9 +132,20 @@ export default function Pdp({ productId }: { productId: string }) {
         </div>
 
         <div className="pdp__ai">
-          <button className="press" onClick={askAi}>
+          <div
+            className="press"
+            role="button"
+            tabIndex={0}
+            onClick={askAi}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                askAi();
+              }
+            }}
+          >
             <AiBanner variant="pdp" />
-          </button>
+          </div>
         </div>
 
         <p className="pdp__desc">

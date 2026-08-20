@@ -192,9 +192,6 @@ html[data-shell='live'] .ai-banner--search .ai-banner__copy,
 html[data-shell='live'] .ai-banner--advice .ai-banner__copy {
   width: min(226px, calc(100% - 96px));
 }
-html[data-shell='live'] .ai-banner--pdp .ai-banner__copy {
-  max-width: min(226px, calc(100% - 152px));
-}
 
 html[data-shell='live'] .onb__art--head {
   min-height: 0;

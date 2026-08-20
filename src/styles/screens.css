@@ -1045,7 +1045,7 @@
   padding: 16px;
   overflow: visible;
 }
-.pdp__ai > button {
+.pdp__ai > [role='button'] {
   display: block;
   width: 100%;
   margin: 0 auto;
