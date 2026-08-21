@@ -133,6 +133,7 @@ export default function Chat() {
                 ))}
               </div>
             </div>
+            {!opening && (
             <div className="welcome__section">
               <div className="t-title-17 welcome__section-title">Что умею</div>
               <div className="welcome__caps hscroll">
@@ -147,6 +148,7 @@ export default function Chat() {
                 ))}
               </div>
             </div>
+            )}
           </div>
         </div>
         )}

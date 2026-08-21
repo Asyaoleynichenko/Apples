@@ -192,7 +192,7 @@ function WhySheet() {
             {checks.map((c) => (
               <li key={c.text} className="t-body-16">
                 <span className="why__icon">{c.ok ? <TickOk size={24} /> : <TickWarn size={24} />}</span>
-                {c.text}
+                <span>{c.text}</span>
               </li>
             ))}
           </ul>
@@ -215,8 +215,10 @@ function WhySheet() {
             <ul className="why__list">
               {p.why.map((w) => (
                 <li key={w} className="t-body-16">
-                  <TickOk size={24} />
-                  {w}
+                  <span className="why__icon">
+                    <TickOk size={24} />
+                  </span>
+                  <span>{w}</span>
                 </li>
               ))}
             </ul>
